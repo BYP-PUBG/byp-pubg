@@ -366,9 +366,12 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
   <div class="nav-logo">BYP<span> : BUILD YOUR PLAY</span></div>
   <div class="nav-links">
     <button class="nav-link active">Browse</button>
-    <button class="nav-link" onclick="location.href='pubg-setup-v1.html'">กรอก Setup ของฉัน</button>
+    <button class="nav-link" onclick="goToForm()">กรอก Setup ของฉัน</button>
   </div>
-  <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
+    <div id="authBtn"></div>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -874,8 +877,38 @@ function closeOverlay(e){
     document.getElementById('overlay').classList.remove('show');
 }
 
+// ===== AUTH UI =====
+function goToForm() {
+  _supa.auth.getSession().then(({ data: { session } }) => {
+    window.location.href = session ? 'pubg-setup-v1.html' : 'login.html';
+  });
+}
+
+async function renderAuthBtn() {
+  const { data: { session } } = await _supa.auth.getSession();
+  const el = document.getElementById('authBtn');
+  if (!el) return;
+  if (session) {
+    const email = session.user.email || '';
+    const short = email.split('@')[0].substring(0, 12);
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;">${short}</span>
+        <button onclick="logout()" style="padding:5px 12px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">ออกจากระบบ</button>
+      </div>`;
+  } else {
+    el.innerHTML = `<button onclick="location.href='login.html'" style="padding:5px 14px;border:1px solid var(--gold);border-radius:6px;background:transparent;color:var(--gold);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='var(--gold)';this.style.color='#08090b'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">LOGIN</button>`;
+  }
+}
+
+async function logout() {
+  await _supa.auth.signOut();
+  renderAuthBtn();
+}
+
 // ===== INIT =====
 loadData();
+renderAuthBtn();
 </script>
 </body>
 </html>
