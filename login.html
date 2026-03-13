@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYP : Build Your Play — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const _supa = window.supabase.createClient(
+    'https://llijafxfyeeehxeeuwvv.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWphZnhmeWVlZWh4ZWV1d3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjUwMjQsImV4cCI6MjA4ODk0MTAyNH0.u_jiWxNpZvTQFOMaJ0DfSZhMp1ysqUTk-vvIoHzxkNY'
+  );
+</script>
+<style>
+:root {
+  --bg:     #07080a;
+  --bg2:    #0e0f12;
+  --surf:   #131417;
+  --surf2:  #1a1b1f;
+  --border: #272830;
+  --bord2:  #32333e;
+  --gold:   #f5c842;
+  --goldf:  rgba(245,200,66,0.10);
+  --text:   #f0f1f5;
+  --text2:  #8e8f9e;
+  --text3:  #45464f;
+  --red:    #ef4444;
+  --green:  #22c55e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow','Noto Sans Thai',sans-serif;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+/* noise overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.2;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+/* NAV */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:52px;
+  background:rgba(13,14,18,0.95);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
+.nav-logo span{color:var(--gold);}
+.nav-back{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text2);text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;
+  padding:5px 12px;border:1px solid var(--border);border-radius:6px;
+  transition:all .15s;
+}
+.nav-back:hover{color:var(--gold);border-color:var(--gold);}
+
+/* MAIN */
+.page{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:40px 20px;
+}
+
+.card{
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:14px;
+  width:100%;max-width:420px;
+  overflow:hidden;
+}
+
+/* Card top accent */
+.card::before{
+  content:'';display:block;height:3px;
+  background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.2));
+}
+
+.card-body{padding:32px 36px 36px;}
+
+.card-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:900;letter-spacing:.5px;
+  color:var(--text);margin-bottom:4px;
+}
+.card-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.5;}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--bg2);border-radius:8px;padding:4px;}
+.tab{
+  flex:1;padding:8px;border-radius:6px;border:none;background:transparent;
+  color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;
+  font-family:'Barlow',sans-serif;transition:all .2s;
+}
+.tab.active{background:var(--surf2);color:var(--text);border:1px solid var(--border);}
+
+/* Form */
+.form-group{margin-bottom:16px;}
+.form-label{
+  display:block;font-size:11px;color:var(--text2);
+  letter-spacing:1.5px;text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;margin-bottom:7px;
+}
+.form-input{
+  width:100%;background:var(--surf2);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-size:14px;padding:11px 14px;
+  outline:none;font-family:'Barlow','Noto Sans Thai',sans-serif;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--gold);}
+.form-input::placeholder{color:var(--text3);}
+
+.btn-primary{
+  width:100%;padding:13px;border-radius:8px;border:none;
+  background:var(--gold);color:#08090b;
+  font-size:14px;font-weight:700;letter-spacing:.5px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;
+  transition:all .15s;margin-top:4px;
+}
+.btn-primary:hover{background:#e8a820;transform:translateY(-1px);}
+.btn-primary:active{transform:translateY(0);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* Divider */
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0;color:var(--text3);font-size:12px;
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Google button */
+.btn-google{
+  width:100%;padding:11px;border-radius:8px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text);font-size:14px;font-weight:500;
+  cursor:pointer;font-family:'Barlow',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:all .15s;
+}
+.btn-google:hover{border-color:var(--text2);background:var(--surf2);}
+
+.google-icon{width:18px;height:18px;flex-shrink:0;}
+
+/* Message */
+.msg{
+  padding:10px 14px;border-radius:7px;
+  font-size:13px;margin-bottom:16px;display:none;
+}
+.msg.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.msg.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;}
+.msg.show{display:block;}
+
+/* Footer link */
+.card-footer{
+  padding:16px 36px;border-top:1px solid var(--border);
+  text-align:center;font-size:12px;color:var(--text3);
+  background:var(--bg2);
+}
+.card-footer a{color:var(--text2);text-decoration:none;transition:color .15s;}
+.card-footer a:hover{color:var(--gold);}
+
+/* Loading spinner */
+.spinner{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(0,0,0,.3);border-top-color:#08090b;
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:6px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Verified email notice */
+.verify-box{
+  text-align:center;padding:20px 0;
+}
+.verify-icon{font-size:40px;margin-bottom:12px;}
+.verify-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;
+}
+.verify-sub{font-size:13px;color:var(--text2);line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">BYP<span> : BUILD YOUR PLAY</span></div>
+  <a href="pubg-browse.html" class="nav-back">← Browse</a>
+</nav>
+
+<div class="page">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title" id="cardTitle">ยินดีต้อนรับ</div>
+      <div class="card-sub" id="cardSub">เข้าสู่ระบบเพื่อกรอก Setup ของคุณ</div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" id="tabLogin" onclick="switchTab('login')">เข้าสู่ระบบ</button>
+        <button class="tab" id="tabRegister" onclick="switchTab('register')">สมัครสมาชิก</button>
+      </div>
+
+      <!-- Message -->
+      <div class="msg" id="msgBox"></div>
+
+      <!-- Email/Password Form -->
+      <div id="formSection">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="emailInput" placeholder="your@email.com">
+        </div>
+        <div class="form-group" id="usernameGroup" style="display:none">
+          <label class="form-label">ชื่อในเกม (IGN)</label>
+          <input type="text" class="form-input" id="usernameInput" placeholder="เช่น SniperKing99">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="passwordInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleSubmit()">
+        </div>
+        <button class="btn-primary" id="submitBtn" onclick="handleSubmit()">เข้าสู่ระบบ</button>
+
+        <div class="divider">หรือ</div>
+
+        <button class="btn-google" onclick="loginGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          เข้าสู่ระบบด้วย Google
+        </button>
+      </div>
+
+      <!-- Verify Email Notice -->
+      <div id="verifySection" style="display:none">
+        <div class="verify-box">
+          <div class="verify-icon">📧</div>
+          <div class="verify-title">ยืนยัน Email ของคุณ</div>
+          <div class="verify-sub">เราส่ง Email ไปที่ <strong id="sentEmail" style="color:var(--gold)"></strong> แล้วครับ<br>คลิกลิงก์ใน Email เพื่อเปิดใช้งาน Account</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer">
+      <span id="footerText">ยังไม่มีบัญชี? <a href="#" onclick="switchTab('register');return false">สมัครสมาชิกฟรี</a></span>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentTab = 'login';
+
+// Check if already logged in
+_supa.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = 'pubg-setup-v1.html';
+});
+
+// Handle OAuth redirect
+_supa.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    window.location.href = 'pubg-setup-v1.html';
+  }
+});
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+  document.getElementById('usernameGroup').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('submitBtn').textContent = tab === 'login' ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+  document.getElementById('cardTitle').textContent = tab === 'login' ? 'ยินดีต้อนรับ' : 'สร้างบัญชีใหม่';
+  document.getElementById('cardSub').textContent = tab === 'login' ? 'เข้าสู่ระบบเพื่อกรอก Setup ของคุณ' : 'สมัครฟรี เพื่อบันทึก Setup PUBG ของคุณ';
+  document.getElementById('footerText').innerHTML = tab === 'login'
+    ? 'ยังไม่มีบัญชี? <a href="#" onclick="switchTab(\'register\');return false">สมัครสมาชิกฟรี</a>'
+    : 'มีบัญชีแล้ว? <a href="#" onclick="switchTab(\'login\');return false">เข้าสู่ระบบ</a>';
+  hideMsg();
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('msgBox');
+  el.textContent = text;
+  el.className = 'msg ' + type + ' show';
+}
+function hideMsg() {
+  document.getElementById('msgBox').className = 'msg';
+}
+
+function setLoading(loading) {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<span class="spinner"></span>กำลังดำเนินการ...'
+    : (currentTab === 'login' ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก');
+}
+
+async function handleSubmit() {
+  const email    = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+
+  if (!email || !password) { showMsg('กรุณากรอก Email และ Password', 'error'); return; }
+  if (password.length < 6)  { showMsg('Password ต้องมีอย่างน้อย 6 ตัวอักษร', 'error'); return; }
+
+  setLoading(true); hideMsg();
+
+  if (currentTab === 'login') {
+    const { error } = await _supa.auth.signInWithPassword({ email, password });
+    if (error) { showMsg('Email หรือ Password ไม่ถูกต้อง', 'error'); setLoading(false); }
+    // success handled by onAuthStateChange
+  } else {
+    const { error } = await _supa.auth.signUp({ email, password });
+    if (error) {
+      showMsg(error.message, 'error'); setLoading(false);
+    } else {
+      setLoading(false);
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('verifySection').style.display = 'block';
+      document.getElementById('sentEmail').textContent = email;
+      document.querySelectorAll('.tabs,.divider').forEach(el => el.style.display = 'none');
+    }
+  }
+}
+
+async function loginGoogle() {
+  const { error } = await _supa.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/pubg-setup-v1.html' }
+  });
+  if (error) showMsg('Google Login ไม่สำเร็จ: ' + error.message, 'error');
+}
+</script>
+</body>
+</html>
