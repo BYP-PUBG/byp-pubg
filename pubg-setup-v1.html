@@ -1198,6 +1198,12 @@ window.addEventListener('scroll', () => {
     else if (i === visible) dot.classList.add('active');
   }
 });
+
+// AUTH CHECK — ต้อง Login ก่อนถึงจะกรอกข้อมูลได้
+(async () => {
+  const { data: { session } } = await _supa.auth.getSession();
+  if (!session) window.location.href = 'login.html';
+})();
 </script>
 </body>
 </html>
