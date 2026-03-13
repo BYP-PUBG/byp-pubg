@@ -814,7 +814,7 @@ input[type=range]::-webkit-slider-thumb:hover {
             <button class="chip" onclick="selectChip(this,'monSizeChips','24\"')">24"</button>
             <button class="chip selected" onclick="selectChip(this,'monSizeChips','27\"')">27"</button>
             <button class="chip" onclick="selectChip(this,'monSizeChips','32\"')">32"</button>
-            <button class="chip" onclick="selectChip(this,'monSizeChips','34\" (Ultra)')">34" Ultra</button>
+            <button class="chip" onclick="selectChip(this,'monSizeChips','34\" Ultra')">34" Ultra</button>
           </div>
         </div>
       </div>
@@ -1237,10 +1237,12 @@ window.addEventListener('scroll', () => {
 
   const selectChipByVal = (groupId, val) => {
     if (!val || val === '—') return;
+    // clear group ก่อนทุกครั้ง
+    document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
+    // หา chip ที่ตรงกัน
     document.querySelectorAll('#' + groupId + ' .chip').forEach(c => {
-      if ((c.dataset.val || c.textContent.trim()) === val) {
-        c.classList.add('selected');
-      }
+      const chipVal = c.dataset.val || c.textContent.trim();
+      if (chipVal === val) c.classList.add('selected');
     });
   };
   selectChipByVal('hzChips',      existing.hz);
