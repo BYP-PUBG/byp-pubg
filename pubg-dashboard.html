@@ -578,6 +578,14 @@ td {
 </head>
 <body>
 
+<!-- ACCESS DENIED OVERLAY -->
+<div id="accessDenied" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="font-size:48px;">🚫</div>
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text);">Access Denied</div>
+  <div style="font-size:14px;color:var(--text2);">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</div>
+  <a href="pubg-browse.html" style="margin-top:8px;padding:10px 24px;background:var(--gold);color:#08090b;border-radius:8px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;">← กลับหน้าหลัก</a>
+</div>
+
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
@@ -602,7 +610,9 @@ td {
     </button>
   </nav>
   <div class="sidebar-footer">
-    <a href="pubg-setup-v1.html">← กลับหน้ากรอกข้อมูล</a>
+    <div id="adminInfo" style="font-size:11px;color:var(--text2);margin-bottom:8px;padding:8px 10px;background:var(--surf2);border-radius:6px;border:1px solid var(--border);"></div>
+    <button onclick="adminLogout()" style="width:100%;padding:7px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-bottom:8px;transition:all .15s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='';this.style.color=''">ออกจากระบบ</button>
+    <a href="pubg-browse.html">← กลับหน้าหลัก</a>
   </div>
 </aside>
 
@@ -1280,14 +1290,46 @@ function exportCSV() {
   a.click();
 }
 
-// ===== INIT =====
-loadData();
+// ===== INIT — Admin Auth Check =====
+(async () => {
+  const { data: { session } } = await _supa.auth.getSession();
 
-// Realtime — อัพเดตอัตโนมัติเมื่อมีข้อมูลใหม่
-_supa.channel('setups-realtime')
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'setups' },
-    (payload) => { allData.unshift(mapRow(payload.new)); refresh(); })
-  .subscribe();
+  // ไม่ได้ Login → ไปหน้า Login
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  // เช็ค Role จากตาราง profiles
+  const { data: profile } = await _supa
+    .from('profiles')
+    .select('role, email')
+    .eq('id', session.user.id)
+    .single();
+
+  if (!profile || profile.role !== 'admin') {
+    // ไม่ใช่ Admin → แสดง Access Denied
+    document.getElementById('accessDenied').style.display = 'flex';
+    document.querySelector('aside').style.display = 'none';
+    document.querySelector('.main').style.display = 'none';
+    return;
+  }
+
+  // เป็น Admin → แสดงข้อมูลใน Sidebar
+  const email = profile.email || session.user.email || '';
+  const short = email.split('@')[0];
+  document.getElementById('adminInfo').innerHTML =
+    `<div style="color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:2px;">👑 ADMIN</div>${short}`;
+
+  // โหลดข้อมูลและเปิด Realtime
+  loadData();
+  _supa.channel('setups-realtime')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'setups' },
+      (payload) => { allData.unshift(mapRow(payload.new)); refresh(); })
+    .subscribe();
+})();
+
+async function adminLogout() {
+  await _supa.auth.signOut();
+  window.location.href = 'login.html';
+}
 </script>
 </body>
 </html>
