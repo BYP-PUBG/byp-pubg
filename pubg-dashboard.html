@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PUBG SETUP — Admin Dashboard</title>
+<title>BYP : Build Your Play — Admin Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const _supa = window.supabase.createClient(
+    'https://llijafxfyeeehxeeuwvv.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWphZnhmeWVlZWh4ZWV1d3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjUwMjQsImV4cCI6MjA4ODk0MTAyNH0.u_jiWxNpZvTQFOMaJ0DfSZhMp1ysqUTk-vvIoHzxkNY'
+  );
+</script>
 <style>
 :root {
   --bg:      #08090b;
@@ -58,7 +65,7 @@ body {
 
 .logo-mark {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 900;
   letter-spacing: 1px;
   color: var(--text);
@@ -574,8 +581,8 @@ td {
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-mark">PUBG<span>SETUP</span></div>
-    <div class="logo-sub">Admin Dashboard</div>
+    <div class="logo-mark">BYP<span> : BUILD YOUR PLAY</span></div>
+    <div class="logo-sub">Admin Dashboard — PUBG</div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-label">Menu</div>
@@ -589,9 +596,7 @@ td {
       <span class="nav-icon">📈</span> Analytics
     </button>
     <div class="nav-label" style="margin-top:12px">Tools</div>
-    <button class="nav-item" onclick="loadDemoData()">
-      <span class="nav-icon">⚡</span> โหลด Demo Data
-    </button>
+
     <button class="nav-item" onclick="clearData()">
       <span class="nav-icon">🗑️</span> ล้างข้อมูล
     </button>
@@ -608,7 +613,7 @@ td {
     <div class="topbar-right">
       <div class="live-badge"><div class="live-dot"></div> LIVE</div>
       <button class="btn-small" onclick="exportCSV()">⬇ Export CSV</button>
-      <button class="btn-small gold" onclick="loadDemoData()">+ Demo Data</button>
+
     </div>
   </div>
 
@@ -838,16 +843,40 @@ let currentFilter = 'all';
 let currentPage = 1;
 const PER_PAGE = 12;
 
-// Load from localStorage
-function loadData() {
-  try {
-    allData = JSON.parse(localStorage.getItem('pubg_setups') || '[]');
-  } catch(e) { allData = []; }
+function mapRow(d) {
+  return {
+    ign:       d.ign,        height:    d.height,
+    mouse:     d.mouse,      dpi:       d.dpi,
+    hz:        d.hz,         grip:      d.grip,
+    arm:       d.arm,        invert:    d.invert,
+    genSens:   d.gen_sens,   vertMult:  d.vert_mult,
+    aimSens:   d.aim_sens,   adsSens:   d.ads_sens,
+    scopeSens: d.scope_sens, univScope: d.univ_scope,
+    tableH:    d.table_h,    tableSize: d.table_size,
+    pad:       d.pad,        monSize:   d.mon_size,
+    monHz:     d.mon_hz,     monDist:   d.mon_dist,
+    cpuBrand:  d.cpu_brand,  cpuModel:  d.cpu_model,
+    gpuBrand:  d.gpu_brand,  gpuModel:  d.gpu_model,
+    ram:       d.ram,        storage:   d.storage,
+    os:        d.os,         avgFps:    d.avg_fps,
+    gfx:       d.gfx,        notes:     d.notes,
+    timestamp: d.created_at,
+  };
+}
+
+// Load from Supabase
+async function loadData() {
+  const { data, error } = await _supa
+    .from('setups')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error(error); return; }
+  allData = data.map(mapRow);
   refresh();
 }
 
 // ===== DEMO DATA =====
-function loadDemoData() {
+async function loadDemoData() {
   const igns = ['SnakeEyes_TH','KiraFrag','ZeroRecoil','GhostPUBG','NightCrawler','SniperKing99','BlindFire','StormBolt','IronWrist','AceHunter','TactikZ','ProPlayerX','ShadowAim','FrostBite','QuickScope'];
   const mice = ['Logitech G Pro X S2','Razer Viper V3 Pro','Zowie EC2-C','Finalmouse Starlight','SteelSeries Prime','Logitech G502 X','Razer DeathAdder V3','Zowie FK1+','Pulsar X2','Endgame Gear XM1r'];
   const grips = ['Palm','Claw','Fingertip'];
@@ -856,14 +885,11 @@ function loadDemoData() {
   const monSizes = ['24"','27"','32"'];
   const monHz = ['144Hz','165Hz','240Hz','360Hz'];
   const cpuBrands = ['Intel','Intel','AMD'];
-  const cpuModels = ['i5-13600K','i7-13700K','i9-13900K','Ryzen 5 7600X','Ryzen 7 7700X','i5-12600K'];
   const gpuBrands = ['NVIDIA','NVIDIA','NVIDIA','AMD'];
-  const gpuModels = ['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080','RX 7900 XT','RTX 4060 Ti'];
   const rams = ['16GB','16GB','32GB','32GB','64GB'];
   const storages = ['NVMe SSD','NVMe SSD','SSD SATA'];
   const oses = ['Windows 11','Windows 11','Windows 10'];
   const gfxs = ['Very Low','Very Low','Low','Medium','High'];
-
   const r = () => Math.random();
   const pick = arr => arr[Math.floor(r() * arr.length)];
   const rng = (a,b) => Math.round(a + r()*(b-a));
@@ -873,54 +899,34 @@ function loadDemoData() {
     const gen = rng(35,65);
     const cpuB = pick(cpuBrands);
     const gpuB = pick(gpuBrands);
-    const ago = Math.floor(r() * 7 * 24 * 60);
-    const ts = new Date(Date.now() - ago * 60000).toISOString();
     return {
       ign: igns[i] || 'Player'+(i+1),
-      height: rng(160,185) + ' cm',
-      mouse: pick(mice),
-      dpi: String(dpi),
-      hz: pick(['500Hz','1000Hz','1000Hz','2000Hz']),
-      grip: pick(grips),
-      arm: pick(arms),
-      invert: 'Disable',
-      genSens: String(gen),
-      vertMult: (r() > 0.7 ? '1.1' : '1.0'),
-      aimSens: String(rng(gen-5, gen+5)),
-      adsSens: String(rng(gen-8, gen+2)),
-      scopeSens: String(rng(gen-5, gen+5)),
-      univScope: 'Enable',
-      tableH: rng(70,85) + ' cm',
-      tableSize: rng(100,160)+'×'+rng(55,80)+' cm',
-      pad: pick(pads),
-      padX: rng(-20,0) + ' cm',
-      monSize: pick(monSizes),
-      monHz: pick(monHz),
-      monDist: rng(50,80) + ' cm',
-      monX: '0',
-      monDeg: '0°',
-      cpuBrand: cpuB,
-      cpuModel: pick(cpuB==='Intel' ? ['i5-13600K','i7-13700K','i9-13900K','i5-12600K'] : ['Ryzen 5 7600X','Ryzen 7 7700X','Ryzen 9 7950X']),
-      gpuBrand: gpuB,
-      gpuModel: pick(gpuB==='NVIDIA' ? ['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080','RTX 4060 Ti'] : ['RX 7900 XT','RX 6800 XT']),
-      ram: pick(rams),
-      storage: pick(storages),
-      os: pick(oses),
-      avgFps: String(rng(80,200)) + ' FPS',
-      gfx: pick(gfxs),
-      notes: '',
-      timestamp: ts,
+      height: rng(160,185)+' cm', mouse: pick(mice),
+      dpi: String(dpi), hz: pick(['500Hz','1000Hz','1000Hz','2000Hz']),
+      grip: pick(grips), arm: pick(arms), invert: 'Disable',
+      gen_sens: String(gen), vert_mult: r()>0.7?'1.1':'1.0',
+      aim_sens: String(rng(gen-5,gen+5)), ads_sens: String(rng(gen-8,gen+2)),
+      scope_sens: String(rng(gen-5,gen+5)), univ_scope: 'Enable',
+      table_h: rng(70,85)+' cm', table_size: rng(100,160)+'×'+rng(55,80)+' cm',
+      pad: pick(pads), mon_size: pick(monSizes), mon_hz: pick(monHz),
+      mon_dist: rng(50,80)+' cm',
+      cpu_brand: cpuB,
+      cpu_model: pick(cpuB==='Intel'?['i5-13600K','i7-13700K','i9-13900K']:['Ryzen 5 7600X','Ryzen 7 7700X']),
+      gpu_brand: gpuB,
+      gpu_model: pick(gpuB==='NVIDIA'?['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080']:['RX 7900 XT','RX 6800 XT']),
+      ram: pick(rams), storage: pick(storages), os: pick(oses),
+      avg_fps: String(rng(80,200))+' FPS', gfx: pick(gfxs), notes: '',
     };
   });
 
-  const existing = JSON.parse(localStorage.getItem('pubg_setups') || '[]');
-  localStorage.setItem('pubg_setups', JSON.stringify([...existing, ...demos]));
+  const { error } = await _supa.from('setups').insert(demos);
+  if (error) { alert('Error: '+error.message); return; }
   loadData();
 }
 
-function clearData() {
-  if (confirm('ล้างข้อมูลทั้งหมด?')) {
-    localStorage.removeItem('pubg_setups');
+async function clearData() {
+  if (confirm('ล้างข้อมูลทั้งหมด? (ลบจาก Database จริง)')) {
+    await _supa.from('setups').delete().neq('id', '00000000-0000-0000-0000-000000000000');
     allData = []; filtered = [];
     refresh();
   }
@@ -1270,14 +1276,18 @@ function exportCSV() {
   const csv = [header,...rows].join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = 'pubg_setups_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.download = 'byp_pubg_setups_' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
 }
 
 // ===== INIT =====
 loadData();
-// Auto-refresh every 30s
-setInterval(loadData, 30000);
+
+// Realtime — อัพเดตอัตโนมัติเมื่อมีข้อมูลใหม่
+_supa.channel('setups-realtime')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'setups' },
+    (payload) => { allData.unshift(mapRow(payload.new)); refresh(); })
+  .subscribe();
 </script>
 </body>
 </html>
