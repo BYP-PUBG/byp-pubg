@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PUBG SETUP — V1</title>
+<title>BYP : Build Your Play — PUBG Setup</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const _supa = window.supabase.createClient(
+    'https://llijafxfyeeehxeeuwvv.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWphZnhmeWVlZWh4ZWV1d3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjUwMjQsImV4cCI6MjA4ODk0MTAyNH0.u_jiWxNpZvTQFOMaJ0DfSZhMp1ysqUTk-vvIoHzxkNY'
+  );
+</script>
 <style>
 :root {
   --bg:       #09090b;
@@ -532,10 +539,16 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 <!-- HEADER -->
 <header>
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;">
+    <a href="pubg-browse.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;padding:6px 14px;border:1px solid var(--border2);border-radius:6px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">
+      ← หน้าหลัก
+    </a>
+    <span style="margin-left:16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--text);letter-spacing:1px;">BYP <span style="color:#f5c842">: BUILD YOUR PLAY</span></span>
+  </div>
   <div class="hero">
     <div class="hero-inner">
-      <div class="version-badge">● Version 1.0 &nbsp;·&nbsp; PUBG Only</div>
-      <h1 class="hero-title">PUBG<br><span>SETUP</span> COLLECTOR</h1>
+      <div class="version-badge">● Version 1.0 &nbsp;·&nbsp; PUBG Edition</div>
+      <h1 class="hero-title">BYP<br><span>BUILD YOUR PLAY</span></h1>
       <p class="hero-sub">บันทึก Mouse Settings และ Desktop Setup ของคุณ เพื่อหาค่าที่เหมาะสมกับ Playstyle</p>
       <div class="progress-bar-wrap">
         <div class="steps">
@@ -1110,12 +1123,41 @@ function submitForm() {
   document.getElementById('successScreen').classList.add('show');
   document.body.style.overflow = 'hidden';
 
-  // Save to localStorage
-  try {
-    const saved = JSON.parse(localStorage.getItem('pubg_setups') || '[]');
-    saved.push({ ...data, timestamp: new Date().toISOString() });
-    localStorage.setItem('pubg_setups', JSON.stringify(saved));
-  } catch(e) {}
+  // Save to Supabase
+  _supa.from('setups').insert([{
+    ign:        data.ign,
+    height:     data.height,
+    mouse:      data.mouse,
+    dpi:        data.dpi,
+    hz:         data.hz,
+    grip:       data.grip,
+    arm:        data.arm,
+    invert:     data.invert,
+    gen_sens:   data.genSens,
+    vert_mult:  data.vertMult,
+    aim_sens:   data.aimSens,
+    ads_sens:   data.adsSens,
+    scope_sens: data.scopeSens,
+    univ_scope: data.univScope,
+    table_h:    data.tableH,
+    table_size: data.tableSize,
+    pad:        data.pad,
+    mon_size:   data.monSize,
+    mon_hz:     data.monHz,
+    mon_dist:   data.monDist,
+    cpu_brand:  data.cpuBrand,
+    cpu_model:  data.cpuModel,
+    gpu_brand:  data.gpuBrand,
+    gpu_model:  data.gpuModel,
+    ram:        data.ram,
+    storage:    data.storage,
+    os:         data.os,
+    avg_fps:    data.avgFps,
+    gfx:        data.gfx,
+    notes:      data.notes,
+  }]).then(({ error }) => {
+    if (error) console.error('Supabase error:', error.message);
+  });
 }
 
 // ===== RESET =====
