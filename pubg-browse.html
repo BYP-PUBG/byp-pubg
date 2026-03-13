@@ -922,8 +922,7 @@ async function renderAuthBtn() {
       setupBtn.textContent = mySetup ? '⚙️ ตั้งค่าของฉัน' : '+ กรอก Setup ของฉัน';
     }
 
-    // re-render cards ถ้าโหลดเสร็จแล้ว
-    if (typeof renderCards === 'function' && filtered.length > 0) renderCards();
+    // re-render cards ถ้าโหลดเสร็จแล้ว — ไม่จำเป็นแล้ว (init เช็ค admin ก่อน loadData)
 
     el.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;">
@@ -943,8 +942,10 @@ async function logout() {
 }
 
 // ===== INIT =====
-loadData();
-renderAuthBtn();
+(async () => {
+  await renderAuthBtn(); // เช็ค admin ก่อน
+  await loadData();      // แล้วค่อยโหลด data + render cards
+})();
 </script>
 </body>
 </html>
