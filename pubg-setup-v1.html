@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUBG SETUP — V1</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #09090b;
+  --bg2:      #111113;
+  --surface:  #18181b;
+  --surface2: #222226;
+  --border:   #2e2e33;
+  --border2:  #3f3f46;
+  --gold:     #f5c842;
+  --gold2:    #e8a820;
+  --red:      #ef4444;
+  --blue:     #3b82f6;
+  --text:     #fafafa;
+  --text2:    #a1a1aa;
+  --text3:    #52525b;
+  --radius:   10px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle noise texture overlay */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.4;
+}
+
+/* ===== HEADER ===== */
+header {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1209 50%, #0f0f0f 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0 32px;
+  position: relative;
+}
+
+.hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(245,200,66,0.07) 0%, transparent 70%);
+}
+
+.hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.hero-title span { color: var(--gold); }
+
+.hero-sub {
+  color: var(--text2);
+  font-size: 15px;
+  font-weight: 400;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* Progress bar */
+.progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.steps {
+  display: flex;
+  gap: 4px;
+}
+
+.step-dot {
+  width: 28px; height: 4px;
+  border-radius: 2px;
+  background: var(--border2);
+  transition: background 0.3s;
+}
+.step-dot.done { background: var(--gold); }
+.step-dot.active { background: var(--gold); opacity: 0.5; }
+
+.progress-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+.progress-label span { color: var(--gold); }
+
+/* ===== MAIN LAYOUT ===== */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SECTION ===== */
+.section {
+  margin-bottom: 40px;
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.10s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.20s; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-icon {
+  width: 36px; height: 36px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.section-title-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.section-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  margin-left: auto;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ===== FIELD ROWS ===== */
+.field-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: center;
+  min-height: 52px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.field-row:last-child { border-bottom: none; }
+.field-row:hover { background: rgba(255,255,255,0.015); }
+
+.field-label {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--text2);
+  font-weight: 500;
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+}
+
+.field-label .lbl-icon { font-size: 13px; opacity: 0.7; }
+
+.field-input {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* inputs */
+input[type=text],
+input[type=number],
+select,
+textarea {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
+  font-size: 14px;
+  padding: 6px 10px;
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+input[type=text]:hover, input[type=number]:hover, select:hover {
+  border-color: var(--border2);
+  background: var(--bg2);
+}
+
+input[type=text]:focus, input[type=number]:focus, select:focus {
+  border-color: var(--gold);
+  background: var(--bg2);
+  box-shadow: 0 0 0 2px rgba(245,200,66,0.08);
+}
+
+select option { background: var(--surface2); color: var(--text); }
+
+.input-unit {
+  font-size: 12px;
+  color: var(--text3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Range slider */
+.range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 3px;
+  background: var(--border2);
+  border-radius: 2px;
+  outline: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(245,200,66,0.15);
+  transition: box-shadow 0.2s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 5px rgba(245,200,66,0.2);
+}
+
+.range-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* Toggle */
+.toggle-wrap {
+  display: flex;
+  gap: 6px;
+}
+
+.toggle-btn {
+  padding: 5px 16px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  transition: all 0.15s;
+}
+
+.toggle-btn.on  { background: rgba(245,200,66,0.12); border-color: var(--gold); color: var(--gold); }
+.toggle-btn.off { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.4); color: var(--red); }
+
+/* Chip selector */
+.chip-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 5px 14px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--gold); color: var(--text); }
+.chip.selected { background: rgba(245,200,66,0.1); border-color: var(--gold); color: var(--gold); font-weight: 600; }
+
+/* Sub-label */
+.sub-row {
+  background: rgba(0,0,0,0.2);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.sub-row:last-child { border-bottom: none; }
+
+/* Info tip */
+.info-tip {
+  font-size: 11px;
+  color: var(--text3);
+  margin-left: 4px;
+}
+
+/* ===== SUBMIT ===== */
+.submit-section {
+  margin-top: 48px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(245,200,66,0.04) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.submit-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.submit-sub {
+  color: var(--text2);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 40px;
+  background: var(--gold);
+  color: #09090b;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-submit:hover {
+  background: var(--gold2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(245,200,66,0.25);
+}
+
+.btn-submit:active { transform: translateY(0); }
+
+/* ===== SUCCESS SCREEN ===== */
+#successScreen {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+
+#successScreen.show { display: flex; animation: fadeUp 0.5s ease; }
+
+.success-icon {
+  width: 80px; height: 80px;
+  background: rgba(245,200,66,0.1);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  margin-bottom: 24px;
+}
+
+.success-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.success-sub {
+  color: var(--text2);
+  font-size: 16px;
+  margin-bottom: 32px;
+  max-width: 400px;
+}
+
+.summary-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 32px;
+  text-align: left;
+  max-width: 520px;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.summary-row:last-child { border-bottom: none; }
+.summary-row .s-lbl { color: var(--text2); }
+.summary-row .s-val { color: var(--text); font-weight: 600; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; letter-spacing: 0.5px; }
+.summary-row .s-val.gold { color: var(--gold); }
+
+.btn-new {
+  padding: 12px 32px;
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text2);
+  font-size: 14px;
+  font-family: 'Barlow', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-new:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Responsive */
+@media(max-width: 600px) {
+  .field-row { grid-template-columns: 1fr; }
+  .field-label { border-right: none; border-bottom: 1px solid var(--border); min-height: auto; padding: 10px 16px; }
+  .field-input { padding: 10px 16px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SUCCESS SCREEN -->
+<div id="successScreen">
+  <div class="success-icon">✓</div>
+  <div class="success-title">บันทึกแล้ว!</div>
+  <div class="success-sub">ข้อมูล Setup ของคุณถูกบันทึกเรียบร้อยแล้ว</div>
+  <div class="summary-box" id="summaryBox"></div>
+  <button class="btn-new" onclick="resetForm()">+ กรอกข้อมูลใหม่</button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="version-badge">● Version 1.0 &nbsp;·&nbsp; PUBG Only</div>
+      <h1 class="hero-title">PUBG<br><span>SETUP</span> COLLECTOR</h1>
+      <p class="hero-sub">บันทึก Mouse Settings และ Desktop Setup ของคุณ เพื่อหาค่าที่เหมาะสมกับ Playstyle</p>
+      <div class="progress-bar-wrap">
+        <div class="steps">
+          <div class="step-dot done" id="dot1"></div>
+          <div class="step-dot" id="dot2"></div>
+          <div class="step-dot" id="dot3"></div>
+          <div class="step-dot" id="dot4"></div>
+          <div class="step-dot" id="dot5"></div>
+          <div class="step-dot" id="dot6"></div>
+        </div>
+        <span class="progress-label"><span id="progressText">1</span> / 6 หัวข้อ</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SECTION 1: PLAYER INFO -->
+  <div class="section" id="sec1">
+    <div class="section-header">
+      <div class="section-icon">👤</div>
+      <div>
+        <div class="section-title-text">ข้อมูลผู้เล่น</div>
+      </div>
+      <div class="section-num">01 / 06</div>
+    </div>
+    <div class="card">
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🏷️</span> ชื่อในเกม (IGN)</div>
+        <div class="field-input">
+          <input type="text" id="ign" placeholder="Your in-game name...">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📐</span> ส่วนสูง</div>
+        <div class="field-input">
+          <input type="number" id="height" value="170" min="140" max="220" style="max-width:100px">
+          <span class="input-unit">cm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: MOUSE HARDWARE -->
+  <div class="section" id="sec2">
+    <div class="section-header">
+      <div class="section-icon">🖱️</div>
+      <div>
+        <div class="section-title-text">Mouse Hardware</div>
+      </div>
+      <div class="section-num">02 / 06</div>
+    </div>
+    <div class="card">
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📛</span> ยี่ห้อ / รุ่น</div>
+        <div class="field-input">
+          <input type="text" id="mouseName" placeholder="e.g. Logitech G Pro X Superlight">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">⚡</span> DPI ที่ใช้</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="dpi" min="100" max="3200" step="100" value="800"
+              oninput="syncRange('dpi','dpiVal',this.value)">
+            <span class="range-val" id="dpiVal">800</span>
+          </div>
+          <span class="input-unit">DPI</span>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🔄</span> Polling Rate</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="hzChips">
+            <button class="chip" onclick="selectChip(this,'hzChips','125Hz')">125Hz</button>
+            <button class="chip selected" onclick="selectChip(this,'hzChips','500Hz')">500Hz</button>
+            <button class="chip" onclick="selectChip(this,'hzChips','1000Hz')">1000Hz</button>
+            <button class="chip" onclick="selectChip(this,'hzChips','2000Hz')">2000Hz</button>
+            <button class="chip" onclick="selectChip(this,'hzChips','4000Hz')">4000Hz</button>
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">✋</span> Grip Style</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="gripChips">
+            <button class="chip" onclick="selectChip(this,'gripChips','Palm')">Palm</button>
+            <button class="chip selected" onclick="selectChip(this,'gripChips','Claw')">Claw</button>
+            <button class="chip" onclick="selectChip(this,'gripChips','Fingertip')">Fingertip</button>
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">💪</span> Arm Style</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="armChips">
+            <button class="chip" onclick="selectChip(this,'armChips','Wrist Only')">Wrist Only</button>
+            <button class="chip selected" onclick="selectChip(this,'armChips','Arm Aim')">Arm Aim</button>
+            <button class="chip" onclick="selectChip(this,'armChips','Hybrid')">Hybrid</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: PUBG MOUSE SENSITIVITY -->
+  <div class="section" id="sec3">
+    <div class="section-header">
+      <div class="section-icon">🎯</div>
+      <div>
+        <div class="section-title-text">PUBG Mouse Sensitivity</div>
+      </div>
+      <div class="section-num">03 / 06</div>
+    </div>
+    <div class="card">
+
+      <div class="sub-row">Mouse Settings</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🔄</span> Invert Mouse</div>
+        <div class="field-input">
+          <div class="toggle-wrap">
+            <button class="toggle-btn off selected-toggle" id="invertOff" onclick="setToggle('invert','off')">Disable</button>
+            <button class="toggle-btn on" id="invertOn" onclick="setToggle('invert','on')">Enable</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🖱️</span> General Sensitivity</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="genSens" min="1" max="100" value="50"
+              oninput="syncRange('genSens','genSensVal',this.value)">
+            <span class="range-val" id="genSensVal">50</span>
+          </div>
+          <span class="input-unit">/ 100</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">↕️</span> Vertical Sensitivity Multiplier</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="vertMult" min="0.1" max="2.0" step="0.1" value="1.0"
+              oninput="syncRange('vertMult','vertMultVal',this.value)">
+            <span class="range-val" id="vertMultVal">1.0</span>
+          </div>
+          <span class="input-unit">x</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🎯</span> Aim Sensitivity</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="aimSens" min="1" max="100" value="50"
+              oninput="syncRange('aimSens','aimSensVal',this.value)">
+            <span class="range-val" id="aimSensVal">50</span>
+          </div>
+          <span class="input-unit">/ 100</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🔭</span> ADS Sensitivity</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="adsSens" min="1" max="100" value="50"
+              oninput="syncRange('adsSens','adsSensVal',this.value)">
+            <span class="range-val" id="adsSensVal">50</span>
+          </div>
+          <span class="input-unit">/ 100</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🔬</span> Scoping Sensitivity</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="scopeSens" min="1" max="100" value="50"
+              oninput="syncRange('scopeSens','scopeSensVal',this.value)">
+            <span class="range-val" id="scopeSensVal">50</span>
+          </div>
+          <span class="input-unit">/ 100</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🌐</span> Universal Sensitivity for All Scopes</div>
+        <div class="field-input">
+          <div class="toggle-wrap">
+            <button class="toggle-btn off" id="univOff" onclick="setToggle('univ','off')">Disable</button>
+            <button class="toggle-btn on selected-toggle" id="univOn" onclick="setToggle('univ','on')">Enable</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4: DESKTOP SETUP -->
+  <div class="section" id="sec4">
+    <div class="section-header">
+      <div class="section-icon">🖥️</div>
+      <div>
+        <div class="section-title-text">Desktop Setup</div>
+      </div>
+      <div class="section-num">04 / 06</div>
+    </div>
+    <div class="card">
+
+      <div class="sub-row">โต๊ะ & ที่นั่ง</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📏</span> ความสูงโต๊ะ</div>
+        <div class="field-input">
+          <input type="number" id="tableH" value="75" min="50" max="120" style="max-width:100px">
+          <span class="input-unit">cm</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📐</span> ขนาดโต๊ะ (กว้าง × ลึก)</div>
+        <div class="field-input">
+          <input type="number" id="tableW" placeholder="120" min="60" max="300" style="max-width:90px">
+          <span class="input-unit">×</span>
+          <input type="number" id="tableD" placeholder="60" min="40" max="120" style="max-width:90px">
+          <span class="input-unit">cm</span>
+        </div>
+      </div>
+
+      <div class="sub-row">แผ่นรองเม้าส์</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🟫</span> ขนาดแผ่นรอง</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="padChips">
+            <button class="chip" onclick="selectChip(this,'padChips','S (250×210mm)')">S</button>
+            <button class="chip selected" onclick="selectChip(this,'padChips','M (350×300mm)')">M</button>
+            <button class="chip" onclick="selectChip(this,'padChips','L (450×400mm)')">L</button>
+            <button class="chip" onclick="selectChip(this,'padChips','XL (900×400mm)')">XL / All Desk</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">↔️</span> ตำแหน่งแผ่นรอง X</div>
+        <div class="field-input">
+          <input type="number" id="padX" value="-10" min="-40" max="40" style="max-width:100px">
+          <span class="input-unit">cm จากกึ่งกลาง (ซ้าย = ลบ)</span>
+        </div>
+      </div>
+
+      <div class="sub-row">จอและระยะ</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🖥️</span> ขนาดจอ</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="monSizeChips">
+            <button class="chip" onclick="selectChip(this,'monSizeChips','24\"')">24"</button>
+            <button class="chip selected" onclick="selectChip(this,'monSizeChips','27\"')">27"</button>
+            <button class="chip" onclick="selectChip(this,'monSizeChips','32\"')">32"</button>
+            <button class="chip" onclick="selectChip(this,'monSizeChips','34\" (Ultra)')">34" Ultra</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📺</span> Hz จอ</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="monHzChips">
+            <button class="chip" onclick="selectChip(this,'monHzChips','60Hz')">60Hz</button>
+            <button class="chip" onclick="selectChip(this,'monHzChips','144Hz')">144Hz</button>
+            <button class="chip selected" onclick="selectChip(this,'monHzChips','165Hz')">165Hz</button>
+            <button class="chip" onclick="selectChip(this,'monHzChips','240Hz')">240Hz</button>
+            <button class="chip" onclick="selectChip(this,'monHzChips','360Hz')">360Hz</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📡</span> ระยะจอ (ห่างจากตา)</div>
+        <div class="field-input">
+          <input type="number" id="monDist" value="60" min="30" max="120" style="max-width:100px">
+          <span class="input-unit">cm</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">↔️</span> ตำแหน่งจอ X (ซ้าย/ขวา)</div>
+        <div class="field-input">
+          <input type="number" id="monX" value="0" min="-30" max="30" style="max-width:100px">
+          <span class="input-unit">cm จากกึ่งกลาง</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🔄</span> องศาจอ</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="monDeg" min="-30" max="30" value="0"
+              oninput="syncRange('monDeg','monDegVal',this.value+'°')">
+            <span class="range-val" id="monDegVal">0°</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 5: NOTES -->
+  <div class="section" id="sec5">
+    <div class="section-header">
+      <div class="section-icon">📝</div>
+      <div>
+        <div class="section-title-text">หมายเหตุเพิ่มเติม</div>
+      </div>
+      <div class="section-num">05 / 06</div>
+    </div>
+    <div class="card">
+
+      <div class="sub-row">CPU</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">⚙️</span> CPU ยี่ห้อ</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="cpuBrandChips">
+            <button class="chip selected" onclick="selectChip(this,'cpuBrandChips','Intel')">Intel</button>
+            <button class="chip" onclick="selectChip(this,'cpuBrandChips','AMD')">AMD</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🏷️</span> CPU รุ่น</div>
+        <div class="field-input">
+          <input type="text" id="cpuModel" placeholder="e.g. i7-13700K / Ryzen 7 7700X">
+        </div>
+      </div>
+
+      <div class="sub-row">GPU</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🎴</span> GPU ยี่ห้อ</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="gpuBrandChips">
+            <button class="chip selected" onclick="selectChip(this,'gpuBrandChips','NVIDIA')">NVIDIA</button>
+            <button class="chip" onclick="selectChip(this,'gpuBrandChips','AMD')">AMD</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🏷️</span> GPU รุ่น</div>
+        <div class="field-input">
+          <input type="text" id="gpuModel" placeholder="e.g. RTX 4070 Ti / RX 7900 XT">
+        </div>
+      </div>
+
+      <div class="sub-row">RAM & Storage</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🧠</span> RAM</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="ramChips">
+            <button class="chip" onclick="selectChip(this,'ramChips','8GB')">8GB</button>
+            <button class="chip" onclick="selectChip(this,'ramChips','16GB')">16GB</button>
+            <button class="chip selected" onclick="selectChip(this,'ramChips','32GB')">32GB</button>
+            <button class="chip" onclick="selectChip(this,'ramChips','64GB')">64GB</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">💾</span> Storage ประเภท</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="storageChips">
+            <button class="chip" onclick="selectChip(this,'storageChips','HDD')">HDD</button>
+            <button class="chip" onclick="selectChip(this,'storageChips','SSD SATA')">SSD SATA</button>
+            <button class="chip selected" onclick="selectChip(this,'storageChips','NVMe SSD')">NVMe SSD</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-row">OS & FPS</div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🪟</span> ระบบปฏิบัติการ</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="osChips">
+            <button class="chip" onclick="selectChip(this,'osChips','Windows 10')">Win 10</button>
+            <button class="chip selected" onclick="selectChip(this,'osChips','Windows 11')">Win 11</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📊</span> FPS เฉลี่ยใน PUBG</div>
+        <div class="field-input">
+          <div class="range-wrap">
+            <input type="range" id="avgFps" min="30" max="240" step="10" value="120"
+              oninput="syncRange('avgFps','avgFpsVal',this.value)">
+            <span class="range-val" id="avgFpsVal">120</span>
+          </div>
+          <span class="input-unit">FPS</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🎮</span> Graphics Preset ใน PUBG</div>
+        <div class="field-input">
+          <div class="chip-wrap" id="gfxChips">
+            <button class="chip" onclick="selectChip(this,'gfxChips','Very Low')">Very Low</button>
+            <button class="chip" onclick="selectChip(this,'gfxChips','Low')">Low</button>
+            <button class="chip selected" onclick="selectChip(this,'gfxChips','Medium')">Medium</button>
+            <button class="chip" onclick="selectChip(this,'gfxChips','High')">High</button>
+            <button class="chip" onclick="selectChip(this,'gfxChips','Ultra')">Ultra</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 6: NOTES -->
+  <div class="section" id="sec6">
+    <div class="section-header">
+      <div class="section-icon">📝</div>
+      <div><div class="section-title-text">หมายเหตุเพิ่มเติม</div></div>
+      <div class="section-num">06 / 06</div>
+    </div>
+    <div class="card">
+      <div class="field-row" style="grid-template-columns:1fr; align-items:flex-start;">
+        <div class="field-input" style="padding:16px 20px;">
+          <textarea id="notes" rows="4" placeholder="เช่น ปัญหาที่เจอ, สิ่งที่อยากปรับ, ความรู้สึกของ setup ปัจจุบัน..."
+            style="width:100%; resize:vertical; background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--text); padding:12px; font-size:14px; font-family:'Barlow','Noto Sans Thai',sans-serif; outline:none; line-height:1.6;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <div class="submit-title">พร้อมบันทึก Setup ของคุณ?</div>
+    <div class="submit-sub">ข้อมูลจะถูกเก็บไว้เพื่อวิเคราะห์และหา Setting ที่เหมาะสมที่สุด</div>
+    <button class="btn-submit" onclick="submitForm()">
+      <span>💾</span> บันทึก Setup
+    </button>
+  </div>
+
+</main>
+
+<script>
+// ===== CHIP SELECT =====
+function selectChip(el, groupId, val) {
+  document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  el.dataset.val = val;
+  updateProgress();
+}
+
+// ===== TOGGLE =====
+const toggleState = { invert: 'off', univ: 'on' };
+
+function setToggle(name, val) {
+  toggleState[name] = val;
+  const onBtn  = document.getElementById(name + 'On');
+  const offBtn = document.getElementById(name + 'Off');
+  if (val === 'on') {
+    onBtn.classList.add('selected-toggle');
+    offBtn.classList.remove('selected-toggle');
+  } else {
+    offBtn.classList.add('selected-toggle');
+    onBtn.classList.remove('selected-toggle');
+  }
+}
+
+// ===== RANGE SYNC =====
+function syncRange(id, valId, val) {
+  document.getElementById(valId).textContent = val;
+  updateProgress();
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  const filled = [
+    document.getElementById('ign').value.trim() !== '',
+    document.getElementById('mouseName').value.trim() !== '',
+    document.getElementById('genSens').value !== '50',
+    document.getElementById('tableH').value !== '',
+    document.getElementById('notes').value.trim() !== ''
+  ];
+  const count = filled.filter(Boolean).length + 1;
+  const display = Math.min(count, 6);
+  document.getElementById('progressText').textContent = display;
+  for (let i = 1; i <= 6; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'step-dot';
+    if (i < display) dot.classList.add('done');
+    else if (i === display) dot.classList.add('active');
+  }
+}
+
+// Attach input listeners for progress
+['ign','mouseName','notes'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateProgress);
+});
+
+// ===== GET CHIP VALUE =====
+function getChip(groupId) {
+  const sel = document.querySelector('#' + groupId + ' .chip.selected');
+  return sel ? (sel.dataset.val || sel.textContent.trim()) : '—';
+}
+
+// ===== SUBMIT =====
+function submitForm() {
+  const data = {
+    ign:       document.getElementById('ign').value || '—',
+    height:    document.getElementById('height').value + ' cm',
+    mouse:     document.getElementById('mouseName').value || '—',
+    dpi:       document.getElementById('dpi').value,
+    hz:        getChip('hzChips'),
+    grip:      getChip('gripChips'),
+    arm:       getChip('armChips'),
+    invert:    toggleState.invert === 'on' ? 'Enable' : 'Disable',
+    genSens:   document.getElementById('genSens').value,
+    vertMult:  document.getElementById('vertMult').value,
+    aimSens:   document.getElementById('aimSens').value,
+    adsSens:   document.getElementById('adsSens').value,
+    scopeSens: document.getElementById('scopeSens').value,
+    univScope: toggleState.univ === 'on' ? 'Enable' : 'Disable',
+    tableH:    document.getElementById('tableH').value + ' cm',
+    tableSize: (document.getElementById('tableW').value || '?') + '×' + (document.getElementById('tableD').value || '?') + ' cm',
+    pad:       getChip('padChips'),
+    monSize:   getChip('monSizeChips'),
+    monHz:     getChip('monHzChips'),
+    monDist:   document.getElementById('monDist').value + ' cm',
+    cpuBrand:  getChip('cpuBrandChips'),
+    cpuModel:  document.getElementById('cpuModel').value || '—',
+    gpuBrand:  getChip('gpuBrandChips'),
+    gpuModel:  document.getElementById('gpuModel').value || '—',
+    ram:       getChip('ramChips'),
+    storage:   getChip('storageChips'),
+    os:        getChip('osChips'),
+    avgFps:    document.getElementById('avgFps').value + ' FPS',
+    gfx:       getChip('gfxChips'),
+    notes:     document.getElementById('notes').value || '—',
+  };
+
+  const summaryItems = [
+    ['IGN', data.ign, true],
+    ['Mouse', data.mouse, false],
+    ['DPI', data.dpi, true],
+    ['Grip / Arm', data.grip + ' / ' + data.arm, false],
+    ['General Sens', data.genSens, true],
+    ['ADS Sens', data.adsSens, false],
+    ['CPU', data.cpuBrand + ' ' + data.cpuModel, false],
+    ['GPU', data.gpuBrand + ' ' + data.gpuModel, false],
+    ['RAM', data.ram, false],
+    ['FPS เฉลี่ย', data.avgFps, true],
+    ['Monitor', data.monSize + ' · ' + data.monHz, false],
+    ['Pad Size', data.pad, false],
+  ];
+
+  document.getElementById('summaryBox').innerHTML =
+    summaryItems.map(([l, v, g]) =>
+      `<div class="summary-row"><span class="s-lbl">${l}</span><span class="s-val${g?' gold':''}">${v}</span></div>`
+    ).join('');
+
+  document.getElementById('successScreen').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  // Save to localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem('pubg_setups') || '[]');
+    saved.push({ ...data, timestamp: new Date().toISOString() });
+    localStorage.setItem('pubg_setups', JSON.stringify(saved));
+  } catch(e) {}
+}
+
+// ===== RESET =====
+function resetForm() {
+  document.getElementById('successScreen').classList.remove('show');
+  document.body.style.overflow = '';
+  document.getElementById('ign').value = '';
+  document.getElementById('mouseName').value = '';
+  document.getElementById('notes').value = '';
+  ['genSens','aimSens','adsSens','scopeSens'].forEach(id => {
+    document.getElementById(id).value = 50;
+    syncRange(id, id+'Val', 50);
+  });
+  document.getElementById('vertMult').value = 1.0;
+  syncRange('vertMult','vertMultVal','1.0');
+  updateProgress();
+}
+
+// Init progress
+updateProgress();
+
+// Scroll-based progress sync
+window.addEventListener('scroll', () => {
+  const sections = ['sec1','sec2','sec3','sec4','sec5','sec6'];
+  let visible = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8) visible = i + 1;
+    }
+  });
+  document.getElementById('progressText').textContent = visible || 1;
+  for (let i = 1; i <= 6; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'step-dot';
+    if (i < visible) dot.classList.add('done');
+    else if (i === visible) dot.classList.add('active');
+  }
+});
+</script>
+</body>
+</html>

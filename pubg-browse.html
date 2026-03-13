@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYP : Build Your Play — Browse Setups</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const _supa = window.supabase.createClient(
+    'https://llijafxfyeeehxeeuwvv.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWphZnhmeWVlZWh4ZWV1d3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjUwMjQsImV4cCI6MjA4ODk0MTAyNH0.u_jiWxNpZvTQFOMaJ0DfSZhMp1ysqUTk-vvIoHzxkNY'
+  );
+</script>
+<style>
+:root {
+  --bg:     #07080a;
+  --bg2:    #0e0f12;
+  --surf:   #131417;
+  --surf2:  #1a1b1f;
+  --surf3:  #21222a;
+  --border: #272830;
+  --bord2:  #32333e;
+  --gold:   #f5c842;
+  --goldf:  rgba(245,200,66,0.10);
+  --red:    #ef4444;
+  --green:  #22c55e;
+  --blue:   #3b82f6;
+  --purple: #a855f7;
+  --text:   #f0f1f5;
+  --text2:  #8e8f9e;
+  --text3:  #45464f;
+  --r:      10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow','Noto Sans Thai',sans-serif;
+  min-height:100vh;
+}
+
+/* noise */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+/* ===== TOPNAV ===== */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:56px;
+  background:rgba(13,14,18,0.95);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(12px);
+}
+.nav-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:900;letter-spacing:1px;
+}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:4px;}
+.nav-link{
+  padding:6px 14px;border-radius:6px;
+  font-size:13px;font-weight:500;
+  color:var(--text2);cursor:pointer;border:none;background:none;
+  font-family:'Barlow',sans-serif;transition:all .15s;
+}
+.nav-link:hover{color:var(--text);background:var(--surf2);}
+.nav-link.active{color:var(--gold);background:var(--goldf);}
+.nav-count{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;letter-spacing:1px;color:var(--text3);
+}
+.nav-count span{color:var(--gold);}
+
+/* ===== HERO ===== */
+.hero{
+  padding:48px 32px 36px;
+  background:linear-gradient(180deg,rgba(245,200,66,.04) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.hero-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(32px,5vw,56px);font-weight:900;
+  letter-spacing:-1px;line-height:1;
+  color:var(--text);margin-bottom:10px;
+}
+.hero-title span{color:var(--gold);}
+.hero-sub{color:var(--text2);font-size:15px;max-width:500px;margin:0 auto 28px;line-height:1.6;}
+
+/* Search bar */
+.search-wrap{
+  display:flex;gap:10px;max-width:580px;margin:0 auto;
+  align-items:center;
+}
+.search-box{
+  flex:1;display:flex;align-items:center;gap:10px;
+  background:var(--surf2);border:1px solid var(--bord2);
+  border-radius:10px;padding:10px 16px;
+  transition:border-color .2s;
+}
+.search-box:focus-within{border-color:var(--gold);}
+.search-icon{color:var(--text3);font-size:14px;}
+.search-box input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-size:14px;font-family:'Barlow','Noto Sans Thai',sans-serif;
+}
+.search-box input::placeholder{color:var(--text3);}
+
+.sort-select{
+  background:var(--surf2);border:1px solid var(--bord2);
+  border-radius:8px;padding:10px 12px;
+  color:var(--text2);font-size:13px;
+  font-family:'Barlow',sans-serif;outline:none;cursor:pointer;
+  transition:border-color .2s;
+}
+.sort-select:focus{border-color:var(--gold);}
+.sort-select option{background:var(--surf3);}
+
+/* Filter chips */
+.filter-row{
+  display:flex;gap:8px;justify-content:center;
+  flex-wrap:wrap;margin-top:16px;
+}
+.fchip{
+  padding:5px 14px;border-radius:20px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text2);font-size:12px;font-weight:500;
+  cursor:pointer;font-family:'Barlow',sans-serif;
+  transition:all .15s;white-space:nowrap;
+}
+.fchip:hover{border-color:var(--gold);color:var(--text);}
+.fchip.on{background:var(--goldf);border-color:rgba(245,200,66,.4);color:var(--gold);font-weight:600;}
+
+/* ===== GRID ===== */
+.page-wrap{max-width:1200px;margin:0 auto;padding:32px 24px 80px;}
+
+.results-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;font-size:13px;color:var(--text3);
+}
+.results-bar strong{color:var(--text2);}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:18px;
+}
+
+/* ===== SETUP CARD ===== */
+.setup-card{
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  cursor:pointer;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+  position:relative;
+}
+.setup-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0));
+  opacity:0;transition:opacity .2s;
+}
+.setup-card:hover{
+  border-color:rgba(245,200,66,.35);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.4);
+}
+.setup-card:hover::before{opacity:1;}
+
+/* Card header */
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 10px;
+  border-bottom:1px solid var(--border);
+}
+.card-ign{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:800;letter-spacing:.3px;
+  color:var(--text);
+}
+.card-time{font-size:11px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;}
+
+/* Desktop 2D view */
+.desktop-view{
+  padding:12px 14px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+}
+canvas.dv{
+  display:block;width:100%;border-radius:6px;
+  background:#0a0b0e;
+}
+
+/* Stats row */
+.card-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--border);
+}
+.cstat{
+  padding:10px 8px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.cstat:last-child{border-right:none;}
+.cstat-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:19px;font-weight:800;color:var(--gold);
+  line-height:1;
+}
+.cstat-lbl{font-size:9px;color:var(--text3);margin-top:3px;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
+
+/* PUBG sens */
+.sens-strip{
+  display:flex;gap:0;
+  border-bottom:1px solid var(--border);
+}
+.sblk{
+  flex:1;padding:8px 6px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.sblk:last-child{border-right:none;}
+.sblk-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:700;color:var(--text);line-height:1;
+}
+.sblk-lbl{font-size:8px;color:var(--text3);margin-top:2px;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
+
+/* Card footer */
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;
+}
+.foot-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{
+  padding:2px 8px;border-radius:4px;
+  font-size:10px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;letter-spacing:.5px;
+}
+.t-grip-Palm{background:rgba(59,130,246,.14);color:#60a5fa;}
+.t-grip-Claw{background:rgba(168,85,247,.14);color:#c084fc;}
+.t-grip-Fingertip{background:rgba(34,197,94,.14);color:#4ade80;}
+.t-nvidia{background:rgba(118,185,0,.14);color:#84cc16;}
+.t-amd{background:rgba(239,68,68,.14);color:#f87171;}
+.t-intel{background:rgba(59,130,246,.14);color:#60a5fa;}
+.t-fps{background:rgba(245,200,66,.1);color:var(--gold);}
+
+.foot-arrow{
+  font-size:16px;color:var(--text3);
+  transition:color .15s,transform .15s;
+}
+.setup-card:hover .foot-arrow{color:var(--gold);transform:translateX(3px);}
+
+/* Empty */
+.empty{text-align:center;padding:80px 20px;color:var(--text3);}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-t{font-family:'Barlow Condensed',sans-serif;font-size:20px;margin-bottom:8px;color:var(--text2);}
+
+/* Load more */
+.load-more-wrap{text-align:center;margin-top:32px;}
+.btn-more{
+  padding:12px 36px;border-radius:8px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text2);font-size:14px;font-weight:600;
+  cursor:pointer;font-family:'Barlow',sans-serif;
+  transition:all .2s;
+}
+.btn-more:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ===== DETAIL OVERLAY ===== */
+.overlay{
+  display:none;position:fixed;inset:0;z-index:50;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.overlay.show{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+
+.detail-modal{
+  background:var(--surf);
+  border:1px solid var(--bord2);
+  border-radius:14px;
+  width:100%;max-width:720px;
+  max-height:92vh;overflow-y:auto;
+}
+
+.dm-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:22px 26px 18px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--surf);z-index:1;
+}
+.dm-ign{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:900;color:var(--gold);letter-spacing:.5px;
+}
+.dm-sub{font-size:12px;color:var(--text3);margin-top:4px;}
+.dm-close{
+  width:34px;height:34px;border-radius:7px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text2);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+}
+.dm-close:hover{border-color:var(--red);color:var(--red);}
+
+.dm-body{padding:22px 26px;}
+
+/* 2D big view */
+.dm-desktop{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:16px;margin-bottom:22px;
+  text-align:center;
+}
+.dm-desktop-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;
+}
+canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
+
+/* PUBG big sens */
+.dm-sens-row{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px;
+}
+.dmsbox{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 8px;text-align:center;
+}
+.dmsbox-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--gold);}
+.dmsbox-lbl{font-size:9px;color:var(--text3);margin-top:4px;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
+
+/* Detail grid */
+.dm-sec-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);
+}
+.dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.dmf{background:var(--surf2);border-radius:7px;padding:11px 13px;}
+.dmf-lbl{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-family:'Barlow Condensed',sans-serif;}
+.dmf-val{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--text);}
+.dmf-val.gold{color:var(--gold);}
+.dm-notes{background:var(--surf2);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--text2);line-height:1.7;font-style:italic;}
+
+@media(max-width:600px){
+  .cards-grid{grid-template-columns:1fr;}
+  .dm-sens-row{grid-template-columns:repeat(3,1fr);}
+  nav{padding:0 16px;}
+  .hero{padding:32px 16px 24px;}
+  .page-wrap{padding:24px 16px 60px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BYP<span> : BUILD YOUR PLAY</span></div>
+  <div class="nav-links">
+    <button class="nav-link active">Browse</button>
+    <button class="nav-link" onclick="location.href='pubg-setup-v1.html'">กรอก Setup ของฉัน</button>
+  </div>
+  <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Build Your Play · PUBG Edition</div>
+  <h1 class="hero-title"><span>BYP</span> — ดู Setup ของผู้เล่นคนอื่น</h1>
+  <p class="hero-sub">Browse Mouse Settings, Desktop Layout และ Spec PC ของผู้เล่น PUBG ทั้งหมด</p>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="ค้นหา IGN, Mouse, GPU..." oninput="applyFilters()">
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+      <option value="newest">ล่าสุด</option>
+      <option value="dpi_asc">DPI น้อย→มาก</option>
+      <option value="dpi_desc">DPI มาก→น้อย</option>
+      <option value="fps_desc">FPS สูงสุด</option>
+      <option value="sens_asc">Sens น้อย→มาก</option>
+    </select>
+  </div>
+
+  <div class="filter-row">
+    <button class="fchip on" onclick="setFilter('all',this)">ทั้งหมด</button>
+    <button class="fchip" onclick="setFilter('Palm',this)">Palm Grip</button>
+    <button class="fchip" onclick="setFilter('Claw',this)">Claw Grip</button>
+    <button class="fchip" onclick="setFilter('Fingertip',this)">Fingertip</button>
+    <button class="fchip" onclick="setFilter('NVIDIA',this)">NVIDIA</button>
+    <button class="fchip" onclick="setFilter('AMD',this)">AMD GPU</button>
+    <button class="fchip" onclick="setFilter('1000Hz',this)">1000Hz+</button>
+  </div>
+</div>
+
+<!-- GRID -->
+<div class="page-wrap">
+  <div class="results-bar">
+    <span id="resultsText">โหลดข้อมูล...</span>
+    <button class="fchip" onclick="loadDemo()" style="font-size:11px">⚡ โหลด Demo Data</button>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+  <div class="empty" id="emptyState" style="display:none">
+    <div class="empty-icon">🎮</div>
+    <div class="empty-t">ยังไม่มี Setup</div>
+    <div style="font-size:14px;margin-bottom:20px">เป็นคนแรกที่แชร์ Setup ของคุณ!</div>
+    <button class="btn-more" onclick="location.href='pubg-setup-v1.html'">+ กรอก Setup ของฉัน</button>
+  </div>
+  <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+    <button class="btn-more" onclick="loadMore()">โหลดเพิ่ม →</button>
+  </div>
+</div>
+
+<!-- DETAIL OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="detail-modal" id="detailModal">
+    <div class="dm-head">
+      <div>
+        <div class="dm-ign" id="dmIgn">—</div>
+        <div class="dm-sub" id="dmSub">—</div>
+      </div>
+      <button class="dm-close" onclick="document.getElementById('overlay').classList.remove('show')">✕</button>
+    </div>
+    <div class="dm-body" id="dmBody"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+let allData = [], filtered = [], visibleCount = 12;
+let activeFilter = 'all';
+
+function mapRow(d) {
+  return {
+    ign:       d.ign,       height:    d.height,
+    mouse:     d.mouse,     dpi:       d.dpi,
+    hz:        d.hz,        grip:      d.grip,
+    arm:       d.arm,       invert:    d.invert,
+    genSens:   d.gen_sens,  vertMult:  d.vert_mult,
+    aimSens:   d.aim_sens,  adsSens:   d.ads_sens,
+    scopeSens: d.scope_sens,univScope: d.univ_scope,
+    tableH:    d.table_h,   tableSize: d.table_size,
+    pad:       d.pad,       monSize:   d.mon_size,
+    monHz:     d.mon_hz,    monDist:   d.mon_dist,
+    monX:      d.mon_x,     monDeg:    d.mon_deg,
+    cpuBrand:  d.cpu_brand, cpuModel:  d.cpu_model,
+    gpuBrand:  d.gpu_brand, gpuModel:  d.gpu_model,
+    ram:       d.ram,       storage:   d.storage,
+    os:        d.os,        avgFps:    d.avg_fps,
+    gfx:       d.gfx,       notes:     d.notes,
+    timestamp: d.created_at,
+  };
+}
+
+async function loadData() {
+  const { data, error } = await _supa
+    .from('setups')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error(error); return; }
+  allData = data.map(mapRow);
+  applyFilters();
+}
+
+// ===== DEMO DATA =====
+async function loadDemo() {
+  const igns = ['SnakeEyes_TH','KiraFrag','ZeroRecoil','GhostPUBG','NightCrawler','SniperKing99','BlindFire','StormBolt','IronWrist','AceHunter','TactikZ','ProPlayerX'];
+  const mice = ['Logitech G Pro X S2','Razer Viper V3 Pro','Zowie EC2-C','Finalmouse Starlight','SteelSeries Prime','Logitech G502 X','Razer DeathAdder V3','Pulsar X2'];
+  const grips = ['Palm','Claw','Fingertip'];
+  const arms  = ['Wrist Only','Arm Aim','Hybrid'];
+  const pads  = ['S (250×210mm)','M (350×300mm)','L (450×400mm)','XL (900×400mm)'];
+  const monS  = ['24"','27"','32"'];
+  const monHz = ['144Hz','165Hz','240Hz','360Hz'];
+  const gfxs  = ['Very Low','Very Low','Low','Medium','High'];
+  const pick  = a => a[Math.floor(Math.random()*a.length)];
+  const rng   = (a,b) => Math.round(a+Math.random()*(b-a));
+
+  const demos = igns.map((ign) => {
+    const cpuB = pick(['Intel','Intel','AMD']);
+    const gpuB = pick(['NVIDIA','NVIDIA','NVIDIA','AMD']);
+    const dpi  = pick([400,800,800,1600]);
+    const gen  = rng(35,65);
+    return {
+      ign, height: rng(160,185)+' cm', mouse: pick(mice),
+      dpi: String(dpi), hz: pick(['500Hz','1000Hz','1000Hz','2000Hz']),
+      grip: pick(grips), arm: pick(arms),
+      invert:'Disable', gen_sens:String(gen),
+      vert_mult: Math.random()>.7?'1.1':'1.0',
+      aim_sens:String(rng(gen-5,gen+5)),
+      ads_sens:String(rng(gen-8,gen+2)),
+      scope_sens:String(rng(gen-5,gen+5)),
+      univ_scope:'Enable',
+      table_h:rng(70,85)+' cm',
+      table_size:rng(100,160)+'×'+rng(55,80)+' cm',
+      pad:pick(pads),
+      mon_size:pick(monS), mon_hz:pick(monHz),
+      mon_dist:rng(50,80)+' cm',
+      cpu_brand:cpuB,
+      cpu_model:pick(cpuB==='Intel'?['i5-13600K','i7-13700K','i9-13900K']:['Ryzen 5 7600X','Ryzen 7 7700X']),
+      gpu_brand:gpuB,
+      gpu_model:pick(gpuB==='NVIDIA'?['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080']:['RX 7900 XT','RX 6800 XT']),
+      ram:pick(['16GB','16GB','32GB','64GB']),
+      storage:pick(['NVMe SSD','NVMe SSD','SSD SATA']),
+      os:pick(['Windows 11','Windows 11','Windows 10']),
+      avg_fps:String(rng(80,220))+' FPS',
+      gfx:pick(gfxs), notes:'',
+    };
+  });
+
+  const { error } = await _supa.from('setups').insert(demos);
+  if (error) { alert('Error: '+error.message); return; }
+  loadData();
+}
+
+// ===== FILTER & SORT =====
+function setFilter(val, el) {
+  activeFilter = val;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  visibleCount = 12;
+  applyFilters();
+}
+
+function applyFilters() {
+  const q   = (document.getElementById('searchInput').value||'').toLowerCase();
+  const srt = document.getElementById('sortSelect').value;
+
+  filtered = allData.filter(d => {
+    const grip = d.grip||'';
+    const gpuB = d.gpuBrand||'';
+    const hz   = d.hz||'';
+    let pass = true;
+    if (activeFilter==='Palm')      pass = grip==='Palm';
+    if (activeFilter==='Claw')      pass = grip==='Claw';
+    if (activeFilter==='Fingertip') pass = grip==='Fingertip';
+    if (activeFilter==='NVIDIA')    pass = gpuB==='NVIDIA';
+    if (activeFilter==='AMD')       pass = gpuB==='AMD';
+    if (activeFilter==='1000Hz')    pass = ['1000Hz','2000Hz','4000Hz'].includes(hz);
+    if (q) pass = pass && [d.ign,d.mouse,d.gpuModel,d.cpuModel,d.grip].some(v=>(v||'').toLowerCase().includes(q));
+    return pass;
+  });
+
+  filtered.sort((a,b)=>{
+    if (srt==='newest')    return new Date(b.timestamp||0)-new Date(a.timestamp||0);
+    if (srt==='dpi_asc')   return +a.dpi - +b.dpi;
+    if (srt==='dpi_desc')  return +b.dpi - +a.dpi;
+    if (srt==='fps_desc')  return parseFloat(b.avgFps)-parseFloat(a.avgFps);
+    if (srt==='sens_asc')  return +a.genSens - +b.genSens;
+    return 0;
+  });
+
+  document.getElementById('navCount').textContent = allData.length;
+  document.getElementById('resultsText').innerHTML = `พบ <strong>${filtered.length}</strong> setups`;
+  renderCards();
+}
+
+function loadMore(){
+  visibleCount += 12;
+  renderCards();
+}
+
+// ===== RENDER CARDS =====
+function renderCards() {
+  const grid  = document.getElementById('cardsGrid');
+  const empty = document.getElementById('emptyState');
+  const lmw   = document.getElementById('loadMoreWrap');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    lmw.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const slice = filtered.slice(0, visibleCount);
+  grid.innerHTML = slice.map((d,i) => buildCard(d,i)).join('');
+
+  // Draw canvases after render
+  slice.forEach((d,i) => drawDesktop('dvc-'+i, d, 312, 160));
+
+  lmw.style.display = visibleCount < filtered.length ? 'block' : 'none';
+}
+
+function timeAgo(ts){
+  if(!ts) return '—';
+  const s = Math.floor((Date.now()-new Date(ts))/1000);
+  if(s<60) return s+'s ago';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+
+function buildCard(d, i) {
+  const grip = d.grip||'—';
+  const gpuB = d.gpuBrand||'—';
+  const fps  = (d.avgFps||'—').replace(' FPS','');
+  const padShort = (d.pad||'').split(' ')[0]||'—';
+  const monShort = (d.monHz||'').replace('Hz','');
+  return `
+  <div class="setup-card" onclick="openDetail('${escStr(d.ign)}')">
+    <div class="card-head">
+      <div class="card-ign">${d.ign||'—'}</div>
+      <div class="card-time">${timeAgo(d.timestamp)}</div>
+    </div>
+    <div class="desktop-view">
+      <canvas class="dv" id="dvc-${i}" width="312" height="160"></canvas>
+    </div>
+    <div class="card-stats">
+      <div class="cstat"><div class="cstat-val">${d.dpi||'—'}</div><div class="cstat-lbl">DPI</div></div>
+      <div class="cstat"><div class="cstat-val">${d.genSens||'—'}</div><div class="cstat-lbl">Gen Sens</div></div>
+      <div class="cstat"><div class="cstat-val">${padShort}</div><div class="cstat-lbl">Pad</div></div>
+      <div class="cstat"><div class="cstat-val">${monShort}<span style="font-size:11px">Hz</span></div><div class="cstat-lbl">Monitor</div></div>
+    </div>
+    <div class="sens-strip">
+      <div class="sblk"><div class="sblk-val">${d.genSens||'—'}</div><div class="sblk-lbl">General</div></div>
+      <div class="sblk"><div class="sblk-val">${d.aimSens||'—'}</div><div class="sblk-lbl">Aim</div></div>
+      <div class="sblk"><div class="sblk-val">${d.adsSens||'—'}</div><div class="sblk-lbl">ADS</div></div>
+      <div class="sblk"><div class="sblk-val">${d.scopeSens||'—'}</div><div class="sblk-lbl">Scope</div></div>
+      <div class="sblk"><div class="sblk-val">${d.vertMult||'1.0'}</div><div class="sblk-lbl">V.Mult</div></div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-tags">
+        <span class="tag t-grip-${grip}">${grip}</span>
+        <span class="tag t-${gpuB.toLowerCase()}">${gpuB}</span>
+        <span class="tag t-fps">${fps} FPS</span>
+      </div>
+      <span class="foot-arrow">→</span>
+    </div>
+  </div>`;
+}
+
+function escStr(s){ return (s||'').replace(/'/g,"\\'"); }
+
+// ===== 2D DESKTOP DRAW =====
+function drawDesktop(canvasId, d, W, H) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  // BG
+  ctx.fillStyle = '#0a0b0e';
+  ctx.fillRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle = 'rgba(245,200,66,0.04)';
+  ctx.lineWidth = 1;
+  for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  const sc = W/120; // 120cm table width baseline
+  const cx = W/2, cy = H*0.58;
+
+  // Parse table
+  const twStr = (d.tableSize||'120×60').split('×')[0];
+  const tdStr = (d.tableSize||'120×60').split('×')[1]||'60';
+  const tw = Math.min((parseFloat(twStr)||120)*sc, W-10);
+  const td = Math.min((parseFloat(tdStr)||60)*sc*0.85, H*0.55);
+
+  // Table shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(cx-tw/2+3, cy-td/2+3, tw, td);
+
+  // Table surface
+  ctx.fillStyle = 'rgba(245,200,66,0.03)';
+  ctx.strokeStyle = 'rgba(245,200,66,0.25)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.roundRect(cx-tw/2, cy-td/2, tw, td, 3); ctx.fill(); ctx.stroke();
+
+  // Table legs
+  ctx.fillStyle = 'rgba(245,200,66,0.08)';
+  [[cx-tw/2+4,cy+td/2],[cx+tw/2-4,cy+td/2],[cx-tw/2+4,cy-td/2],[cx+tw/2-4,cy-td/2]].forEach(([lx,ly])=>{
+    ctx.fillRect(lx-3,ly-3,6,6);
+  });
+
+  // Monitor
+  const monX = (+d.monX||0)*sc;
+  const monW = Math.min(55*sc, tw*0.55);
+  const monDeg = (+((d.monDeg||'0°').replace('°','')))*Math.PI/180;
+  const mY = cy - td/2 - 4;
+  ctx.save();
+  ctx.translate(cx+monX, mY);
+  ctx.rotate(monDeg);
+  // Monitor glow
+  ctx.shadowColor = 'rgba(123,97,255,0.4)'; ctx.shadowBlur = 8;
+  ctx.fillStyle = '#7b61ff';
+  ctx.fillRect(-monW/2,-2,monW,5);
+  ctx.shadowBlur = 0;
+  // Screen tint
+  ctx.fillStyle = 'rgba(123,97,255,0.08)';
+  ctx.fillRect(-monW/2,-12,monW,10);
+  // Stand
+  ctx.fillStyle = 'rgba(123,97,255,0.3)';
+  ctx.fillRect(-4,2,8,5);
+  ctx.restore();
+
+  // Monitor label
+  ctx.fillStyle = 'rgba(123,97,255,0.7)';
+  ctx.font = `${Math.max(7,sc*3.5)}px Barlow Condensed,sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('MONITOR', cx+monX, mY-14);
+
+  // Mousepad
+  const padSizes = {'S':[(d.tw||25)*sc,(d.th||21)*sc],'M':[35*sc,30*sc],'L':[45*sc,40*sc],'XL':[Math.min(90*sc,tw-4),35*sc]};
+  const padKey = (d.pad||'M').charAt(0);
+  let [pw,ph] = padSizes[padKey]||padSizes['M'];
+  pw = Math.min(pw, tw*0.75);
+  const padXOff = (+((d.padX||'-10').replace(' cm',''))||0)*sc;
+  const padLeft = cx+padXOff-pw/2;
+  const padTop  = cy - td/4;
+
+  // Pad shadow
+  ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.fillRect(padLeft+3,padTop+3,pw,ph);
+  // Pad surface
+  ctx.fillStyle='rgba(239,68,68,0.07)'; ctx.strokeStyle='rgba(239,68,68,0.5)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(padLeft,padTop,pw,ph,3); ctx.fill(); ctx.stroke();
+  // Pad texture
+  ctx.strokeStyle='rgba(239,68,68,0.04)'; ctx.lineWidth=1;
+  for(let lx=padLeft+8;lx<padLeft+pw;lx+=10){ctx.beginPath();ctx.moveTo(lx,padTop);ctx.lineTo(lx,padTop+ph);ctx.stroke();}
+  ctx.fillStyle='rgba(239,68,68,0.5)'; ctx.font=`${Math.max(6,sc*3)}px Barlow Condensed,sans-serif`; ctx.textAlign='center';
+  ctx.fillText('PAD', padLeft+pw/2, padTop+ph-4);
+
+  // Mouse on pad
+  const mx = padLeft + pw*0.65;
+  const my = padTop  + ph*0.42;
+  const mw = Math.max(5, sc*5.5);
+  const mhh = mw*1.6;
+  ctx.save(); ctx.translate(mx,my);
+  // Shadow
+  ctx.fillStyle='rgba(0,0,0,0.5)';
+  ctx.beginPath(); ctx.ellipse(1.5,2,mw,mhh,0,0,Math.PI*2); ctx.fill();
+  // Body
+  const mg = ctx.createRadialGradient(-mw*.2,-mhh*.3,1,0,0,mw*1.5);
+  mg.addColorStop(0,'#3a3f4a'); mg.addColorStop(.5,'#242830'); mg.addColorStop(1,'#141720');
+  ctx.fillStyle=mg;
+  ctx.beginPath();
+  ctx.moveTo(0,-mhh);
+  ctx.bezierCurveTo(mw*.7,-mhh*.8,mw,-mhh*.2,mw*.85,mhh*.3);
+  ctx.bezierCurveTo(mw*.6,mhh*.9,-mw*.6,mhh*.9,-mw*.85,mhh*.3);
+  ctx.bezierCurveTo(-mw,-mhh*.2,-mw*.7,-mhh*.8,0,-mhh);
+  ctx.closePath(); ctx.fill();
+  // Seam
+  ctx.strokeStyle='rgba(255,255,255,.1)'; ctx.lineWidth=.7; ctx.stroke();
+  // Center line
+  ctx.strokeStyle='rgba(0,0,0,.5)'; ctx.lineWidth=.8;
+  ctx.beginPath(); ctx.moveTo(0,-mhh); ctx.lineTo(0,-mhh*.1); ctx.stroke();
+  // Scroll wheel
+  ctx.fillStyle='#181c24'; ctx.strokeStyle='rgba(245,200,66,.4)'; ctx.lineWidth=.6;
+  ctx.beginPath(); ctx.roundRect(-mw*.18,-mhh*.55,mw*.36,mhh*.28,2); ctx.fill(); ctx.stroke();
+  // LED dot
+  ctx.fillStyle='rgba(245,200,66,0.7)';
+  ctx.beginPath(); ctx.arc(0,mhh*.1,mw*.1,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  // Keyboard
+  const kbW = Math.min(38*sc, tw*0.36);
+  const kbH = 10*sc;
+  const kbX = cx - kbW/2 - 4;
+  const kbY = cy - td/2 + (parseFloat(d.kbY||10)*sc*0.5);
+  ctx.fillStyle='rgba(245,200,66,0.04)'; ctx.strokeStyle='rgba(245,200,66,0.3)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(kbX,kbY,kbW,kbH,2); ctx.fill(); ctx.stroke();
+  // Key dots
+  ctx.fillStyle='rgba(245,200,66,0.15)';
+  for(let ki=0;ki<4;ki++) for(let kj=0;kj<10;kj++){
+    if(ki===0&&kj>8) continue;
+    ctx.fillRect(kbX+4+kj*(kbW-8)/10, kbY+2+ki*(kbH-4)/4, (kbW-8)/10-1, (kbH-4)/4-1);
+  }
+  ctx.fillStyle='rgba(245,200,66,0.4)'; ctx.textAlign='center';
+  ctx.font=`${Math.max(5,sc*2.8)}px Barlow Condensed,sans-serif`;
+  ctx.fillText('KB', kbX+kbW/2, kbY+kbH/2+2);
+
+  // Player circle
+  const pY = cy + td/2 + 12;
+  ctx.beginPath(); ctx.arc(cx, pY, 9, 0, Math.PI*2);
+  ctx.fillStyle='rgba(245,200,66,0.1)'; ctx.fill();
+  ctx.strokeStyle='rgba(245,200,66,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='rgba(245,200,66,0.7)'; ctx.font=`bold ${Math.max(5,sc*2.8)}px Barlow Condensed,sans-serif`;
+  ctx.textAlign='center'; ctx.fillText('YOU', cx, pY+3);
+
+  // Legend (mini)
+  const legItems=[['rgba(245,200,66,0.3)','Table'],['rgba(123,97,255,0.7)','Monitor'],['rgba(239,68,68,0.5)','Pad'],['rgba(100,110,130,0.8)','Mouse']];
+  legItems.forEach(([c,l],i)=>{
+    ctx.fillStyle=c; ctx.fillRect(6,6+i*12,7,7);
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font=`${Math.max(6,sc*2.6)}px Barlow Condensed,sans-serif`;
+    ctx.textAlign='left';
+    ctx.fillText(l,16,12+i*12);
+  });
+}
+
+// ===== DETAIL MODAL =====
+function openDetail(ign) {
+  const d = allData.find(x=>x.ign===ign);
+  if (!d) return;
+  document.getElementById('dmIgn').textContent = d.ign||'—';
+  document.getElementById('dmSub').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString('th-TH') : '—';
+
+  document.getElementById('dmBody').innerHTML = `
+    <div class="dm-desktop">
+      <div class="dm-desktop-label">Desktop Top View</div>
+      <canvas class="dv-big" id="dvBig" width="640" height="280"></canvas>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">PUBG Mouse Sensitivity</div>
+      <div class="dm-sens-row">
+        <div class="dmsbox"><div class="dmsbox-val">${d.genSens||'—'}</div><div class="dmsbox-lbl">General</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.vertMult||'1.0'}</div><div class="dmsbox-lbl">Vert Mult</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.aimSens||'—'}</div><div class="dmsbox-lbl">Aim</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.adsSens||'—'}</div><div class="dmsbox-lbl">ADS</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.scopeSens||'—'}</div><div class="dmsbox-lbl">Scope</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px">
+        Invert: <strong style="color:var(--text2)">${d.invert||'—'}</strong> &nbsp;·&nbsp;
+        Universal Scope: <strong style="color:var(--text2)">${d.univScope||'—'}</strong>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">Mouse Hardware</div>
+      <div class="dm-grid">
+        <div class="dmf"><div class="dmf-lbl">Mouse</div><div class="dmf-val">${d.mouse||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">DPI</div><div class="dmf-val gold">${d.dpi||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Polling Rate</div><div class="dmf-val">${d.hz||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Grip / Arm Style</div><div class="dmf-val">${d.grip||'—'} / ${d.arm||'—'}</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">Desktop Setup</div>
+      <div class="dm-grid">
+        <div class="dmf"><div class="dmf-lbl">Mousepad</div><div class="dmf-val">${(d.pad||'—').split('(')[0]}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Monitor</div><div class="dmf-val">${d.monSize||'—'} · ${d.monHz||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ความสูงโต๊ะ</div><div class="dmf-val">${d.tableH||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ขนาดโต๊ะ</div><div class="dmf-val">${d.tableSize||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ระยะจอ</div><div class="dmf-val">${d.monDist||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ส่วนสูง</div><div class="dmf-val">${d.height||'—'}</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:${d.notes?'20':'0'}px">
+      <div class="dm-sec-title">Spec PC</div>
+      <div class="dm-grid">
+        <div class="dmf"><div class="dmf-lbl">CPU</div><div class="dmf-val">${d.cpuBrand||''} ${d.cpuModel||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">GPU</div><div class="dmf-val gold">${d.gpuBrand||''} ${d.gpuModel||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">RAM</div><div class="dmf-val">${d.ram||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Storage</div><div class="dmf-val">${d.storage||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">OS</div><div class="dmf-val">${d.os||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">FPS เฉลี่ย · Graphics</div><div class="dmf-val gold">${d.avgFps||'—'} · ${d.gfx||'—'}</div></div>
+      </div>
+    </div>
+
+    ${d.notes?`<div><div class="dm-sec-title">หมายเหตุ</div><div class="dm-notes">"${d.notes}"</div></div>`:''}
+  `;
+
+  document.getElementById('overlay').classList.add('show');
+  // Draw big canvas after DOM ready
+  setTimeout(() => drawDesktop('dvBig', d, 640, 280), 50);
+}
+
+function closeOverlay(e){
+  if(e.target===document.getElementById('overlay'))
+    document.getElementById('overlay').classList.remove('show');
+}
+
+// ===== INIT =====
+loadData();
+</script>
+</body>
+</html>

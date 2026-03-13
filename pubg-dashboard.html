@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUBG SETUP — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #08090b;
+  --bg2:     #0f1013;
+  --surface: #14151a;
+  --surf2:   #1c1d24;
+  --surf3:   #23242d;
+  --border:  #2a2b35;
+  --border2: #363740;
+  --gold:    #f5c842;
+  --gold2:   #e8a820;
+  --golddim: rgba(245,200,66,0.12);
+  --red:     #ef4444;
+  --green:   #22c55e;
+  --blue:    #3b82f6;
+  --purple:  #a855f7;
+  --text:    #f0f0f4;
+  --text2:   #9494a4;
+  --text3:   #50505f;
+  --r:       8px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 10;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-mark {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.logo-mark span { color: var(--gold); }
+
+.logo-sub {
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+.sidebar-nav {
+  padding: 16px 10px;
+  flex: 1;
+}
+
+.nav-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 8px 10px 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  color: var(--text2);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: 'Barlow', sans-serif;
+}
+.nav-item:hover { background: var(--surf2); color: var(--text); }
+.nav-item.active { background: var(--golddim); color: var(--gold); border: 1px solid rgba(245,200,66,0.2); }
+.nav-item .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-footer a {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.sidebar-footer a:hover { color: var(--gold); }
+
+/* ===== MAIN ===== */
+.main {
+  margin-left: 220px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.topbar {
+  height: 56px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: var(--bg2);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.topbar-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-small {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  border: 1px solid var(--border2);
+  background: var(--surf2);
+  color: var(--text2);
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.btn-small:hover { border-color: var(--gold); color: var(--gold); }
+.btn-small.gold { background: var(--gold); color: #08090b; border-color: var(--gold); font-weight: 700; }
+.btn-small.gold:hover { background: var(--gold2); }
+
+.live-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--green);
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px;
+}
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* ===== CONTENT ===== */
+.content { padding: 28px; flex: 1; }
+
+/* Panel system */
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== STAT CARDS ===== */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--border2); }
+
+.stat-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+}
+.stat-card.c-gold::before { background: var(--gold); }
+.stat-card.c-green::before { background: var(--green); }
+.stat-card.c-blue::before { background: var(--blue); }
+.stat-card.c-purple::before { background: var(--purple); }
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Barlow Condensed', sans-serif;
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.stat-card.c-gold .stat-value { color: var(--gold); }
+.stat-card.c-green .stat-value { color: var(--green); }
+.stat-card.c-blue .stat-value { color: var(--blue); }
+.stat-card.c-purple .stat-value { color: var(--purple); }
+
+.stat-sub { font-size: 12px; color: var(--text3); margin-top: 6px; }
+
+/* ===== SECTION HEADER ===== */
+.sec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+/* ===== CHART BOXES ===== */
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.chart-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+}
+
+.chart-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 16px;
+}
+
+/* Bar chart */
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+.bar-item { display: flex; align-items: center; gap: 10px; }
+.bar-label { font-size: 12px; color: var(--text2); min-width: 70px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+.bar-track { flex:1; height: 6px; background: var(--surf3); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
+.bar-count { font-size: 12px; color: var(--text); font-family: 'Barlow Condensed', sans-serif; min-width: 28px; text-align: right; font-weight: 700; }
+
+/* Donut */
+.donut-wrap { display: flex; align-items: center; gap: 20px; }
+.donut-canvas { flex-shrink: 0; }
+.donut-legend { display: flex; flex-direction: column; gap: 8px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.legend-val { margin-left: auto; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--text); font-weight: 700; }
+
+/* ===== TABLE ===== */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.search-input {
+  flex: 1;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 13px;
+  padding: 7px 12px;
+  outline: none;
+  font-family: 'Barlow', sans-serif;
+  transition: border-color 0.2s;
+  max-width: 260px;
+}
+.search-input:focus { border-color: var(--gold); }
+.search-input::placeholder { color: var(--text3); }
+
+.filter-chip {
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  transition: all 0.15s;
+}
+.filter-chip:hover { border-color: var(--gold); color: var(--gold); }
+.filter-chip.active { background: var(--golddim); border-color: rgba(245,200,66,0.4); color: var(--gold); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  padding: 10px 16px;
+  text-align: left;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text2); }
+thead th .sort-icon { margin-left: 4px; opacity: 0.4; }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+  cursor: pointer;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.025); }
+
+td {
+  padding: 12px 16px;
+  color: var(--text);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.td-ign { font-weight: 600; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; letter-spacing: 0.3px; }
+.td-mono { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; }
+.td-gold { color: var(--gold); }
+.td-dim { color: var(--text2); font-size: 12px; }
+.td-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.tag-palm { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.tag-claw { background: rgba(168,85,247,0.15); color: #c084fc; }
+.tag-fingertip { background: rgba(34,197,94,0.15); color: #4ade80; }
+.tag-nvidia { background: rgba(118,185,0,0.15); color: #84cc16; }
+.tag-amd { background: rgba(239,68,68,0.15); color: #f87171; }
+.tag-intel { background: rgba(0,113,197,0.15); color: #60a5fa; }
+
+.td-time { color: var(--text3); font-size: 11px; font-family: 'Barlow Condensed', sans-serif; }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  font-size: 12px;
+  color: var(--text2);
+}
+.page-btns { display: flex; gap: 4px; }
+.page-btn {
+  width: 28px; height: 28px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.page-btn:hover { border-color: var(--gold); color: var(--gold); }
+.page-btn.active { background: var(--golddim); border-color: rgba(245,200,66,0.4); color: var(--gold); }
+
+/* ===== DETAIL MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: var(--surface);
+  z-index: 1;
+}
+
+.modal-ign {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--gold);
+}
+.modal-time { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+.close-btn {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.close-btn:hover { border-color: var(--red); color: var(--red); }
+
+.modal-body { padding: 20px 24px; }
+
+.modal-section {
+  margin-bottom: 20px;
+}
+.modal-sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.modal-field {
+  background: var(--surf2);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.modal-field-label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; font-family: 'Barlow Condensed', sans-serif; }
+.modal-field-val { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-field-val.gold { color: var(--gold); }
+
+.pubg-sens-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.sens-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.sens-box-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--gold); }
+.sens-box-lbl { font-size: 9px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; font-family: 'Barlow Condensed', sans-serif; }
+
+.modal-notes {
+  background: var(--surf2);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+.empty-icon { font-size: 40px; margin-bottom: 14px; }
+.empty-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; letter-spacing: 1px; margin-bottom: 6px; color: var(--text2); }
+.empty-sub { font-size: 13px; }
+
+/* Responsive */
+@media(max-width:900px) {
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .charts-row { grid-template-columns: 1fr; }
+}
+@media(max-width:640px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">PUBG<span>SETUP</span></div>
+    <div class="logo-sub">Admin Dashboard</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Menu</div>
+    <button class="nav-item active" onclick="showPanel('overview',this)">
+      <span class="nav-icon">📊</span> Overview
+    </button>
+    <button class="nav-item" onclick="showPanel('players',this)">
+      <span class="nav-icon">👥</span> ผู้เล่นทั้งหมด
+    </button>
+    <button class="nav-item" onclick="showPanel('analytics',this)">
+      <span class="nav-icon">📈</span> Analytics
+    </button>
+    <div class="nav-label" style="margin-top:12px">Tools</div>
+    <button class="nav-item" onclick="loadDemoData()">
+      <span class="nav-icon">⚡</span> โหลด Demo Data
+    </button>
+    <button class="nav-item" onclick="clearData()">
+      <span class="nav-icon">🗑️</span> ล้างข้อมูล
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="pubg-setup-v1.html">← กลับหน้ากรอกข้อมูล</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Overview</div>
+    <div class="topbar-right">
+      <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+      <button class="btn-small" onclick="exportCSV()">⬇ Export CSV</button>
+      <button class="btn-small gold" onclick="loadDemoData()">+ Demo Data</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- OVERVIEW PANEL -->
+    <div class="panel active" id="panel-overview">
+
+      <div class="stat-row">
+        <div class="stat-card c-gold">
+          <div class="stat-label">ผู้เล่นทั้งหมด</div>
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-sub">Records ในระบบ</div>
+        </div>
+        <div class="stat-card c-blue">
+          <div class="stat-label">DPI เฉลี่ย</div>
+          <div class="stat-value" id="statAvgDPI">—</div>
+          <div class="stat-sub">ค่าเฉลี่ยทั้งหมด</div>
+        </div>
+        <div class="stat-card c-green">
+          <div class="stat-label">Sens เฉลี่ย</div>
+          <div class="stat-value" id="statAvgSens">—</div>
+          <div class="stat-sub">General Sensitivity</div>
+        </div>
+        <div class="stat-card c-purple">
+          <div class="stat-label">FPS เฉลี่ย</div>
+          <div class="stat-value" id="statAvgFPS">—</div>
+          <div class="stat-sub">In-game PUBG</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <!-- Grip -->
+        <div class="chart-box">
+          <div class="chart-title">Grip Style</div>
+          <div class="donut-wrap">
+            <canvas id="gripCanvas" width="90" height="90" class="donut-canvas"></canvas>
+            <div class="donut-legend" id="gripLegend"></div>
+          </div>
+        </div>
+        <!-- GPU Brand -->
+        <div class="chart-box">
+          <div class="chart-title">GPU Brand</div>
+          <div class="donut-wrap">
+            <canvas id="gpuCanvas" width="90" height="90" class="donut-canvas"></canvas>
+            <div class="donut-legend" id="gpuLegend"></div>
+          </div>
+        </div>
+        <!-- Graphics preset -->
+        <div class="chart-box">
+          <div class="chart-title">Graphics Preset</div>
+          <div class="bar-chart" id="gfxBars"></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <!-- DPI distribution -->
+        <div class="chart-box">
+          <div class="chart-title">DPI Distribution</div>
+          <div class="bar-chart" id="dpiBars"></div>
+        </div>
+        <!-- Mousepad size -->
+        <div class="chart-box">
+          <div class="chart-title">Mousepad Size</div>
+          <div class="bar-chart" id="padBars"></div>
+        </div>
+        <!-- Monitor Hz -->
+        <div class="chart-box">
+          <div class="chart-title">Monitor Hz</div>
+          <div class="bar-chart" id="monHzBars"></div>
+        </div>
+      </div>
+
+      <!-- Recent entries -->
+      <div class="sec-header">
+        <div class="sec-title">รายการล่าสุด</div>
+        <button class="btn-small" onclick="showPanel('players', document.querySelector('.nav-item:nth-child(2)'))">ดูทั้งหมด →</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>IGN</th>
+              <th>DPI</th>
+              <th>Gen Sens</th>
+              <th>Grip</th>
+              <th>GPU</th>
+              <th>FPS</th>
+              <th>เวลา</th>
+            </tr>
+          </thead>
+          <tbody id="recentTbody"></tbody>
+        </table>
+        <div class="empty-state" id="recentEmpty">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">ยังไม่มีข้อมูล</div>
+          <div class="empty-sub">กด "Demo Data" เพื่อโหลดข้อมูลตัวอย่าง หรือให้ผู้เล่นกรอกแบบฟอร์ม</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYERS PANEL -->
+    <div class="panel" id="panel-players">
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <input type="text" class="search-input" placeholder="🔍  ค้นหา IGN, Mouse, GPU..." id="searchInput" oninput="filterTable()">
+          <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+          <button class="filter-chip" onclick="setFilter('Palm',this)">Palm</button>
+          <button class="filter-chip" onclick="setFilter('Claw',this)">Claw</button>
+          <button class="filter-chip" onclick="setFilter('Fingertip',this)">Fingertip</button>
+          <span style="margin-left:auto;font-size:12px;color:var(--text3)" id="tableCount"></span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th onclick="sortBy('ign')">IGN <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('dpi')">DPI <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('genSens')">Gen Sens <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('adsSens')">ADS <span class="sort-icon">↕</span></th>
+              <th>Grip</th>
+              <th>Mouse</th>
+              <th onclick="sortBy('gpuModel')">GPU <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('avgFps')">FPS <span class="sort-icon">↕</span></th>
+              <th>Pad</th>
+              <th onclick="sortBy('timestamp')">เวลา <span class="sort-icon">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="playersTbody"></tbody>
+        </table>
+        <div class="empty-state" id="playersEmpty">
+          <div class="empty-icon">👥</div>
+          <div class="empty-title">ยังไม่มีผู้เล่น</div>
+          <div class="empty-sub">กด "Demo Data" เพื่อโหลดข้อมูลตัวอย่าง</div>
+        </div>
+        <div class="pagination">
+          <span id="paginationInfo">0 รายการ</span>
+          <div class="page-btns" id="pageBtns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS PANEL -->
+    <div class="panel" id="panel-analytics">
+      <div class="stat-row">
+        <div class="stat-card c-gold">
+          <div class="stat-label">eDPI เฉลี่ย</div>
+          <div class="stat-value" id="statEdpi">—</div>
+          <div class="stat-sub">DPI × GenSens / 50</div>
+        </div>
+        <div class="stat-card c-blue">
+          <div class="stat-label">ADS เฉลี่ย</div>
+          <div class="stat-value" id="statAvgAds">—</div>
+          <div class="stat-sub">ADS Sensitivity</div>
+        </div>
+        <div class="stat-card c-green">
+          <div class="stat-label">Scope เฉลี่ย</div>
+          <div class="stat-value" id="statAvgScope">—</div>
+          <div class="stat-sub">Scoping Sensitivity</div>
+        </div>
+        <div class="stat-card c-purple">
+          <div class="stat-label">Vert Mult เฉลี่ย</div>
+          <div class="stat-value" id="statAvgVert">—</div>
+          <div class="stat-sub">Vertical Multiplier</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-title">CPU Brand</div>
+          <div class="donut-wrap">
+            <canvas id="cpuCanvas" width="90" height="90" class="donut-canvas"></canvas>
+            <div class="donut-legend" id="cpuLegend"></div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">RAM Size</div>
+          <div class="bar-chart" id="ramBars"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Storage Type</div>
+          <div class="bar-chart" id="storageBars"></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-title">ARM Style</div>
+          <div class="bar-chart" id="armBars"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Monitor Size</div>
+          <div class="bar-chart" id="monSizeBars"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">OS</div>
+          <div class="donut-wrap">
+            <canvas id="osCanvas" width="90" height="90" class="donut-canvas"></canvas>
+            <div class="donut-legend" id="osLegend"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <div>
+        <div class="modal-ign" id="mIgn">—</div>
+        <div class="modal-time" id="mTime">—</div>
+      </div>
+      <button class="close-btn" onclick="document.getElementById('modalOverlay').classList.remove('show')">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+let allData = [];
+let filtered = [];
+let currentSort = { key: 'timestamp', dir: -1 };
+let currentFilter = 'all';
+let currentPage = 1;
+const PER_PAGE = 12;
+
+// Load from localStorage
+function loadData() {
+  try {
+    allData = JSON.parse(localStorage.getItem('pubg_setups') || '[]');
+  } catch(e) { allData = []; }
+  refresh();
+}
+
+// ===== DEMO DATA =====
+function loadDemoData() {
+  const igns = ['SnakeEyes_TH','KiraFrag','ZeroRecoil','GhostPUBG','NightCrawler','SniperKing99','BlindFire','StormBolt','IronWrist','AceHunter','TactikZ','ProPlayerX','ShadowAim','FrostBite','QuickScope'];
+  const mice = ['Logitech G Pro X S2','Razer Viper V3 Pro','Zowie EC2-C','Finalmouse Starlight','SteelSeries Prime','Logitech G502 X','Razer DeathAdder V3','Zowie FK1+','Pulsar X2','Endgame Gear XM1r'];
+  const grips = ['Palm','Claw','Fingertip'];
+  const arms = ['Wrist Only','Arm Aim','Hybrid'];
+  const pads = ['S (250×210mm)','M (350×300mm)','L (450×400mm)','XL (900×400mm)'];
+  const monSizes = ['24"','27"','32"'];
+  const monHz = ['144Hz','165Hz','240Hz','360Hz'];
+  const cpuBrands = ['Intel','Intel','AMD'];
+  const cpuModels = ['i5-13600K','i7-13700K','i9-13900K','Ryzen 5 7600X','Ryzen 7 7700X','i5-12600K'];
+  const gpuBrands = ['NVIDIA','NVIDIA','NVIDIA','AMD'];
+  const gpuModels = ['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080','RX 7900 XT','RTX 4060 Ti'];
+  const rams = ['16GB','16GB','32GB','32GB','64GB'];
+  const storages = ['NVMe SSD','NVMe SSD','SSD SATA'];
+  const oses = ['Windows 11','Windows 11','Windows 10'];
+  const gfxs = ['Very Low','Very Low','Low','Medium','High'];
+
+  const r = () => Math.random();
+  const pick = arr => arr[Math.floor(r() * arr.length)];
+  const rng = (a,b) => Math.round(a + r()*(b-a));
+
+  const demos = Array.from({length:15}, (_,i) => {
+    const dpi = [400,800,800,1600][Math.floor(r()*4)];
+    const gen = rng(35,65);
+    const cpuB = pick(cpuBrands);
+    const gpuB = pick(gpuBrands);
+    const ago = Math.floor(r() * 7 * 24 * 60);
+    const ts = new Date(Date.now() - ago * 60000).toISOString();
+    return {
+      ign: igns[i] || 'Player'+(i+1),
+      height: rng(160,185) + ' cm',
+      mouse: pick(mice),
+      dpi: String(dpi),
+      hz: pick(['500Hz','1000Hz','1000Hz','2000Hz']),
+      grip: pick(grips),
+      arm: pick(arms),
+      invert: 'Disable',
+      genSens: String(gen),
+      vertMult: (r() > 0.7 ? '1.1' : '1.0'),
+      aimSens: String(rng(gen-5, gen+5)),
+      adsSens: String(rng(gen-8, gen+2)),
+      scopeSens: String(rng(gen-5, gen+5)),
+      univScope: 'Enable',
+      tableH: rng(70,85) + ' cm',
+      tableSize: rng(100,160)+'×'+rng(55,80)+' cm',
+      pad: pick(pads),
+      padX: rng(-20,0) + ' cm',
+      monSize: pick(monSizes),
+      monHz: pick(monHz),
+      monDist: rng(50,80) + ' cm',
+      monX: '0',
+      monDeg: '0°',
+      cpuBrand: cpuB,
+      cpuModel: pick(cpuB==='Intel' ? ['i5-13600K','i7-13700K','i9-13900K','i5-12600K'] : ['Ryzen 5 7600X','Ryzen 7 7700X','Ryzen 9 7950X']),
+      gpuBrand: gpuB,
+      gpuModel: pick(gpuB==='NVIDIA' ? ['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080','RTX 4060 Ti'] : ['RX 7900 XT','RX 6800 XT']),
+      ram: pick(rams),
+      storage: pick(storages),
+      os: pick(oses),
+      avgFps: String(rng(80,200)) + ' FPS',
+      gfx: pick(gfxs),
+      notes: '',
+      timestamp: ts,
+    };
+  });
+
+  const existing = JSON.parse(localStorage.getItem('pubg_setups') || '[]');
+  localStorage.setItem('pubg_setups', JSON.stringify([...existing, ...demos]));
+  loadData();
+}
+
+function clearData() {
+  if (confirm('ล้างข้อมูลทั้งหมด?')) {
+    localStorage.removeItem('pubg_setups');
+    allData = []; filtered = [];
+    refresh();
+  }
+}
+
+// ===== PANEL SWITCH =====
+function showPanel(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = { overview:'Overview', players:'ผู้เล่นทั้งหมด', analytics:'Analytics' };
+  document.getElementById('topbarTitle').textContent = titles[name] || name;
+  if (name === 'players') renderPlayersTable();
+  if (name === 'analytics') renderAnalytics();
+}
+
+// ===== REFRESH ALL =====
+function refresh() {
+  renderStats();
+  renderCharts();
+  renderRecent();
+  filterTable();
+}
+
+// ===== STATS =====
+function renderStats() {
+  const n = allData.length;
+  document.getElementById('statTotal').textContent = n;
+  if (n === 0) {
+    ['statAvgDPI','statAvgSens','statAvgFPS'].forEach(id => document.getElementById(id).textContent = '—');
+    return;
+  }
+  const avg = key => {
+    const vals = allData.map(d => parseFloat(d[key])).filter(v => !isNaN(v));
+    return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : 0;
+  };
+  document.getElementById('statAvgDPI').textContent = avg('dpi');
+  document.getElementById('statAvgSens').textContent = avg('genSens');
+  const fpsVals = allData.map(d => parseFloat(d.avgFps)).filter(v => !isNaN(v));
+  document.getElementById('statAvgFPS').textContent = fpsVals.length ? Math.round(fpsVals.reduce((a,b)=>a+b)/fpsVals.length) : '—';
+
+  // Analytics stats
+  const edpiVals = allData.map(d => Math.round(+d.dpi * (+d.genSens/50))).filter(v=>!isNaN(v));
+  document.getElementById('statEdpi').textContent = edpiVals.length ? Math.round(edpiVals.reduce((a,b)=>a+b)/edpiVals.length) : '—';
+  document.getElementById('statAvgAds').textContent = avg('adsSens') || '—';
+  document.getElementById('statAvgScope').textContent = avg('scopeSens') || '—';
+  const vertVals = allData.map(d => parseFloat(d.vertMult)).filter(v=>!isNaN(v));
+  document.getElementById('statAvgVert').textContent = vertVals.length ? (vertVals.reduce((a,b)=>a+b)/vertVals.length).toFixed(1) : '—';
+}
+
+// ===== CHARTS =====
+function countField(key) {
+  const counts = {};
+  allData.forEach(d => {
+    const v = d[key] || '—';
+    counts[v] = (counts[v] || 0) + 1;
+  });
+  return Object.entries(counts).sort((a,b) => b[1]-a[1]);
+}
+
+function drawDonut(canvasId, legendId, data, colors) {
+  const canvas = document.getElementById(canvasId);
+  const legend = document.getElementById(legendId);
+  if (!canvas || !legend) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  if (data.length === 0) {
+    ctx.fillStyle = '#23242d';
+    ctx.beginPath(); ctx.arc(W/2,H/2,36,0,Math.PI*2); ctx.fill();
+    legend.innerHTML = '<span style="color:var(--text3);font-size:12px">ไม่มีข้อมูล</span>';
+    return;
+  }
+
+  const total = data.reduce((s,[,v])=>s+v,0);
+  let angle = -Math.PI/2;
+  const cx = W/2, cy = H/2, R = 36, r = 22;
+
+  data.forEach(([label,val],i) => {
+    const slice = (val/total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,R,angle,angle+slice);
+    ctx.closePath();
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+    angle += slice;
+  });
+
+  // Center hole
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.fillStyle = '#14151a'; ctx.fill();
+
+  // Center text
+  ctx.fillStyle = '#f0f0f4';
+  ctx.font = 'bold 14px Barlow Condensed,sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(total, cx, cy);
+
+  legend.innerHTML = data.map(([label,val],i) => `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${colors[i%colors.length]}"></div>
+      <span>${label}</span>
+      <span class="legend-val">${val}</span>
+    </div>
+  `).join('');
+}
+
+function renderBarChart(containerId, data, color='var(--gold)') {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (data.length === 0) { el.innerHTML = '<div style="color:var(--text3);font-size:12px;padding:8px 0">ไม่มีข้อมูล</div>'; return; }
+  const max = Math.max(...data.map(([,v])=>v));
+  el.innerHTML = data.map(([label,val]) => `
+    <div class="bar-item">
+      <div class="bar-label">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${max?Math.round(val/max*100):0}%;background:${color}"></div></div>
+      <div class="bar-count">${val}</div>
+    </div>
+  `).join('');
+}
+
+const DONUT_COLORS_1 = ['#f5c842','#3b82f6','#a855f7','#22c55e','#ef4444','#f97316'];
+const DONUT_COLORS_2 = ['#76b900','#ef4444','#f97316'];
+
+function renderCharts() {
+  drawDonut('gripCanvas','gripLegend', countField('grip'), DONUT_COLORS_1);
+  drawDonut('gpuCanvas','gpuLegend', countField('gpuBrand'), DONUT_COLORS_2);
+  renderBarChart('gfxBars', countField('gfx'), 'var(--purple)');
+  renderBarChart('padBars', countField('pad'), 'var(--gold)');
+  renderBarChart('monHzBars', countField('monHz'), 'var(--blue)');
+
+  // DPI grouped
+  const dpiGroups = {'≤400':0,'800':0,'1600':0,'>1600':0};
+  allData.forEach(d => {
+    const v = +d.dpi;
+    if (v <= 400) dpiGroups['≤400']++;
+    else if (v === 800) dpiGroups['800']++;
+    else if (v === 1600) dpiGroups['1600']++;
+    else dpiGroups['>1600']++;
+  });
+  renderBarChart('dpiBars', Object.entries(dpiGroups).filter(([,v])=>v>0), 'var(--green)');
+}
+
+function renderAnalytics() {
+  drawDonut('cpuCanvas','cpuLegend', countField('cpuBrand'), ['#60a5fa','#f87171','#fbbf24']);
+  drawDonut('osCanvas','osLegend', countField('os'), ['#3b82f6','#22c55e']);
+  renderBarChart('ramBars', countField('ram'), 'var(--blue)');
+  renderBarChart('storageBars', countField('storage'), 'var(--green)');
+  renderBarChart('armBars', countField('arm'), 'var(--purple)');
+  renderBarChart('monSizeBars', countField('monSize'), 'var(--gold)');
+}
+
+// ===== RECENT TABLE =====
+function timeAgo(ts) {
+  if (!ts) return '—';
+  const diff = Math.floor((Date.now() - new Date(ts)) / 1000);
+  if (diff < 60) return diff + 's ago';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  return Math.floor(diff/86400) + 'd ago';
+}
+
+function gripTag(g) {
+  const map = { Palm:'tag-palm', Claw:'tag-claw', Fingertip:'tag-fingertip' };
+  return `<span class="td-tag ${map[g]||''}">${g||'—'}</span>`;
+}
+
+function gpuTag(brand) {
+  const map = { NVIDIA:'tag-nvidia', AMD:'tag-amd', Intel:'tag-intel' };
+  return `<span class="td-tag ${map[brand]||''}">${brand||'—'}</span>`;
+}
+
+function renderRecent() {
+  const tbody = document.getElementById('recentTbody');
+  const empty = document.getElementById('recentEmpty');
+  const recent = [...allData].sort((a,b) => new Date(b.timestamp||0)-new Date(a.timestamp||0)).slice(0,8);
+  if (recent.length === 0) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = recent.map((d,i) => `
+    <tr onclick="openModal(${allData.indexOf(d)})">
+      <td class="td-ign">${d.ign||'—'}</td>
+      <td class="td-mono td-gold">${d.dpi||'—'}</td>
+      <td class="td-mono">${d.genSens||'—'}</td>
+      <td>${gripTag(d.grip)}</td>
+      <td>${gpuTag(d.gpuBrand)} <span class="td-dim">${(d.gpuModel||'').split(' ').slice(-1)[0]}</span></td>
+      <td class="td-mono">${(d.avgFps||'').replace(' FPS','')}</td>
+      <td class="td-time">${timeAgo(d.timestamp)}</td>
+    </tr>
+  `).join('');
+}
+
+// ===== PLAYERS TABLE =====
+let sortDir = -1;
+
+function sortBy(key) {
+  if (currentSort.key === key) currentSort.dir *= -1;
+  else { currentSort.key = key; currentSort.dir = 1; }
+  renderPlayersTable();
+}
+
+function setFilter(val, el) {
+  currentFilter = val;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentPage = 1;
+  filterTable();
+}
+
+function filterTable() {
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  filtered = allData.filter(d => {
+    const matchFilter = currentFilter === 'all' || d.grip === currentFilter;
+    const matchSearch = !q || [d.ign,d.mouse,d.gpuModel,d.cpuModel,d.grip].some(v => (v||'').toLowerCase().includes(q));
+    return matchFilter && matchSearch;
+  });
+  currentPage = 1;
+  renderPlayersTable();
+}
+
+function renderPlayersTable() {
+  const tbody = document.getElementById('playersTbody');
+  const empty = document.getElementById('playersEmpty');
+  document.getElementById('tableCount').textContent = filtered.length + ' รายการ';
+
+  const sorted = [...filtered].sort((a,b) => {
+    const av = a[currentSort.key] || '', bv = b[currentSort.key] || '';
+    const an = parseFloat(av), bn = parseFloat(bv);
+    if (!isNaN(an) && !isNaN(bn)) return (an-bn) * currentSort.dir;
+    return av.localeCompare(bv) * currentSort.dir;
+  });
+
+  const start = (currentPage-1)*PER_PAGE;
+  const page = sorted.slice(start, start+PER_PAGE);
+
+  if (page.length === 0) { tbody.innerHTML=''; empty.style.display='block'; }
+  else {
+    empty.style.display='none';
+    tbody.innerHTML = page.map((d) => {
+      const idx = allData.indexOf(d);
+      const padShort = (d.pad||'').split(' ')[0];
+      const monShort = (d.monHz||'').replace('Hz','');
+      return `
+      <tr onclick="openModal(${idx})">
+        <td class="td-ign">${d.ign||'—'}</td>
+        <td class="td-mono td-gold">${d.dpi}</td>
+        <td class="td-mono">${d.genSens}</td>
+        <td class="td-mono">${d.adsSens}</td>
+        <td>${gripTag(d.grip)}</td>
+        <td class="td-dim">${(d.mouse||'').split(' ').slice(0,3).join(' ')}</td>
+        <td>${gpuTag(d.gpuBrand)} <span class="td-dim">${(d.gpuModel||'')}</span></td>
+        <td class="td-mono">${(d.avgFps||'').replace(' FPS','')} <span class="td-dim">fps</span></td>
+        <td class="td-dim">${padShort}</td>
+        <td class="td-time">${timeAgo(d.timestamp)}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Pagination
+  const totalPages = Math.ceil(filtered.length/PER_PAGE);
+  document.getElementById('paginationInfo').textContent = `${filtered.length} รายการ · หน้า ${currentPage}/${totalPages||1}`;
+  const pageBtns = document.getElementById('pageBtns');
+  pageBtns.innerHTML = Array.from({length:totalPages},(_,i)=>`
+    <button class="page-btn ${i+1===currentPage?'active':''}" onclick="goPage(${i+1})">${i+1}</button>
+  `).join('');
+}
+
+function goPage(p) { currentPage=p; renderPlayersTable(); }
+
+// ===== MODAL =====
+function openModal(idx) {
+  const d = allData[idx];
+  if (!d) return;
+  document.getElementById('mIgn').textContent = d.ign || '—';
+  document.getElementById('mTime').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString('th-TH') : '—';
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-section">
+      <div class="modal-sec-title">Mouse & Hardware</div>
+      <div class="modal-grid">
+        <div class="modal-field"><div class="modal-field-label">Mouse</div><div class="modal-field-val">${d.mouse||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">DPI</div><div class="modal-field-val gold">${d.dpi}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Polling Rate</div><div class="modal-field-val">${d.hz||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Grip / Arm</div><div class="modal-field-val">${d.grip||'—'} / ${d.arm||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-sec-title">PUBG Mouse Sensitivity</div>
+      <div class="pubg-sens-row">
+        <div class="sens-box"><div class="sens-box-val">${d.genSens}</div><div class="sens-box-lbl">General</div></div>
+        <div class="sens-box"><div class="sens-box-val">${d.vertMult}</div><div class="sens-box-lbl">Vert Mult</div></div>
+        <div class="sens-box"><div class="sens-box-val">${d.aimSens}</div><div class="sens-box-lbl">Aim</div></div>
+        <div class="sens-box"><div class="sens-box-val">${d.adsSens}</div><div class="sens-box-lbl">ADS</div></div>
+        <div class="sens-box"><div class="sens-box-val">${d.scopeSens}</div><div class="sens-box-lbl">Scope</div></div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3)">
+        Invert: <strong style="color:var(--text2)">${d.invert}</strong> &nbsp;·&nbsp; Universal Scope: <strong style="color:var(--text2)">${d.univScope}</strong>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-sec-title">Desktop Setup</div>
+      <div class="modal-grid">
+        <div class="modal-field"><div class="modal-field-label">Mousepad</div><div class="modal-field-val">${(d.pad||'—').split('(')[0]}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Monitor</div><div class="modal-field-val">${d.monSize||'—'} · ${d.monHz||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">โต๊ะสูง / ขนาด</div><div class="modal-field-val">${d.tableH||'—'} · ${d.tableSize||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">ระยะจอ</div><div class="modal-field-val">${d.monDist||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-sec-title">Spec PC</div>
+      <div class="modal-grid">
+        <div class="modal-field"><div class="modal-field-label">CPU</div><div class="modal-field-val">${d.cpuBrand||''} ${d.cpuModel||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">GPU</div><div class="modal-field-val gold">${d.gpuBrand||''} ${d.gpuModel||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">RAM / Storage</div><div class="modal-field-val">${d.ram||'—'} · ${d.storage||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">OS / FPS</div><div class="modal-field-val">${d.os||'—'} · ${d.avgFps||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Graphics</div><div class="modal-field-val">${d.gfx||'—'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">ส่วนสูง</div><div class="modal-field-val">${d.height||'—'}</div></div>
+      </div>
+    </div>
+
+    ${d.notes ? `
+    <div class="modal-section">
+      <div class="modal-sec-title">หมายเหตุ</div>
+      <div class="modal-notes">"${d.notes}"</div>
+    </div>` : ''}
+  `;
+
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay'))
+    document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// ===== EXPORT CSV =====
+function exportCSV() {
+  if (!allData.length) { alert('ยังไม่มีข้อมูล'); return; }
+  const keys = ['ign','height','mouse','dpi','hz','grip','arm','genSens','vertMult','aimSens','adsSens','scopeSens','univScope','pad','monSize','monHz','monDist','cpuBrand','cpuModel','gpuBrand','gpuModel','ram','storage','os','avgFps','gfx','timestamp'];
+  const header = keys.join(',');
+  const rows = allData.map(d => keys.map(k => `"${(d[k]||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [header,...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'pubg_setups_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// ===== INIT =====
+loadData();
+// Auto-refresh every 30s
+setInterval(loadData, 30000);
+</script>
+</body>
+</html>
