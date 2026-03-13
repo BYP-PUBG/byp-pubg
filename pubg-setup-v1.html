@@ -1232,7 +1232,9 @@ window.addEventListener('scroll', () => {
   const sensMap = { genSens: existing.gen_sens, aimSens: existing.aim_sens, adsSens: existing.ads_sens, scopeSens: existing.scope_sens, vertMult: existing.vert_mult };
   Object.entries(sensMap).forEach(([id, val]) => { if (val) { set(id, val); syncRange(id, id+'Val', val); } });
 
-  // Chips — helper
+  // Chips — clear ทั้งหมดก่อน แล้ว set ใหม่ตามข้อมูล user
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+
   const selectChipByVal = (groupId, val) => {
     if (!val || val === '—') return;
     document.querySelectorAll('#' + groupId + ' .chip').forEach(c => {
