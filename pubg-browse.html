@@ -613,7 +613,10 @@ function buildCard(d, i) {
   <div class="setup-card" onclick="openDetail('${escStr(d.ign)}')">
     <div class="card-head">
       <div class="card-ign">${d.ign||'—'}</div>
-      <div class="card-time">${timeAgo(d.timestamp)}</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${window._isAdmin && d.id ? `<button onclick="event.stopPropagation();adminDeleteCard('${d.id}')" style="padding:2px 8px;border:1px solid rgba(239,68,68,.35);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>` : ''}
+        <div class="card-time">${timeAgo(d.timestamp)}</div>
+      </div>
     </div>
     <div class="desktop-view">
       <canvas class="dv" id="dvc-${i}" width="312" height="160"></canvas>
@@ -640,6 +643,15 @@ function buildCard(d, i) {
       <span class="foot-arrow">→</span>
     </div>
   </div>`;
+}
+
+async function adminDeleteCard(id) {
+  if (!confirm('ลบ Setup นี้ออกจากระบบ?')) return;
+  const { error } = await _supa.from('setups').delete().eq('id', id);
+  if (error) { alert('เกิดข้อผิดพลาด: ' + error.message); return; }
+  allSetups = allSetups.filter(d => d.id !== id);
+  filtered  = filtered.filter(d => d.id !== id);
+  renderCards();
 }
 
 function escStr(s){ return (s||'').replace(/'/g,"\\'"); }
@@ -892,6 +904,10 @@ async function renderAuthBtn() {
     const email = session.user.email || '';
     const short = email.split('@')[0].substring(0, 12);
 
+    // เช็ค role
+    const { data: profile } = await _supa.from('profiles').select('role').eq('id', session.user.id).single();
+    window._isAdmin = profile?.role === 'admin';
+
     // เช็คว่ามี setup แล้วหรือยัง
     const { data: mySetup } = await _supa
       .from('setups')
@@ -906,12 +922,17 @@ async function renderAuthBtn() {
       setupBtn.textContent = mySetup ? '⚙️ ตั้งค่าของฉัน' : '+ กรอก Setup ของฉัน';
     }
 
+    // re-render cards ถ้าโหลดเสร็จแล้ว
+    if (typeof renderCards === 'function' && filtered.length > 0) renderCards();
+
     el.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;">
+        ${window._isAdmin ? `<span style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:3px 8px;border:1px solid rgba(245,200,66,.3);border-radius:5px;">👑 ADMIN</span>` : ''}
         <a href="profile.html" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:6px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">👤 Profile</a>
         <button onclick="logout()" style="padding:5px 12px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#fca5a5'" onmouseout="this.style.borderColor='';this.style.color=''">ออก</button>
       </div>`;
   } else {
+    window._isAdmin = false;
     el.innerHTML = `<button onclick="location.href='login.html'" style="padding:5px 14px;border:1px solid var(--gold);border-radius:6px;background:transparent;color:var(--gold);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='var(--gold)';this.style.color='#08090b'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">LOGIN</button>`;
   }
 }
