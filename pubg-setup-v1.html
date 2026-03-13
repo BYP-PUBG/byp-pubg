@@ -1067,7 +1067,10 @@ function getChip(groupId) {
 }
 
 // ===== SUBMIT =====
-function submitForm() {
+let _currentUserId = null;
+let _existingSetupId = null;
+
+async function submitForm() {
   const data = {
     ign:       document.getElementById('ign').value || '—',
     height:    document.getElementById('height').value + ' cm',
@@ -1124,41 +1127,29 @@ function submitForm() {
   document.getElementById('successScreen').classList.add('show');
   document.body.style.overflow = 'hidden';
 
-  // Save to Supabase
-  _supa.from('setups').insert([{
-    ign:        data.ign,
-    height:     data.height,
-    mouse:      data.mouse,
-    dpi:        data.dpi,
-    hz:         data.hz,
-    grip:       data.grip,
-    arm:        data.arm,
-    invert:     data.invert,
-    gen_sens:   data.genSens,
-    vert_mult:  data.vertMult,
-    aim_sens:   data.aimSens,
-    ads_sens:   data.adsSens,
-    scope_sens: data.scopeSens,
-    univ_scope: data.univScope,
-    table_h:    data.tableH,
-    table_size: data.tableSize,
-    pad:        data.pad,
-    mon_size:   data.monSize,
-    mon_hz:     data.monHz,
-    mon_dist:   data.monDist,
-    cpu_brand:  data.cpuBrand,
-    cpu_model:  data.cpuModel,
-    gpu_brand:  data.gpuBrand,
-    gpu_model:  data.gpuModel,
-    ram:        data.ram,
-    storage:    data.storage,
-    os:         data.os,
-    avg_fps:    data.avgFps,
-    gfx:        data.gfx,
-    notes:      data.notes,
-  }]).then(({ error }) => {
-    if (error) console.error('Supabase error:', error.message);
-  });
+  const payload = {
+    ign: data.ign, height: data.height, mouse: data.mouse,
+    dpi: data.dpi, hz: data.hz, grip: data.grip, arm: data.arm,
+    invert: data.invert, gen_sens: data.genSens, vert_mult: data.vertMult,
+    aim_sens: data.aimSens, ads_sens: data.adsSens, scope_sens: data.scopeSens,
+    univ_scope: data.univScope, table_h: data.tableH, table_size: data.tableSize,
+    pad: data.pad, mon_size: data.monSize, mon_hz: data.monHz, mon_dist: data.monDist,
+    cpu_brand: data.cpuBrand, cpu_model: data.cpuModel,
+    gpu_brand: data.gpuBrand, gpu_model: data.gpuModel,
+    ram: data.ram, storage: data.storage, os: data.os,
+    avg_fps: data.avgFps, gfx: data.gfx, notes: data.notes,
+    user_id: _currentUserId,
+  };
+
+  let error;
+  if (_existingSetupId) {
+    // มี setup แล้ว → UPDATE
+    ({ error } = await _supa.from('setups').update(payload).eq('id', _existingSetupId));
+  } else {
+    // ยังไม่มี → INSERT
+    ({ error } = await _supa.from('setups').insert([payload]));
+  }
+  if (error) console.error('Supabase error:', error.message);
 }
 
 // ===== RESET =====
@@ -1200,10 +1191,70 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// AUTH CHECK — ต้อง Login ก่อนถึงจะกรอกข้อมูลได้
+// AUTH CHECK + โหลดข้อมูลเดิม (ถ้ามี)
 (async () => {
   const { data: { session } } = await _supa.auth.getSession();
-  if (!session) window.location.href = 'login.html';
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  _currentUserId = session.user.id;
+
+  // เช็คว่ามี setup ของ user นี้แล้วหรือยัง
+  const { data: existing } = await _supa
+    .from('setups')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .limit(1)
+    .single();
+
+  if (!existing) return; // ยังไม่มี → กรอกใหม่ได้เลย
+
+  // มีแล้ว → โหลดข้อมูลเดิมมาใส่ฟอร์ม
+  _existingSetupId = existing.id;
+
+  // เปลี่ยน title และปุ่ม submit
+  document.querySelector('.hero-title').innerHTML = 'BYP<br><span>แก้ไข SETUP</span>';
+  document.querySelector('.btn-submit').innerHTML = '💾 &nbsp;บันทึกการแก้ไข';
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  set('ign',       existing.ign);
+  set('height',    existing.height?.replace(' cm',''));
+  set('mouseName', existing.mouse);
+  set('cpuModel',  existing.cpu_model);
+  set('gpuModel',  existing.gpu_model);
+  set('monDist',   existing.mon_dist?.replace(' cm',''));
+  set('tableH',    existing.table_h?.replace(' cm',''));
+  set('notes',     existing.notes === '—' ? '' : existing.notes);
+
+  // DPI slider
+  if (existing.dpi) { set('dpi', existing.dpi); syncRange('dpi','dpiVal', existing.dpi); }
+
+  // Sens sliders
+  const sensMap = { genSens: existing.gen_sens, aimSens: existing.aim_sens, adsSens: existing.ads_sens, scopeSens: existing.scope_sens, vertMult: existing.vert_mult };
+  Object.entries(sensMap).forEach(([id, val]) => { if (val) { set(id, val); syncRange(id, id+'Val', val); } });
+
+  // Chips — helper
+  const selectChipByVal = (groupId, val) => {
+    if (!val || val === '—') return;
+    document.querySelectorAll('#' + groupId + ' .chip').forEach(c => {
+      if ((c.dataset.val || c.textContent.trim()) === val) {
+        c.classList.add('selected');
+      }
+    });
+  };
+  selectChipByVal('hzChips',      existing.hz);
+  selectChipByVal('gripChips',    existing.grip);
+  selectChipByVal('armChips',     existing.arm);
+  selectChipByVal('padChips',     existing.pad);
+  selectChipByVal('monSizeChips', existing.mon_size);
+  selectChipByVal('monHzChips',   existing.mon_hz);
+  selectChipByVal('cpuBrandChips',existing.cpu_brand);
+  selectChipByVal('gpuBrandChips',existing.gpu_brand);
+  selectChipByVal('ramChips',     existing.ram);
+  selectChipByVal('storageChips', existing.storage);
+  selectChipByVal('osChips',      existing.os);
+  selectChipByVal('gfxChips',     existing.gfx);
+
+  updateProgress();
 })();
 </script>
 </body>
