@@ -1360,9 +1360,19 @@ async function loadThemeSelector(currentTheme, currentEffect, setupId) {
   _selectedTheme = currentTheme || 'default';
   _selectedEffect = currentEffect || null;
 
-  const { data: orders } = await _supa.from('orders')
-    .select('theme_id').eq('user_id', _currentUserId).eq('status', 'approved');
-  const owned = orders ? orders.map(o => o.theme_id) : [];
+  // เช็ค role — ถ้า admin ได้ทุก theme/effect ฟรี
+  const { data: profile } = await _supa.from('profiles').select('role').eq('id', _currentUserId).single();
+  const isAdmin = profile?.role === 'admin';
+
+  let owned = [];
+  if (isAdmin) {
+    // admin ได้ทุกอัน
+    owned = [...ALL_THEMES.map(t=>t.id), ...ALL_EFFECTS.map(e=>e.id)].filter(Boolean);
+  } else {
+    const { data: orders } = await _supa.from('orders')
+      .select('theme_id').eq('user_id', _currentUserId).eq('status', 'approved');
+    owned = orders ? orders.map(o => o.theme_id) : [];
+  }
 
   const ownedThemes  = ALL_THEMES.filter(t => t.free || owned.includes(t.id));
   const ownedEffects = ALL_EFFECTS.filter(e => e.id === null || owned.includes(e.id));
