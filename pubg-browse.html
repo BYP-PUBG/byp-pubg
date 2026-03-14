@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — Browse Setups</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -13,37 +14,6 @@
   );
 </script>
 <style>
-:root {
-  --bg:     #07080a;
-  --bg2:    #0e0f12;
-  --surf:   #131417;
-  --surf2:  #1a1b1f;
-  --surf3:  #21222a;
-  --border: #272830;
-  --bord2:  #32333e;
-  --gold:   #f5c842;
-  --goldf:  rgba(245,200,66,0.10);
-  --red:    #ef4444;
-  --green:  #22c55e;
-  --blue:   #3b82f6;
-  --purple: #a855f7;
-  --text:   #f0f1f5;
-  --text2:  #8e8f9e;
-  --text3:  #45464f;
-  --r:      10px;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Barlow','Noto Sans Thai',sans-serif;
-  min-height:100vh;
-}
-
-/* noise */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
 
 /* ===== TOPNAV ===== */
 nav{
@@ -55,12 +25,6 @@ nav{
   backdrop-filter:blur(12px);
   gap:8px;
 }
-.nav-logo{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:15px;font-weight:900;letter-spacing:1px;
-  flex-shrink:0;
-}
-.nav-logo span{color:var(--gold);}
 .nav-links{display:flex;gap:2px;flex-shrink:0;}
 .nav-link{
   padding:5px 10px;border-radius:6px;
@@ -642,58 +606,11 @@ async function loadData() {
     .from('setups')
     .select('*')
     .order('created_at', { ascending: false });
-  if (error) { console.error(error); return; }
+  if (error) { return; }
   allData = data.map(mapRow);
   applyFilters();
 }
 
-// ===== DEMO DATA =====
-async function loadDemo() {
-  const igns = ['SnakeEyes_TH','KiraFrag','ZeroRecoil','GhostPUBG','NightCrawler','SniperKing99','BlindFire','StormBolt','IronWrist','AceHunter','TactikZ','ProPlayerX'];
-  const mice = ['Logitech G Pro X S2','Razer Viper V3 Pro','Zowie EC2-C','Finalmouse Starlight','SteelSeries Prime','Logitech G502 X','Razer DeathAdder V3','Pulsar X2'];
-  const grips = ['Palm','Claw','Fingertip'];
-  const arms  = ['Wrist Only','Arm Aim','Hybrid'];
-  const pads  = ['S (250×210mm)','M (350×300mm)','L (450×400mm)','XL (900×400mm)'];
-  const monS  = ['24"','27"','32"'];
-  const monHz = ['144Hz','165Hz','240Hz','360Hz'];
-  const gfxs  = ['Very Low','Very Low','Low','Medium','High'];
-  const pick  = a => a[Math.floor(Math.random()*a.length)];
-  const rng   = (a,b) => Math.round(a+Math.random()*(b-a));
-
-  const demos = igns.map((ign) => {
-    const cpuB = pick(['Intel','Intel','AMD']);
-    const gpuB = pick(['NVIDIA','NVIDIA','NVIDIA','AMD']);
-    const dpi  = pick([400,800,800,1600]);
-    const gen  = rng(35,65);
-    return {
-      ign, height: rng(160,185)+' cm', mouse: pick(mice),
-      dpi: String(dpi), hz: pick(['500Hz','1000Hz','1000Hz','2000Hz']),
-      grip: pick(grips), arm: pick(arms),
-      invert:'Disable', gen_sens:String(gen),
-      vert_mult: Math.random()>.7?'1.1':'1.0',
-      aim_sens:String(rng(gen-5,gen+5)),
-      ads_sens:String(rng(gen-8,gen+2)),
-      scope_sens:String(rng(gen-5,gen+5)),
-      univ_scope:'Enable',
-      table_h:rng(70,85)+' cm',
-      table_size:rng(100,160)+'×'+rng(55,80)+' cm',
-      pad:pick(pads),
-      mon_size:pick(monS), mon_hz:pick(monHz),
-      mon_dist:rng(50,80)+' cm',
-      cpu_brand:cpuB,
-      cpu_model:pick(cpuB==='Intel'?['i5-13600K','i7-13700K','i9-13900K']:['Ryzen 5 7600X','Ryzen 7 7700X']),
-      gpu_brand:gpuB,
-      gpu_model:pick(gpuB==='NVIDIA'?['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080']:['RX 7900 XT','RX 6800 XT']),
-      ram:pick(['16GB','16GB','32GB','64GB']),
-      storage:pick(['NVMe SSD','NVMe SSD','SSD SATA']),
-      os:pick(['Windows 11','Windows 11','Windows 10']),
-      avg_fps:String(rng(80,220))+' FPS',
-      gfx:pick(gfxs), notes:'',
-    };
-  });
-
-  const { error } = await _supa.from('setups').insert(demos);
-  if (error) { alert('Error: '+error.message); return; }
   loadData();
 }
 
