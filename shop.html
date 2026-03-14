@@ -304,9 +304,9 @@ function applyLivePreview() {
   if(_previewEffect === 'glow') {
     card.style.animation = 'glowpulse 2s infinite';
   } else if(_previewEffect === 'wave') {
-    efBox.innerHTML = `<div style="position:absolute;bottom:0;left:0;right:0;height:50px;overflow:hidden;">
-      <svg style="width:200%;animation:wave 3s linear infinite;" viewBox="0 0 300 50" preserveAspectRatio="none">
-        <path d="M0,25 Q37,8 75,25 Q112,42 150,25 Q187,8 225,25 Q262,42 300,25 L300,50 L0,50 Z" fill="#10b981" opacity="0.4"/>
+    efBox.innerHTML = `<div style="position:absolute;bottom:0;left:0;right:0;height:30px;overflow:hidden;">
+      <svg style="width:200%;animation:wave 3s linear infinite;" viewBox="0 0 300 30" preserveAspectRatio="none">
+        <path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/>
       </svg></div>`;
   } else if(_previewEffect === 'particle') {
     const canvas = document.createElement('canvas');
@@ -383,7 +383,7 @@ function render(){
           <div class="preview-stat"><div class="preview-val">360</div><div class="preview-lbl">HZ</div></div>
         </div>
       </div>
-      <div class="theme-info"><div><div class="theme-name">${th.name}</div><div class="theme-price">${isActive||isPending ? '' : isFree ? 'ฟรี' : '฿'+th.price}</div></div>${btn}</div>
+      <div class="theme-info"><div><div class="theme-name">${th.name}</div></div>${btn}</div>
     </div>`;
   }).join('');
 
@@ -398,7 +398,7 @@ function render(){
     // Effect preview animation
     let previewStyle='', extraHtml='';
     if(ef.id==='glow') previewStyle=`animation:glowpulse 2s infinite;`;
-    if(ef.id==='wave') extraHtml=`<div style="position:absolute;bottom:0;left:0;right:0;height:50px;overflow:hidden;"><svg style="width:200%;animation:wave 3s linear infinite;" viewBox="0 0 300 50" preserveAspectRatio="none"><path d="M0,25 Q37,8 75,25 Q112,42 150,25 Q187,8 225,25 Q262,42 300,25 L300,50 L0,50 Z" fill="${ef.color}" opacity="0.4"/></svg></div>`;
+    if(ef.id==='wave') extraHtml=`<div style="position:absolute;bottom:0;left:0;right:0;height:30px;overflow:hidden;"><svg style="width:200%;animation:wave 3s linear infinite;" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="${ef.color}" opacity="0.4"/></svg></div>`;
     if(ef.id==='particle') extraHtml=`<canvas id="efCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>`;
 
     return `<div class="theme-card" style="background:#0a0a14;border:1px solid ${ef.color}44;position:relative;overflow:hidden;${previewStyle}">
@@ -415,7 +415,7 @@ function render(){
         </div>
       </div>
       <div class="theme-info" style="border-color:${ef.color}22;">
-        <div><div class="theme-name" style="color:${ef.color};">${ef.name}</div><div class="theme-price" style="color:${ef.color}88;">${isActive||isPending?'':('฿'+ef.price)}</div></div>
+        <div><div class="theme-name" style="color:${ef.color};">${ef.name}</div></div>
         ${btn}
       </div>
     </div>`;
