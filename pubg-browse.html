@@ -48,31 +48,39 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
 /* ===== TOPNAV ===== */
 nav{
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 32px;height:56px;
-  background:rgba(13,14,18,0.95);
+  padding:0 20px;height:52px;
+  background:rgba(13,14,18,0.97);
   border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:20;
   backdrop-filter:blur(12px);
+  gap:8px;
 }
 .nav-logo{
   font-family:'Barlow Condensed',sans-serif;
   font-size:15px;font-weight:900;letter-spacing:1px;
+  flex-shrink:0;
 }
 .nav-logo span{color:var(--gold);}
-.nav-links{display:flex;gap:4px;}
+.nav-links{display:flex;gap:2px;flex-shrink:0;}
 .nav-link{
-  padding:6px 14px;border-radius:6px;
-  font-size:13px;font-weight:500;
+  padding:5px 10px;border-radius:6px;
+  font-size:12px;font-weight:600;
   color:var(--text2);cursor:pointer;border:none;background:none;
-  font-family:'Barlow',sans-serif;transition:all .15s;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;transition:all .15s;
+  white-space:nowrap;
 }
 .nav-link:hover{color:var(--text);background:var(--surf2);}
 .nav-link.active{color:var(--gold);background:var(--goldf);}
 .nav-count{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;letter-spacing:1px;color:var(--text3);
+  font-size:11px;letter-spacing:1px;color:var(--text3);
+  white-space:nowrap;
 }
 .nav-count span{color:var(--gold);}
+@media(max-width:600px){
+  .nav-logo span{ display:none; }
+  .nav-count{ display:none; }
+}
 
 /* ===== HERO ===== */
 .hero{
@@ -379,8 +387,8 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
 <nav>
   <div class="nav-logo">BYP<span> : BUILD YOUR PLAY</span></div>
   <div class="nav-links">
-    <button class="nav-link active">Browse</button>
-    <button class="nav-link" id="setupBtn" onclick="goToForm()">กรอก Setup ของฉัน</button>
+    <button class="nav-link active">Explore</button>
+    <button class="nav-link" id="setupBtn" onclick="goToForm()">My Setup</button>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
@@ -1055,10 +1063,10 @@ async function renderAuthBtn() {
     // re-render cards ถ้าโหลดเสร็จแล้ว — ไม่จำเป็นแล้ว (init เช็ค admin ก่อน loadData)
 
     el.innerHTML = `
-      <div style="display:flex;align-items:center;gap:8px;">
-        ${window._isAdmin ? `<span style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:3px 8px;border:1px solid rgba(245,200,66,.3);border-radius:5px;">👑 ADMIN</span>` : ''}
-        <a href="profile.html" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:6px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">👤 Profile</a>
-        <button onclick="logout()" style="padding:5px 12px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#fca5a5'" onmouseout="this.style.borderColor='';this.style.color=''">ออก</button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        ${window._isAdmin ? `<span style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:3px 7px;border:1px solid rgba(245,200,66,.3);border-radius:5px;white-space:nowrap;">👑 ADMIN</span>` : ''}
+        <a href="profile.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:6px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">👤 <span class="hide-xs">Profile</span></a>
+        <button onclick="logout()" style="padding:5px 10px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#fca5a5'" onmouseout="this.style.borderColor='';this.style.color=''">ออก</button>
       </div>`;
   } else {
     window._isAdmin = false;
