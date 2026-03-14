@@ -645,7 +645,7 @@ function buildCard(d, i) {
     <div class="card-head">
       <div style="display:flex;align-items:center;gap:8px;">
         ${d.avatarUrl ? `<img src="${d.avatarUrl}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);flex-shrink:0;">` : `<div style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🎮</div>`}
-        <div class="card-ign">${d.ign||'—'}
+        <div class="card-ign">${esc(d.ign)||'—'}
           ${d.verified ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : ''}
           ${d.badge==='streamer' ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;">🎥 STREAMER</span>' : ''}
           ${d.badge==='pro' ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;">🏆 PRO</span>' : ''}
@@ -777,6 +777,11 @@ async function adminDeleteCard(id) {
 }
 
 function escStr(s){ return (s||'').replace(/'/g,"\\'"); }
+
+// XSS escape สำหรับ innerHTML
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
 
 // ===== 2D DESKTOP DRAW =====
 function drawDesktop(canvasId, d, W, H) {
@@ -948,7 +953,7 @@ function drawDesktop(canvasId, d, W, H) {
 function openDetail(ign) {
   const d = allData.find(x=>x.ign===ign);
   if (!d) return;
-  document.getElementById('dmIgn').innerHTML = (d.ign||'—')
+  document.getElementById('dmIgn').innerHTML = esc(d.ign||'—')
     + (d.verified ? ' <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : '')
     + (d.badge==='streamer' ? ' <span style="font-size:11px;background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;">🎥 STREAMER</span>' : '')
     + (d.badge==='pro' ? ' <span style="font-size:11px;background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;">🏆 PRO PLAYER</span>' : '');
