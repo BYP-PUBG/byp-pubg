@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — Admin Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -13,26 +14,6 @@
   );
 </script>
 <style>
-:root {
-  --bg:      #08090b;
-  --bg2:     #0f1013;
-  --surface: #14151a;
-  --surf2:   #1c1d24;
-  --surf3:   #23242d;
-  --border:  #2a2b35;
-  --border2: #363740;
-  --gold:    #f5c842;
-  --gold2:   #e8a820;
-  --golddim: rgba(245,200,66,0.12);
-  --red:     #ef4444;
-  --green:   #22c55e;
-  --blue:    #3b82f6;
-  --purple:  #a855f7;
-  --text:    #f0f0f4;
-  --text2:   #9494a4;
-  --text3:   #50505f;
-  --r:       8px;
-}
 
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
@@ -998,57 +979,12 @@ async function loadData() {
     .from('setups')
     .select('*')
     .order('created_at', { ascending: false });
-  if (error) { console.error(error); return; }
+  if (error) { return; }
   allData = data.map(mapRow);
   refresh();
 }
 
 // ===== DEMO DATA =====
-async function loadDemoData() {
-  const igns = ['SnakeEyes_TH','KiraFrag','ZeroRecoil','GhostPUBG','NightCrawler','SniperKing99','BlindFire','StormBolt','IronWrist','AceHunter','TactikZ','ProPlayerX','ShadowAim','FrostBite','QuickScope'];
-  const mice = ['Logitech G Pro X S2','Razer Viper V3 Pro','Zowie EC2-C','Finalmouse Starlight','SteelSeries Prime','Logitech G502 X','Razer DeathAdder V3','Zowie FK1+','Pulsar X2','Endgame Gear XM1r'];
-  const grips = ['Palm','Claw','Fingertip'];
-  const arms = ['Wrist Only','Arm Aim','Hybrid'];
-  const pads = ['S (250×210mm)','M (350×300mm)','L (450×400mm)','XL (900×400mm)'];
-  const monSizes = ['24"','27"','32"'];
-  const monHz = ['144Hz','165Hz','240Hz','360Hz'];
-  const cpuBrands = ['Intel','Intel','AMD'];
-  const gpuBrands = ['NVIDIA','NVIDIA','NVIDIA','AMD'];
-  const rams = ['16GB','16GB','32GB','32GB','64GB'];
-  const storages = ['NVMe SSD','NVMe SSD','SSD SATA'];
-  const oses = ['Windows 11','Windows 11','Windows 10'];
-  const gfxs = ['Very Low','Very Low','Low','Medium','High'];
-  const r = () => Math.random();
-  const pick = arr => arr[Math.floor(r() * arr.length)];
-  const rng = (a,b) => Math.round(a + r()*(b-a));
-
-  const demos = Array.from({length:15}, (_,i) => {
-    const dpi = [400,800,800,1600][Math.floor(r()*4)];
-    const gen = rng(35,65);
-    const cpuB = pick(cpuBrands);
-    const gpuB = pick(gpuBrands);
-    return {
-      ign: igns[i] || 'Player'+(i+1),
-      height: rng(160,185)+' cm', mouse: pick(mice),
-      dpi: String(dpi), hz: pick(['500Hz','1000Hz','1000Hz','2000Hz']),
-      grip: pick(grips), arm: pick(arms), invert: 'Disable',
-      gen_sens: String(gen), vert_mult: r()>0.7?'1.1':'1.0',
-      aim_sens: String(rng(gen-5,gen+5)), ads_sens: String(rng(gen-8,gen+2)),
-      scope_sens: String(rng(gen-5,gen+5)), univ_scope: 'Enable',
-      table_h: rng(70,85)+' cm', table_size: rng(100,160)+'×'+rng(55,80)+' cm',
-      pad: pick(pads), mon_size: pick(monSizes), mon_hz: pick(monHz),
-      mon_dist: rng(50,80)+' cm',
-      cpu_brand: cpuB,
-      cpu_model: pick(cpuB==='Intel'?['i5-13600K','i7-13700K','i9-13900K']:['Ryzen 5 7600X','Ryzen 7 7700X']),
-      gpu_brand: gpuB,
-      gpu_model: pick(gpuB==='NVIDIA'?['RTX 4070','RTX 4070 Ti','RTX 4080','RTX 3080']:['RX 7900 XT','RX 6800 XT']),
-      ram: pick(rams), storage: pick(storages), os: pick(oses),
-      avg_fps: String(rng(80,200))+' FPS', gfx: pick(gfxs), notes: '',
-    };
-  });
-
-  const { error } = await _supa.from('setups').insert(demos);
-  if (error) { alert('Error: '+error.message); return; }
   loadData();
 }
 
