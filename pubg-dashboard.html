@@ -1387,10 +1387,6 @@ function exportCSV() {
     .eq('id', session.user.id)
     .single();
 
-  // Debug log
-  console.log('session user id:', session.user.id);
-  console.log('profile:', profile, 'error:', profileError);
-
   if (!profile || profile.role !== 'admin') {
     document.getElementById('accessDenied').style.display = 'flex';
     document.querySelector('aside').style.display = 'none';
