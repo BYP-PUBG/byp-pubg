@@ -1605,7 +1605,12 @@ window.addEventListener('scroll', () => {
     .limit(1)
     .single();
 
-  if (!existing) return; // ยังไม่มี → กรอกใหม่ได้เลย
+  if (!existing) {
+    // User ใหม่ ยังไม่มี setup
+    await loadThemeSelector('default', null, null);
+    renderFontSelector(null);
+    return;
+  }
 
   // มีแล้ว → โหลดข้อมูลเดิมมาใส่ฟอร์ม
   _existingSetupId = existing.id;
@@ -1689,26 +1694,6 @@ window.addEventListener('scroll', () => {
   renderFontSelector(existing.card_font);
 
   updateProgress();
-})();
-
-// โหลด theme selector สำหรับ user ใหม่ (ยังไม่มี setup)
-(async () => {
-  const { data: { session } } = await _supa.auth.getSession();
-  if (!session || _existingSetupId) return;
-  const { data: orders } = await _supa.from('orders')
-    .select('theme_id').eq('user_id', session.user.id).eq('status', 'approved');
-  const owned = orders ? orders.map(o => o.theme_id) : [];
-  const themeBox = document.getElementById('themeSelector');
-  const effectBox = document.getElementById('effectSelector');
-  if (themeBox) themeBox.innerHTML = ALL_THEMES.filter(t => t.free || owned.includes(t.id)).map(t =>
-    `<button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
-      style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${t.id==='default'?'var(--gold)':'var(--border)'};background:${t.id==='default'?'rgba(245,200,66,.1)':'transparent'};color:${t.id==='default'?'var(--gold)':'var(--text2)'};">
-      ${t.emoji} ${t.name}</button>`).join('');
-  if (effectBox) effectBox.innerHTML = ALL_EFFECTS.filter(e => e.id === null || owned.includes(e.id)).map(e =>
-    `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
-      style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${e.id===null?'var(--gold)':'var(--border)'};background:${e.id===null?'rgba(245,200,66,.1)':'transparent'};color:${e.id===null?'var(--gold)':'var(--text2)'};">
-      ${e.emoji} ${e.name}</button>`).join('');
-  renderFontSelector(null);
 })();
 </script>
 </body>
