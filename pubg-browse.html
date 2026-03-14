@@ -1237,6 +1237,34 @@ function openDetail(ign) {
     waveEl.innerHTML = `<svg class="effect-wave-svg" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/></svg>`;
     modal.appendChild(waveEl);
   }
+
+  // Particle effect in popup
+  let pcEl = document.getElementById('modalParticle');
+  if (pcEl) pcEl.remove();
+  if (d.cardEffect === 'particle') {
+    setTimeout(() => {
+      const c = document.createElement('canvas');
+      c.id = 'modalParticle';
+      c.className = 'effect-particle-canvas';
+      modal.appendChild(c);
+      const ctx = c.getContext('2d');
+      c.width = modal.offsetWidth;
+      c.height = modal.offsetHeight;
+      const pts = Array.from({length:25},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+      function draw(){
+        ctx.clearRect(0,0,c.width,c.height);
+        pts.forEach(p=>{
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle='rgba(96,165,250,0.45)';ctx.fill();
+          p.x+=p.vx;p.y+=p.vy;
+          if(p.x<0||p.x>c.width)p.vx*=-1;
+          if(p.y<0||p.y>c.height)p.vy*=-1;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }, 100);
+  }
   setTimeout(() => { drawDesktop('dvBig', d, 640, 280); renderDmStars(d.id); }, 50);
 }
 
