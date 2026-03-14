@@ -14,11 +14,7 @@ const _supa = window.supabase.createClient(
 </script>
 <style>
 :root{--bg:#07080a;--bg2:#0e0f12;--surf:#131417;--surf2:#1a1b1f;--border:#272830;--bord2:#32333e;--gold:#f5c842;--golddim:rgba(245,200,66,0.08);--text:#f0f1f5;--text2:#8e8f9e;--text3:#45464f;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Barlow','Noto Sans Thai',sans-serif;min-height:100vh;}
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;background:rgba(13,14,18,.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);}
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
-.nav-logo span{color:var(--gold);}
 .nav-back{font-size:12px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:5px 12px;border:1px solid var(--border);border-radius:6px;transition:all .15s;}
 .nav-back:hover{color:var(--gold);border-color:var(--gold);}
 .hero{padding:40px 24px 32px;text-align:center;}
@@ -629,7 +625,12 @@ async function applyPromo() {
 }
 
 async function submitOrder(){
-  if (!_uid || !_sid) return;
+  if (!_uid) return;
+  if (!_sid) {
+    toast('⚠️ กรุณากรอก Setup ของคุณก่อนซื้อ Theme ครับ');
+    closeModal();
+    return;
+  }
   if (!_isFreeByPromo && !_slipFile) return;
 
   const btn = document.getElementById('submitBtn');
@@ -648,8 +649,9 @@ async function submitOrder(){
         await _supa.from('setups').update({ card_theme: _buyId }).eq('id', _sid);
         _cur = _buyId;
       }
-      // เพิ่ม used_count
-      await _supa.from('promo_codes').update({ used_count: _supa.rpc('increment', {}) }).eq('code', _promoCode);
+      // เพิ่ม used_count อย่างถูกต้อง
+      const { data: promoData } = await _supa.from('promo_codes').select('used_count').eq('code', _promoCode).single();
+      await _supa.from('promo_codes').update({ used_count: (promoData?.used_count || 0) + 1 }).eq('code', _promoCode);
       // Insert order ฟรี
       await _supa.from('orders').insert([{
         user_id:_uid, setup_id:_sid,
