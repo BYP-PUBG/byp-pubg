@@ -845,8 +845,13 @@ function drawDesktop(canvasId, d, W, H) {
   const [padRealW, padRealH] = padSizeMap[padKey] || padSizeMap['M'];
   let pw = Math.min(padRealW * sc, tw * 0.72);
   let ph = Math.min(padRealH * sc * 0.82, td * 0.72);
-  const padLeft = cx + pw * 0.05;    // ขยับขวาของกลาง — อยู่ทางขวาจอ ห่างจาก KB
-  const padTop  = cy - ph * 0.25;   // Y สมดุล
+  const tableRight = cx + tw/2;
+  const tableBot   = cy + td/2;
+
+  let padLeft = cx + pw * 0.05;
+  padLeft = Math.min(padLeft, tableRight - pw - 4); // ไม่เลยขอบขวา
+  let padTop = cy - ph * 0.25;
+  padTop = Math.min(padTop, tableBot - ph - 4);     // ไม่เลยขอบล่าง
 
   // Pad shadow
   ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.fillRect(padLeft+3,padTop+3,pw,ph);
