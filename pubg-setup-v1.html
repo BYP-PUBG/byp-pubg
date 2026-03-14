@@ -1649,6 +1649,10 @@ window.addEventListener('scroll', () => {
     setToggle('univ', 'off');
   }
 
+  // DPI slider
+  if (existing.dpi) { set('dpi', existing.dpi); syncRange('dpi', 'dpiVal', existing.dpi); }
+  if (existing.avg_fps) { const fps = existing.avg_fps.replace(' FPS',''); set('avgFps', fps); syncRange('avgFps', 'avgFpsVal', fps); }
+
   // Sens sliders
   const sensMap = { genSens: existing.gen_sens, aimSens: existing.aim_sens, adsSens: existing.ads_sens, scopeSens: existing.scope_sens, vertMult: existing.vert_mult,
     scopeX2: existing.scope_x2, scopeX3: existing.scope_x3, scopeX4: existing.scope_x4,
