@@ -849,8 +849,11 @@ function closeModal(){document.getElementById('payModal').classList.remove('show
 async function init(){
   const{data:{session}}=await _supa.auth.getSession();
   if(!session){
-    const returnUrl = encodeURIComponent('shop.html');
-    window.location.href='login.html?return=shop.html';
+    // ไม่ได้ login — แสดง theme ได้แต่ซื้อ/ติดตั้งไม่ได้
+    document.getElementById('currentLabel').textContent='Login เพื่อซื้อและติดตั้ง Theme ครับ';
+    renderPreviewBtns();
+    applyLivePreview();
+    render();
     return;
   }
   _uid=session.user.id;
