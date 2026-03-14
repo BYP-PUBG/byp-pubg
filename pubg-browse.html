@@ -837,13 +837,16 @@ function drawDesktop(canvasId, d, W, H) {
   ctx.textAlign = 'center';
   ctx.fillText('MONITOR', cx+monX, mY-14);
 
-  // Mousepad
-  const padSizes = {'S':[(d.tw||25)*sc,(d.th||21)*sc],'M':[35*sc,30*sc],'L':[45*sc,40*sc],'XL':[Math.min(90*sc,tw-4),35*sc]};
+  // Mousepad — ขนาดจริง (cm) scaled
+  const padSizeMap = {
+    'S': [25, 21], 'M': [35, 30], 'L': [45, 40], 'XL': [90, 40]
+  };
   const padKey = (d.pad||'M').charAt(0);
-  let [pw,ph] = padSizes[padKey]||padSizes['M'];
-  pw = Math.min(pw, tw*0.75);
+  const [padRealW, padRealH] = padSizeMap[padKey] || padSizeMap['M'];
+  let pw = Math.min(padRealW * sc, tw * 0.72);
+  let ph = Math.min(padRealH * sc * 0.82, td * 0.72);
   const padXOff = (+((d.padX||'-10').replace(' cm',''))||0)*sc;
-  const padLeft = cx+padXOff-pw/2;
+  const padLeft = cx + padXOff - pw/2;
   const padTop  = cy - td/4;
 
   // Pad shadow
@@ -857,11 +860,11 @@ function drawDesktop(canvasId, d, W, H) {
   ctx.fillStyle='rgba(239,68,68,0.5)'; ctx.font=`${Math.max(6,sc*3)}px Barlow Condensed,sans-serif`; ctx.textAlign='center';
   ctx.fillText('PAD', padLeft+pw/2, padTop+ph-4);
 
-  // Mouse on pad
+  // Mouse on pad — ขนาดจริงเมาส์ประมาณ 6x12 cm top view
   const mx = padLeft + pw*0.65;
   const my = padTop  + ph*0.42;
-  const mw = Math.max(5, sc*5.5);
-  const mhh = mw*1.6;
+  const mw = Math.max(4, sc * 3.0);   // กว้าง ~6cm
+  const mhh = mw * 1.8;               // ยาว ~12cm
   ctx.save(); ctx.translate(mx,my);
   // Shadow
   ctx.fillStyle='rgba(0,0,0,0.5)';
