@@ -1104,10 +1104,20 @@ async function renderAuthBtn() {
 
     // re-render cards ถ้าโหลดเสร็จแล้ว — ไม่จำเป็นแล้ว (init เช็ค admin ก่อน loadData)
 
+    // โหลด avatar
+    const { data: mySetupData } = await _supa
+      .from('setups').select('avatar_url').eq('user_id', session.user.id).single();
+    const avatarUrl = mySetupData?.avatar_url;
+    const avatarHtml = avatarUrl
+      ? `<img src="${avatarUrl}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);">`
+      : `<span style="font-size:14px;">👤</span>`;
+
     el.innerHTML = `
       <div style="display:flex;align-items:center;gap:6px;">
         ${window._isAdmin ? `<span style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:3px 7px;border:1px solid rgba(245,200,66,.3);border-radius:5px;white-space:nowrap;">👑 ADMIN</span>` : ''}
-        <a href="profile.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:6px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">👤 <span class="hide-xs">Profile</span></a>
+        <a href="profile.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:20px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.borderColor='#f5c842'" onmouseout="this.style.borderColor=''">
+          ${avatarHtml}<span class="hide-xs" style="font-size:11px;">${email.split('@')[0].substring(0,10)}</span>
+        </a>
         <button onclick="logout()" style="padding:5px 10px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#fca5a5'" onmouseout="this.style.borderColor='';this.style.color=''">ออก</button>
       </div>`;
   } else {
