@@ -418,13 +418,11 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
 
   <div class="filter-row">
     <button class="fchip on" onclick="setFilter('all',this)">ทั้งหมด</button>
-    <button class="fchip" onclick="setFilter('Palm',this)">Palm Grip</button>
-    <button class="fchip" onclick="setFilter('Claw',this)">Claw Grip</button>
-    <button class="fchip" onclick="setFilter('Fingertip',this)">Fingertip</button>
-    <button class="fchip" onclick="setFilter('NVIDIA',this)">NVIDIA</button>
-    <button class="fchip" onclick="setFilter('AMD',this)">AMD GPU</button>
-    <button class="fchip" onclick="setFilter('1000Hz',this)">1000Hz+</button>
+    <button class="fchip" onclick="setFilter('dpi400',this)">DPI 400</button>
+    <button class="fchip" onclick="setFilter('dpi800',this)">DPI 800</button>
     <button class="fchip" onclick="setFilter('Verified',this)" style="border-color:rgba(34,197,94,0.4);color:#4ade80;">✓ Verified</button>
+    <button class="fchip" onclick="setFilter('streamer',this)" style="border-color:rgba(168,85,247,0.4);color:#c084fc;">🎥 Streamer</button>
+    <button class="fchip" onclick="setFilter('pro',this)" style="border-color:rgba(245,200,66,0.4);color:#f5c842;">🏆 Pro Player</button>
   </div>
 </div>
 
@@ -488,6 +486,7 @@ function mapRow(d) {
     os:        d.os,        avgFps:    d.avg_fps,
     gfx:       d.gfx,       notes:     d.notes,
     timestamp: d.created_at, verified:  d.verified,
+    badge: d.badge,
     avatarUrl: d.avatar_url,
     youtube: d.youtube, facebook: d.facebook,
     tiktok: d.tiktok, twitch: d.twitch, discord: d.discord,
@@ -570,17 +569,13 @@ function applyFilters() {
   const srt = document.getElementById('sortSelect').value;
 
   filtered = allData.filter(d => {
-    const grip = d.grip||'';
-    const gpuB = d.gpuBrand||'';
-    const hz   = d.hz||'';
+    const dpi = parseInt(d.dpi)||0;
     let pass = true;
-    if (activeFilter==='Palm')      pass = grip==='Palm';
-    if (activeFilter==='Claw')      pass = grip==='Claw';
-    if (activeFilter==='Fingertip') pass = grip==='Fingertip';
-    if (activeFilter==='NVIDIA')    pass = gpuB==='NVIDIA';
-    if (activeFilter==='AMD')       pass = gpuB==='AMD';
-    if (activeFilter==='1000Hz')    pass = ['1000Hz','2000Hz','4000Hz'].includes(hz);
-    if (activeFilter==='Verified')  pass = !!d.verified;
+    if (activeFilter==='dpi400')   pass = dpi >= 350 && dpi <= 450;
+    if (activeFilter==='dpi800')   pass = dpi >= 700 && dpi <= 900;
+    if (activeFilter==='Verified') pass = !!d.verified;
+    if (activeFilter==='streamer') pass = d.badge === 'streamer';
+    if (activeFilter==='pro')      pass = d.badge === 'pro';
     if (q) pass = pass && [d.ign,d.mouse,d.gpuModel,d.cpuModel,d.grip].some(v=>(v||'').toLowerCase().includes(q));
     return pass;
   });
@@ -647,7 +642,11 @@ function buildCard(d, i) {
     <div class="card-head">
       <div style="display:flex;align-items:center;gap:8px;">
         ${d.avatarUrl ? `<img src="${d.avatarUrl}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);flex-shrink:0;">` : `<div style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🎮</div>`}
-        <div class="card-ign">${d.ign||'—'} ${d.verified ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : ''}</div>
+        <div class="card-ign">${d.ign||'—'}
+          ${d.verified ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : ''}
+          ${d.badge==='streamer' ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;">🎥 STREAMER</span>' : ''}
+          ${d.badge==='pro' ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;">🏆 PRO</span>' : ''}
+        </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         ${window._isAdmin && d.id ? `<button onclick="event.stopPropagation();adminDeleteCard('${d.id}')" style="padding:2px 8px;border:1px solid rgba(239,68,68,.35);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>` : ''}
@@ -945,7 +944,10 @@ function drawDesktop(canvasId, d, W, H) {
 function openDetail(ign) {
   const d = allData.find(x=>x.ign===ign);
   if (!d) return;
-  document.getElementById('dmIgn').innerHTML = (d.ign||'—') + (d.verified ? ' <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : '');
+  document.getElementById('dmIgn').innerHTML = (d.ign||'—')
+    + (d.verified ? ' <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : '')
+    + (d.badge==='streamer' ? ' <span style="font-size:11px;background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;">🎥 STREAMER</span>' : '')
+    + (d.badge==='pro' ? ' <span style="font-size:11px;background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;">🏆 PRO PLAYER</span>' : '');
 
   // Avatar ใน popup header
   const avatarEl = document.getElementById('dmAvatar');
