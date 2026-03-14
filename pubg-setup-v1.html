@@ -974,20 +974,80 @@ input[type=range]::-webkit-slider-thumb:hover {
     </div>
   </div>
 
-  <!-- SECTION 6: NOTES -->
+  <!-- SECTION 6: PROFILE & SOCIAL -->
   <div class="section" id="sec6">
     <div class="section-header">
-      <div class="section-icon">📝</div>
-      <div><div class="section-title-text">หมายเหตุเพิ่มเติม</div></div>
+      <div class="section-icon">🌐</div>
+      <div><div class="section-title-text">โปรไฟล์ & โซเชียล</div></div>
       <div class="section-num">06 / 06</div>
     </div>
     <div class="card">
-      <div class="field-row" style="grid-template-columns:1fr; align-items:flex-start;">
+
+      <!-- Avatar Upload -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
         <div class="field-input" style="padding:16px 20px;">
-          <textarea id="notes" rows="4" placeholder="เช่น ปัญหาที่เจอ, สิ่งที่อยากปรับ, ความรู้สึกของ setup ปัจจุบัน..."
-            style="width:100%; resize:vertical; background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--text); padding:12px; font-size:14px; font-family:'Barlow','Noto Sans Thai',sans-serif; outline:none; line-height:1.6;"></textarea>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
+            <div>
+              <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
+              <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Social Links -->
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">▶️</span> YouTube</div>
+        <div class="field-input">
+          <input type="text" id="socialYoutube" placeholder="https://youtube.com/@ชื่อช่อง"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📘</span> Facebook</div>
+        <div class="field-input">
+          <input type="text" id="socialFacebook" placeholder="https://facebook.com/ชื่อเพจ"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🎵</span> TikTok</div>
+        <div class="field-input">
+          <input type="text" id="socialTiktok" placeholder="https://tiktok.com/@ชื่อ"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">💜</span> Twitch</div>
+        <div class="field-input">
+          <input type="text" id="socialTwitch" placeholder="https://twitch.tv/ชื่อ"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">💬</span> Discord</div>
+        <div class="field-input">
+          <input type="text" id="socialDiscord" placeholder="https://discord.gg/invite"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">📝</span> หมายเหตุ</div>
+        <div class="field-input" style="padding:16px 20px;">
+          <textarea id="notes" rows="3" placeholder="เช่น ปัญหาที่เจอ, สิ่งที่อยากปรับ..."
+            style="width:100%;resize:vertical;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:12px;font-size:14px;font-family:'Barlow','Noto Sans Thai',sans-serif;outline:none;line-height:1.6;"></textarea>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1058,6 +1118,19 @@ function updateProgress() {
   document.getElementById(id).addEventListener('input', updateProgress);
 });
 
+// ===== AVATAR PREVIEW =====
+function previewAvatar(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 2 * 1024 * 1024) { alert('รูปต้องไม่เกิน 2MB ครับ'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('avatarPreview');
+    prev.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(file);
+}
+
 // ===== GET CHIP VALUE =====
 function getChip(groupId) {
   const sel = document.querySelector('#' + groupId + ' .chip.selected');
@@ -1100,6 +1173,11 @@ async function submitForm() {
     avgFps:    document.getElementById('avgFps').value + ' FPS',
     gfx:       getChip('gfxChips'),
     notes:     document.getElementById('notes').value || '—',
+    youtube:   document.getElementById('socialYoutube').value || '',
+    facebook:  document.getElementById('socialFacebook').value || '',
+    tiktok:    document.getElementById('socialTiktok').value || '',
+    twitch:    document.getElementById('socialTwitch').value || '',
+    discord:   document.getElementById('socialDiscord').value || '',
   };
 
   const summaryItems = [
@@ -1136,8 +1214,23 @@ async function submitForm() {
     gpu_brand: data.gpuBrand, gpu_model: data.gpuModel,
     ram: data.ram, storage: data.storage, os: data.os,
     avg_fps: data.avgFps, gfx: data.gfx, notes: data.notes,
+    youtube: data.youtube, facebook: data.facebook,
+    tiktok: data.tiktok, twitch: data.twitch, discord: data.discord,
     user_id: _currentUserId,
   };
+
+  // Upload avatar ถ้ามีไฟล์ใหม่
+  const avatarFile = document.getElementById('avatarFile').files[0];
+  if (avatarFile && _currentUserId) {
+    const ext = avatarFile.name.split('.').pop();
+    const path = `${_currentUserId}.${ext}`;
+    const { error: upErr } = await _supa.storage
+      .from('avatars').upload(path, avatarFile, { upsert: true });
+    if (!upErr) {
+      const { data: urlData } = _supa.storage.from('avatars').getPublicUrl(path);
+      payload.avatar_url = urlData.publicUrl;
+    }
+  }
 
   let error;
   if (_existingSetupId) {
@@ -1222,6 +1315,17 @@ window.addEventListener('scroll', () => {
   set('monDist',   existing.mon_dist?.replace(' cm',''));
   set('tableH',    existing.table_h?.replace(' cm',''));
   set('notes',     existing.notes === '—' ? '' : existing.notes);
+  set('socialYoutube',  existing.youtube);
+  set('socialFacebook', existing.facebook);
+  set('socialTiktok',   existing.tiktok);
+  set('socialTwitch',   existing.twitch);
+  set('socialDiscord',  existing.discord);
+
+  // โหลด avatar
+  if (existing.avatar_url) {
+    document.getElementById('avatarPreview').innerHTML =
+      `<img src="${existing.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`;
+  }
 
   // DPI slider
   if (existing.dpi) { set('dpi', existing.dpi); syncRange('dpi','dpiVal', existing.dpi); }
