@@ -323,23 +323,64 @@ function applyLivePreview() {
 
   // Update buy buttons
   const buyArea = document.getElementById('previewBuyArea');
-  const isCurTheme = _previewTheme === _cur;
+  const isCurTheme  = _previewTheme === _cur;
   const isCurEffect = _previewEffect === _curEffect;
   const th = THEMES.find(t=>t.id===_previewTheme);
   const ef = EFFECTS.find(e=>e.id===_previewEffect);
+
+  const needBuyTheme  = th && th.price > 0 && !isCurTheme && !_pending.includes(_previewTheme);
+  const needBuyEffect = ef && ef.id && !isCurEffect && !_pendingEffects.includes(_previewEffect);
+  const totalPrice    = (needBuyTheme ? th.price : 0) + (needBuyEffect ? ef.price : 0);
+
   let html = '';
-  if(th && th.price > 0 && !isCurTheme && !_pending.includes(_previewTheme)) {
-    html += `<button onclick="buyItem('theme','${th.id}','${th.name}',${th.price})" style="padding:10px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">ซื้อ ${th.name} ฿${th.price}</button>`;
-  } else if(th && th.price === 0 && !isCurTheme) {
-    html += `<button onclick="applyTheme('${th.id}')" style="padding:10px;border-radius:8px;border:none;background:var(--surf2);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;border:1px solid var(--bord2);">ใช้ ${th.name} (ฟรี)</button>`;
-  } else if(isCurTheme) {
-    html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">✓ ใช้ ${th?.name||'Default'} อยู่แล้ว</div>`;
+
+  // รวมยอด — ซื้อพร้อมกันทีเดียว
+  if (needBuyTheme && needBuyEffect) {
+    html += `
+    <div style="background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:4px;">
+      <div style="font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-bottom:8px;">🛒 รายการที่เลือก</div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+        <span style="color:var(--text2);">${th.emoji} ${th.name} Theme</span>
+        <span style="color:var(--gold);">฿${th.price}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;">
+        <span style="color:var(--text2);">${ef.emoji} ${ef.name} Effect</span>
+        <span style="color:var(--gold);">฿${ef.price}</span>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:8px;display:flex;justify-content:space-between;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;">
+        <span>รวมทั้งหมด</span>
+        <span style="color:var(--gold);">฿${totalPrice}</span>
+      </div>
+    </div>
+    <button onclick="buyBundle('${th.id}','${th.name}',${th.price},'${ef.id}','${ef.name}',${ef.price})"
+      style="padding:12px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:14px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;width:100%;">
+      🛒 ซื้อรวม ฿${totalPrice}
+    </button>`;
+  } else {
+    // ซื้อแยก
+    if (needBuyTheme) {
+      html += `<button onclick="buyItem('theme','${th.id}','${th.name}',${th.price})"
+        style="padding:10px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;width:100%;">
+        ซื้อ ${th.name} ฿${th.price}
+      </button>`;
+    } else if (th && th.price === 0 && !isCurTheme) {
+      html += `<button onclick="applyTheme('${th.id}')"
+        style="padding:10px;border-radius:8px;border:1px solid var(--bord2);background:var(--surf2);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;width:100%;">
+        ใช้ ${th.name} (ฟรี)
+      </button>`;
+    } else if (isCurTheme) {
+      html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;">✓ ใช้ ${th?.name||'Default'} อยู่แล้ว</div>`;
+    }
+    if (needBuyEffect) {
+      html += `<button onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})"
+        style="padding:10px;border-radius:8px;border:none;background:${ef.color};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;width:100%;margin-top:6px;">
+        ซื้อ ${ef.name} Effect ฿${ef.price}
+      </button>`;
+    } else if (ef && ef.id && isCurEffect) {
+      html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;margin-top:4px;">✓ ใช้ ${ef.name} Effect อยู่แล้ว</div>`;
+    }
   }
-  if(ef && !isCurEffect && !_pendingEffects.includes(_previewEffect)) {
-    html += `<button onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})" style="padding:10px;border-radius:8px;border:none;background:${ef.color};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">ซื้อ ${ef.name} Effect ฿${ef.price}</button>`;
-  } else if(ef && isCurEffect) {
-    html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">✓ ใช้ ${ef.name} Effect อยู่แล้ว</div>`;
-  }
+
   buyArea.innerHTML = html || `<div style="font-size:12px;color:var(--text3);">เลือก theme หรือ effect ที่ต้องการ</div>`;
 }
 
@@ -374,7 +415,8 @@ function render(){
     return `<div class="theme-card tc-${th.id}">
       ${isActive?'<div class="badge-active">✓ ใช้งานอยู่</div>':''}
       ${isPending?'<div class="badge-pending">⏳ รอ Approve</div>':''}
-      <div style="padding:16px;">
+      ${!isActive&&!isPending&&!isFree?`<div style="position:absolute;top:10px;right:10px;z-index:2;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;padding:2px 10px;border-radius:20px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);color:#fff;">฿${th.price}</div>`:''}
+      <div style="padding:16px;padding-top:${!isActive&&!isPending&&!isFree?'36px':'16px'}">
         <div class="preview-ign">${th.emoji} ${_previewIGN}</div>
         <div class="preview-stats" style="margin-top:10px;">
           <div class="preview-stat"><div class="preview-val">400</div><div class="preview-lbl">DPI</div></div>
@@ -444,6 +486,27 @@ function render(){
   },100);
 }
 
+let _bundleTheme=null, _bundleEffect=null;
+
+function buyBundle(themeId,themeName,themePrice,effectId,effectName,effectPrice){
+  const total=themePrice+effectPrice;
+  _buyType='bundle'; _buyId=themeId; _buyName=themeName+' + '+effectName+' Effect'; _buyPrice=total;
+  _bundleTheme={id:themeId,name:themeName,price:themePrice};
+  _bundleEffect={id:effectId,name:effectName,price:effectPrice};
+  _slipFile=null;
+  document.getElementById('modalTitle').textContent='🛒 Bundle — ฿'+total;
+  document.getElementById('modalAmount').textContent='฿'+total;
+  document.getElementById('step1').style.display='block';
+  document.getElementById('step2').style.display='none';
+  document.getElementById('slipImg').style.display='none';
+  document.getElementById('slipPlaceholder').style.display='block';
+  document.getElementById('slipArea').classList.remove('has-file');
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('errMsg').style.display='none';
+  document.getElementById('slipInput').value='';
+  document.getElementById('payModal').classList.add('show');
+}
+
 async function applyTheme(id){
   if(!_sid){toast('กรุณากรอก Setup ก่อนนะครับ');return;}
   const{error}=await _supa.from('setups').update({card_theme:id}).eq('id',_sid);
@@ -497,18 +560,31 @@ async function submitOrder(){
     const{error:upErr}=await _supa.storage.from('slips').upload(path,_slipFile);
     if(upErr) throw new Error(upErr.message);
     const{data:urlData}=_supa.storage.from('slips').getPublicUrl(path);
-    const{error:oErr}=await _supa.from('orders').insert([{
-      user_id:_uid, setup_id:_sid,
-      theme_id:_buyId, theme_name:_buyName,
-      amount:_buyPrice, slip_url:urlData.publicUrl,
-      status:'pending',
-    }]);
-    if(oErr) throw new Error(oErr.message);
+    const slipUrl=urlData.publicUrl;
+
+    if(_buyType==='bundle' && _bundleTheme && _bundleEffect){
+      // Insert 2 orders พร้อมกัน
+      const{error:oErr}=await _supa.from('orders').insert([
+        {user_id:_uid,setup_id:_sid,theme_id:_bundleTheme.id,theme_name:_bundleTheme.name,amount:_bundleTheme.price,slip_url:slipUrl,status:'pending'},
+        {user_id:_uid,setup_id:_sid,theme_id:_bundleEffect.id,theme_name:_bundleEffect.name,amount:_bundleEffect.price,slip_url:slipUrl,status:'pending'},
+      ]);
+      if(oErr) throw new Error(oErr.message);
+      _pending.push(_bundleTheme.id);
+      _pendingEffects.push(_bundleEffect.id);
+    } else {
+      const{error:oErr}=await _supa.from('orders').insert([{
+        user_id:_uid,setup_id:_sid,
+        theme_id:_buyId,theme_name:_buyName,
+        amount:_buyPrice,slip_url:slipUrl,status:'pending',
+      }]);
+      if(oErr) throw new Error(oErr.message);
+      if(_buyType==='effect') _pendingEffects.push(_buyId);
+      else _pending.push(_buyId);
+    }
+
     document.getElementById('step1').style.display='none';
     document.getElementById('step2').style.display='block';
-    if(_buyType==='effect') _pendingEffects.push(_buyId);
-    else _pending.push(_buyId);
-    render();
+    render(); applyLivePreview();
   }catch(err){
     showErr('เกิดข้อผิดพลาด: '+err.message);
     btn.disabled=false; btn.textContent='📤 ส่งสลิปและรอ Approve';
