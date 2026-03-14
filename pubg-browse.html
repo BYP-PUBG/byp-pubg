@@ -825,6 +825,9 @@ function renderCards() {
     drawSpace();
     c.remove();
   });
+
+  // Init effect canvases
+  slice.forEach(d => {
     if (!d.id || !['particle','lightning','rain','stars'].includes(d.cardEffect)) return;
     const c = document.getElementById('pc-'+d.id);
     if (!c) return;
