@@ -283,7 +283,17 @@ canvas.dv{
 .overlay.show{display:flex;animation:fadeIn .25s ease;}
 @keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 
-.detail-modal{
+.star-row { display:flex; align-items:center; gap:2px; }
+.star { font-size:15px; cursor:pointer; color:var(--text3); transition:color .15s; line-height:1; }
+.star.on { color:var(--gold); }
+.star:hover, .star:hover ~ .star { color:var(--gold); }
+.star-row:hover .star { color:var(--gold); }
+.star-row .star:hover ~ .star { color:var(--text3); }
+.star-count { font-size:10px; color:var(--text2); font-family:'Barlow Condensed',sans-serif; margin-left:2px; }
+.dm-star-row { display:flex; align-items:center; gap:4px; margin-bottom:16px; }
+.dm-star { font-size:22px; cursor:pointer; color:var(--text3); transition:color .15s; }
+.dm-star.on { color:var(--gold); }
+.dm-star-count { font-size:13px; color:var(--text2); font-family:'Barlow Condensed',sans-serif; margin-left:6px; }
   background:var(--surf);
   border:1px solid var(--bord2);
   border-radius:14px;
@@ -641,9 +651,86 @@ function buildCard(d, i) {
         <span class="tag t-${gpuB.toLowerCase()}">${gpuB}</span>
         <span class="tag t-fps">${fps} FPS</span>
       </div>
-      <span class="foot-arrow">→</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="star-row" id="stars-${d.id}" onclick="event.stopPropagation()">
+          ${[1,2,3,4,5].map(s=>`<span class="star" data-id="${d.id}" data-s="${s}" onclick="rateStar('${d.id}',${s})">☆</span>`).join('')}
+          <span class="star-count" id="sc-${d.id}"></span>
+        </div>
+      </div>
     </div>
   </div>`;
+}
+
+// ===== RATINGS =====
+let _myRatings = {}; // setup_id → stars
+let _allRatings = {}; // setup_id → {avg, count}
+let _currentUserId = null;
+
+async function loadRatings() {
+  const { data: { session } } = await _supa.auth.getSession();
+  _currentUserId = session?.user?.id || null;
+
+  // โหลด ratings ทั้งหมด
+  const { data: rows } = await _supa.from('ratings').select('setup_id, stars, user_id');
+  if (!rows) return;
+
+  // คำนวณ avg + count ต่อ setup
+  _allRatings = {};
+  rows.forEach(r => {
+    if (!_allRatings[r.setup_id]) _allRatings[r.setup_id] = { total:0, count:0 };
+    _allRatings[r.setup_id].total += r.stars;
+    _allRatings[r.setup_id].count += 1;
+    if (_currentUserId && r.user_id === _currentUserId) _myRatings[r.setup_id] = r.stars;
+  });
+
+  // render ดาวใน cards
+  allData.forEach(d => { if (d.id) renderStars(d.id); });
+}
+
+function renderStars(setupId) {
+  const row = document.getElementById('stars-' + setupId);
+  if (!row) return;
+  const r = _allRatings[setupId];
+  const avg = r ? Math.round(r.total / r.count) : 0;
+  const my  = _myRatings[setupId] || 0;
+  const display = my || avg;
+
+  row.querySelectorAll('.star').forEach(s => {
+    s.textContent = parseInt(s.dataset.s) <= display ? '★' : '☆';
+    s.classList.toggle('on', parseInt(s.dataset.s) <= display);
+    // ถ้าให้แล้ว → lock cursor
+    if (my) s.style.cursor = 'default';
+  });
+  const sc = document.getElementById('sc-' + setupId);
+  if (sc) sc.textContent = r ? `${(r.total/r.count).toFixed(1)} (${r.count})` : '';
+}
+
+async function rateStar(setupId, stars) {
+  if (!_currentUserId) { alert('กรุณา Login ก่อนให้ดาวครับ'); return; }
+  if (_myRatings[setupId]) { alert('คุณให้ดาว Setup นี้ไปแล้ว ไม่สามารถเปลี่ยนได้ครับ'); return; }
+
+  await _supa.from('ratings').insert([{ setup_id: setupId, user_id: _currentUserId, stars }]);
+  _myRatings[setupId] = stars;
+  if (!_allRatings[setupId]) _allRatings[setupId] = { total:0, count:0 };
+  _allRatings[setupId].total += stars;
+  _allRatings[setupId].count += 1;
+
+  renderStars(setupId);
+  const dmStars = document.querySelectorAll('.dm-star');
+  if (dmStars.length && dmStars[0].dataset.id === setupId) renderDmStars(setupId);
+}
+
+function renderDmStars(setupId) {
+  const r   = _allRatings[setupId];
+  const my  = _myRatings[setupId] || 0;
+  const avg = r ? r.total / r.count : 0;
+  document.querySelectorAll('.dm-star').forEach(s => {
+    const v = parseInt(s.dataset.s);
+    s.textContent = v <= (my || Math.round(avg)) ? '★' : '☆';
+    s.classList.toggle('on', v <= (my || Math.round(avg)));
+  });
+  const sc = document.getElementById('dm-star-count');
+  if (sc) sc.textContent = r ? `${avg.toFixed(1)} ★ (${r.count} รีวิว)${my?' · คุณให้ '+my+' ดาว':''}` : 'ยังไม่มีรีวิว';
 }
 
 async function adminDeleteCard(id) {
@@ -878,11 +965,18 @@ function openDetail(ign) {
     </div>
 
     ${d.notes?`<div><div class="dm-sec-title">หมายเหตุ</div><div class="dm-notes">"${d.notes}"</div></div>`:''}
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <div class="dm-sec-title">ให้คะแนน Setup นี้</div>
+      <div class="dm-star-row">
+        ${[1,2,3,4,5].map(s=>`<span class="dm-star" data-id="${d.id}" data-s="${s}" onclick="rateStar('${d.id}',${s});renderDmStars('${d.id}')">☆</span>`).join('')}
+        <span class="dm-star-count" id="dm-star-count"></span>
+      </div>
+    </div>
   `;
 
   document.getElementById('overlay').classList.add('show');
-  // Draw big canvas after DOM ready
-  setTimeout(() => drawDesktop('dvBig', d, 640, 280), 50);
+  setTimeout(() => { drawDesktop('dvBig', d, 640, 280); renderDmStars(d.id); }, 50);
 }
 
 function closeOverlay(e){
@@ -945,7 +1039,8 @@ async function logout() {
 // ===== INIT =====
 (async () => {
   await renderAuthBtn(); // เช็ค admin ก่อน
-  await loadData();      // แล้วค่อยโหลด data + render cards
+  await loadData();      // โหลด data + render cards
+  await loadRatings();   // โหลดดาวทั้งหมด
 })();
 </script>
 </body>
