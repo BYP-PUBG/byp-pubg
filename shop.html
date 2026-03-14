@@ -13,235 +13,206 @@ const _supa = window.supabase.createClient(
 );
 </script>
 <style>
-:root {
-  --bg:#07080a; --bg2:#0e0f12; --surf:#131417; --surf2:#1a1b1f;
-  --border:#272830; --bord2:#32333e;
-  --gold:#f5c842; --golddim:rgba(245,200,66,0.08);
-  --text:#f0f1f5; --text2:#8e8f9e; --text3:#45464f;
-}
+:root{--bg:#07080a;--bg2:#0e0f12;--surf:#131417;--surf2:#1a1b1f;--border:#272830;--bord2:#32333e;--gold:#f5c842;--golddim:rgba(245,200,66,0.08);--text:#f0f1f5;--text2:#8e8f9e;--text3:#45464f;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Barlow','Noto Sans Thai',sans-serif;min-height:100vh;}
-
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;background:rgba(13,14,18,.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);}
 .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
 .nav-logo span{color:var(--gold);}
 .nav-back{font-size:12px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:5px 12px;border:1px solid var(--border);border-radius:6px;transition:all .15s;}
 .nav-back:hover{color:var(--gold);border-color:var(--gold);}
-
 .hero{padding:40px 24px 32px;text-align:center;}
 .hero-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;letter-spacing:1px;margin-bottom:8px;}
 .hero-title span{color:var(--gold);}
 .hero-sub{font-size:14px;color:var(--text2);}
-
-.page{max-width:900px;margin:0 auto;padding:0 20px 60px;}
+.page{max-width:920px;margin:0 auto;padding:0 20px 60px;}
 .sec-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
-
 .themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px;}
-
-/* THEME CARD */
 .theme-card{border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s;position:relative;}
 .theme-card:hover{transform:translateY(-4px);}
-.theme-card.owned{opacity:1;}
-.theme-card.active-theme .theme-select-btn{background:var(--gold);color:#08090b;}
-
-.theme-preview{padding:16px;position:relative;}
 .preview-ign{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px;}
 .preview-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
 .preview-stat{padding:6px 4px;border-radius:5px;text-align:center;}
 .preview-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;}
 .preview-lbl{font-size:8px;opacity:.6;letter-spacing:.5px;margin-top:1px;}
-
 .theme-info{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.08);}
 .theme-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;}
 .theme-price{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;}
-.theme-select-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 14px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;}
-
-.badge-owned{position:absolute;top:10px;left:10px;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;}
-.badge-active{position:absolute;top:10px;left:10px;background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;}
-
-/* PAYMENT MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.theme-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 14px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;}
+.badge-active{position:absolute;top:10px;left:10px;background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;z-index:1;}
+.badge-pending{position:absolute;top:10px;left:10px;background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3);font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;z-index:1;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:100;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
 .modal-overlay.show{display:flex;}
-.modal{background:var(--surf);border:1px solid var(--bord2);border-radius:14px;width:100%;max-width:420px;overflow:hidden;}
+.modal{background:var(--surf);border:1px solid var(--bord2);border-radius:14px;width:100%;max-width:420px;margin:auto;}
 .modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .modal-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--gold);}
 .modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:16px;cursor:pointer;}
 .modal-body{padding:24px;}
-.qr-box{background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;margin-bottom:16px;}
-.qr-amount{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--gold);margin-bottom:4px;}
-.qr-note{font-size:12px;color:var(--text2);margin-bottom:16px;}
-.promptpay-info{background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:14px;margin-bottom:16px;}
-.pp-label{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;margin-bottom:6px;}
-.pp-number{font-size:22px;font-weight:700;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;}
-.pp-name{font-size:12px;color:var(--text2);margin-top:4px;}
-.modal-note{font-size:12px;color:var(--text3);text-align:center;margin-bottom:16px;line-height:1.6;}
-.btn-confirm{width:100%;padding:12px;border-radius:8px;border:none;background:var(--gold);color:#08090b;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-bottom:8px;}
-.btn-confirm:hover{background:#e8a820;}
-.btn-cancel{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;}
-
-/* THEMES */
+.bank-box{background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;}
+.bank-label{font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;margin-bottom:5px;}
+.bank-num{font-size:20px;font-weight:700;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;}
+.bank-name{font-size:12px;color:var(--text2);margin-top:2px;}
+.slip-area{border:1.5px dashed var(--bord2);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin:14px 0;}
+.slip-area:hover{border-color:var(--gold);background:var(--golddim);}
+.slip-area.has-file{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.05);}
+.slip-img{max-width:100%;max-height:180px;border-radius:8px;margin-top:10px;display:none;}
+.btn-main{width:100%;padding:12px;border-radius:8px;border:none;background:var(--gold);color:#08090b;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-bottom:8px;}
+.btn-main:hover{background:#e8a820;}
+.btn-main:disabled{opacity:.4;cursor:not-allowed;}
+.btn-sec{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;}
+.err{color:#fca5a5;font-size:12px;margin-bottom:10px;text-align:center;display:none;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1px solid var(--bord2);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text);z-index:200;transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+/* Theme colors */
 .tc-default{background:var(--surf);border:1px solid var(--border);}
 .tc-default .preview-ign{color:var(--text);}
 .tc-default .preview-stat{background:var(--surf2);}
 .tc-default .preview-val{color:var(--gold);}
-.tc-default .theme-select-btn{background:var(--surf2);color:var(--text2);}
-
+.tc-default .theme-btn{background:var(--surf2);color:var(--text2);}
 .tc-inferno{background:#1a0a00;border:1px solid #ff4500;}
 .tc-inferno .preview-ign{color:#ffddcc;}
 .tc-inferno .preview-stat{background:rgba(255,69,0,.12);}
 .tc-inferno .preview-val{color:#ff6b35;}
 .tc-inferno .theme-name{color:#ff6b35;}
 .tc-inferno .theme-price{color:#ff9966;}
-.tc-inferno .theme-select-btn{background:rgba(255,69,0,.2);color:#ff6b35;}
-.tc-inferno .theme-select-btn:hover{background:#ff4500;color:#fff;}
-
+.tc-inferno .theme-btn{background:rgba(255,69,0,.2);color:#ff6b35;}
 .tc-storm{background:#060b1a;border:1px solid #4f46e5;}
 .tc-storm .preview-ign{color:#e0e7ff;}
 .tc-storm .preview-stat{background:rgba(79,70,229,.15);}
 .tc-storm .preview-val{color:#818cf8;}
 .tc-storm .theme-name{color:#818cf8;}
 .tc-storm .theme-price{color:#a5b4fc;}
-.tc-storm .theme-select-btn{background:rgba(79,70,229,.2);color:#818cf8;}
-.tc-storm .theme-select-btn:hover{background:#4f46e5;color:#fff;}
-
+.tc-storm .theme-btn{background:rgba(79,70,229,.2);color:#818cf8;}
 .tc-matrix{background:#001a00;border:1px solid #00ff41;}
 .tc-matrix .preview-ign{color:#00ff41;font-family:'Courier New',monospace;}
 .tc-matrix .preview-stat{background:rgba(0,255,65,.08);}
 .tc-matrix .preview-val{color:#00ff41;}
 .tc-matrix .theme-name{color:#00ff41;}
 .tc-matrix .theme-price{color:#00aa2b;}
-.tc-matrix .theme-select-btn{background:rgba(0,255,65,.1);color:#00ff41;border:1px solid rgba(0,255,65,.3);}
-.tc-matrix .theme-select-btn:hover{background:#00aa2b;color:#000;}
-
+.tc-matrix .theme-btn{background:rgba(0,255,65,.1);color:#00ff41;border:1px solid rgba(0,255,65,.3);}
 .tc-gold{background:#0d0900;border:1px solid #f5c842;}
 .tc-gold .preview-ign{color:#ffe680;}
-.tc-gold .preview-stat{background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.15);}
+.tc-gold .preview-stat{background:rgba(245,200,66,.08);}
 .tc-gold .preview-val{color:#f5c842;}
 .tc-gold .theme-name{color:#f5c842;}
 .tc-gold .theme-price{color:#c9a227;}
-.tc-gold .theme-select-btn{background:rgba(245,200,66,.15);color:#f5c842;}
-.tc-gold .theme-select-btn:hover{background:#f5c842;color:#000;}
-
+.tc-gold .theme-btn{background:rgba(245,200,66,.15);color:#f5c842;}
 .tc-sakura{background:#1a0a0f;border:1px solid #f472b6;}
 .tc-sakura .preview-ign{color:#fce7f3;}
 .tc-sakura .preview-stat{background:rgba(244,114,182,.1);}
 .tc-sakura .preview-val{color:#f472b6;}
 .tc-sakura .theme-name{color:#f472b6;}
 .tc-sakura .theme-price{color:#f9a8d4;}
-.tc-sakura .theme-select-btn{background:rgba(244,114,182,.15);color:#f472b6;}
-.tc-sakura .theme-select-btn:hover{background:#f472b6;color:#fff;}
-
+.tc-sakura .theme-btn{background:rgba(244,114,182,.15);color:#f472b6;}
 .tc-8bit{background:#0a0a1a;border:3px solid #fff;border-radius:0!important;}
 .tc-8bit .preview-ign{font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;text-shadow:2px 2px 0 #000;}
 .tc-8bit .preview-stat{background:#000;border:2px solid #fff;border-radius:0;}
 .tc-8bit .preview-val{font-family:'Press Start 2P',monospace;font-size:9px;color:#ffe600;}
 .tc-8bit .preview-lbl{font-family:'Press Start 2P',monospace;font-size:4px;}
-.tc-8bit .theme-name{color:#fff;font-family:'Press Start 2P',monospace;font-size:9px;}
-.tc-8bit .theme-price{color:#ffe600;font-family:'Press Start 2P',monospace;font-size:9px;}
-.tc-8bit .theme-select-btn{background:#ffe600;color:#000;border-radius:0;font-family:'Press Start 2P',monospace;font-size:8px;}
 .tc-8bit .theme-info{border-color:rgba(255,255,255,.15);}
-
+.tc-8bit .theme-name{color:#fff;font-family:'Press Start 2P',monospace;font-size:8px;}
+.tc-8bit .theme-price{color:#ffe600;font-family:'Press Start 2P',monospace;font-size:8px;}
+.tc-8bit .theme-btn{background:#ffe600;color:#000;border-radius:0;font-family:'Press Start 2P',monospace;font-size:7px;}
 .tc-8bit-retro{background:#0d0020;border:3px solid #cc44ff;border-radius:0!important;}
 .tc-8bit-retro .preview-ign{font-family:'Press Start 2P',monospace;font-size:8px;color:#ee88ff;text-shadow:2px 2px 0 #000;}
 .tc-8bit-retro .preview-stat{background:#000;border:2px solid #cc44ff;border-radius:0;}
 .tc-8bit-retro .preview-val{font-family:'Press Start 2P',monospace;font-size:9px;color:#ee88ff;}
 .tc-8bit-retro .preview-lbl{font-family:'Press Start 2P',monospace;font-size:4px;color:#884499;}
-.tc-8bit-retro .theme-name{color:#ee88ff;font-family:'Press Start 2P',monospace;font-size:9px;}
-.tc-8bit-retro .theme-price{color:#cc44ff;font-family:'Press Start 2P',monospace;font-size:9px;}
-.tc-8bit-retro .theme-select-btn{background:#cc44ff;color:#fff;border-radius:0;font-family:'Press Start 2P',monospace;font-size:8px;}
 .tc-8bit-retro .theme-info{border-color:rgba(204,68,255,.2);}
-
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1px solid var(--bord2);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:200;transition:all .3s;opacity:0;pointer-events:none;}
-.toast.show{opacity:1;}
+.tc-8bit-retro .theme-name{color:#ee88ff;font-family:'Press Start 2P',monospace;font-size:8px;}
+.tc-8bit-retro .theme-price{color:#cc44ff;font-family:'Press Start 2P',monospace;font-size:8px;}
+.tc-8bit-retro .theme-btn{background:#cc44ff;color:#fff;border-radius:0;font-family:'Press Start 2P',monospace;font-size:7px;}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-logo">BYP<span> : BUILD YOUR PLAY</span></div>
   <a href="pubg-browse.html" class="nav-back">← กลับหน้าหลัก</a>
 </nav>
-
 <div class="hero">
   <div class="hero-title">🎨 <span>Card</span> Shop</div>
   <div class="hero-sub">เลือก Theme ให้ Setup Card ของคุณโดดเด่นกว่าใคร</div>
 </div>
-
 <div class="page">
-  <div class="sec-title" id="currentThemeLabel">Theme ปัจจุบัน: Loading...</div>
-
-  <div class="themes-grid" id="themesGrid">
-    <!-- render by JS -->
-  </div>
+  <div class="sec-title" id="currentLabel">Theme ปัจจุบัน: กำลังโหลด...</div>
+  <div class="themes-grid" id="themesGrid"></div>
 </div>
 
-<!-- PAYMENT MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="payModal">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title" id="payThemeName">Inferno Theme</div>
+      <div class="modal-title" id="modalTitle">—</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="qr-box">
-        <div class="qr-amount" id="payAmount">฿29</div>
-        <div class="qr-note">โอนผ่าน PromptPay แล้วแจ้ง Admin</div>
+      <div id="step1">
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-size:26px;font-weight:900;color:var(--gold);font-family:'Barlow Condensed',sans-serif;" id="modalAmount">฿29</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;">โอนเงินแล้วอัพโหลดสลิปด้านล่างได้เลย</div>
+        </div>
+        <div class="bank-box">
+          <div class="bank-label">ธนาคารกรุงไทย</div>
+          <div class="bank-num">986-3-40661-9</div>
+          <div class="bank-name">ภีมภูพัฒน์</div>
+        </div>
+        <div class="bank-box" style="background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);">
+          <div class="bank-label">True Wallet</div>
+          <div class="bank-num" style="color:#60a5fa;">061-478-9089</div>
+          <div class="bank-name">ภีมภูพัฒน์</div>
+        </div>
+        <div class="slip-area" id="slipArea" onclick="document.getElementById('slipInput').click()">
+          <div id="slipPlaceholder">
+            <div style="font-size:28px;margin-bottom:8px;">📎</div>
+            <div style="font-size:13px;color:var(--text2);">กดเพื่อเลือกรูปสลิป</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px;">JPG, PNG ไม่เกิน 5MB</div>
+          </div>
+          <img id="slipImg" class="slip-img">
+        </div>
+        <input type="file" id="slipInput" accept="image/*" style="display:none" onchange="onSlipSelect(this)">
+        <div class="err" id="errMsg"></div>
+        <button class="btn-main" id="submitBtn" onclick="submitOrder()" disabled>📤 ส่งสลิปและรอ Approve</button>
+        <button class="btn-sec" onclick="closeModal()">ยกเลิก</button>
       </div>
-      <div class="promptpay-info">
-        <div class="pp-label">ธนาคารกรุงไทย</div>
-        <div class="pp-number">986-3-40661-9</div>
-        <div class="pp-name">ภีมภูพัฒน์</div>
+      <div id="step2" style="display:none;text-align:center;padding:24px 0;">
+        <div style="font-size:52px;margin-bottom:16px;">✅</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:10px;">ส่งสลิปแล้ว!</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:20px;">Admin กำลังตรวจสอบ<br>Theme จะถูก unlock ภายใน <strong style="color:var(--gold);">24 ชม.</strong></div>
+        <button class="btn-main" onclick="closeModal()">รับทราบ ✓</button>
       </div>
-      <div class="promptpay-info" style="margin-top:8px;background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);">
-        <div class="pp-label" style="color:var(--text2);">True Wallet</div>
-        <div class="pp-number" style="color:#60a5fa;">061-478-9089</div>
-        <div class="pp-name">ภีมภูพัฒน์</div>
-      </div>
-      <div class="modal-note">
-        หลังโอนเงินแล้ว ส่งสลิป + ชื่อ IGN มาที่<br>
-        <strong style="color:var(--gold);">ppkk5811@gmail.com</strong><br>
-        Admin จะ unlock theme ให้ภายใน 24 ชม.
-      </div>
-      <button class="btn-confirm" onclick="closeModal()">รับทราบ ✓</button>
-      <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
 const THEMES = [
-  { id:'default',    name:'Default',      price:0,   emoji:'🎮', desc:'Dark classic' },
-  { id:'inferno',    name:'Inferno',       price:29,  emoji:'🔥', desc:'Fire orange' },
-  { id:'storm',      name:'Storm',         price:29,  emoji:'⚡', desc:'Electric blue' },
-  { id:'matrix',     name:'Matrix',        price:39,  emoji:'💚', desc:'Hacker green' },
-  { id:'gold',       name:'Gold Elite',    price:49,  emoji:'👑', desc:'Luxury gold' },
-  { id:'sakura',     name:'Sakura',        price:29,  emoji:'🌸', desc:'Pink blossom' },
-  { id:'8bit',       name:'8-Bit Classic', price:49,  emoji:'🕹️', desc:'Pixel retro' },
-  { id:'8bit-retro', name:'8-Bit Retro',   price:49,  emoji:'👾', desc:'Arcade purple' },
+  {id:'default',    name:'Default',      price:0,  emoji:'🎮'},
+  {id:'inferno',    name:'Inferno',       price:29, emoji:'🔥'},
+  {id:'storm',      name:'Storm',         price:29, emoji:'⚡'},
+  {id:'matrix',     name:'Matrix',        price:39, emoji:'💚'},
+  {id:'gold',       name:'Gold Elite',    price:49, emoji:'👑'},
+  {id:'sakura',     name:'Sakura',        price:29, emoji:'🌸'},
+  {id:'8bit',       name:'8-Bit Classic', price:49, emoji:'🕹️'},
+  {id:'8bit-retro', name:'8-Bit Retro',   price:49, emoji:'👾'},
 ];
+let _cur='default', _pending=[], _uid=null, _sid=null;
+let _buyId=null, _buyName=null, _buyPrice=null, _slipFile=null;
 
-let _currentTheme = 'default';
-let _userId = null;
-let _setupId = null;
+function toast(msg,d=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 
-function showToast(msg, dur=3000) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
-}
-
-function renderThemes() {
-  const grid = document.getElementById('themesGrid');
-  grid.innerHTML = THEMES.map(th => {
-    const isActive  = th.id === _currentTheme;
-    const isFree    = th.price === 0;
-    return `
-    <div class="theme-card tc-${th.id}${isActive?' active-theme':''}">
-      ${isActive ? '<div class="badge-active">✓ ใช้งานอยู่</div>' : ''}
-      <div class="theme-preview" style="padding:16px;">
+function render(){
+  document.getElementById('themesGrid').innerHTML = THEMES.map(th=>{
+    const isActive=th.id===_cur, isPending=_pending.includes(th.id), isFree=th.price===0;
+    let btn='';
+    if(isActive) btn=`<button class="theme-btn" style="background:var(--gold);color:#000;cursor:default;" disabled>✓ ใช้อยู่</button>`;
+    else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
+    else if(isFree) btn=`<button class="theme-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`;
+    else btn=`<button class="theme-btn" onclick="buyTheme('${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`;
+    return `<div class="theme-card tc-${th.id}">
+      ${isActive?'<div class="badge-active">✓ ใช้งานอยู่</div>':''}
+      ${isPending?'<div class="badge-pending">⏳ รอ Approve</div>':''}
+      <div style="padding:16px;">
         <div class="preview-ign">${th.emoji} xenix-_</div>
         <div class="preview-stats" style="margin-top:10px;">
           <div class="preview-stat"><div class="preview-val">400</div><div class="preview-lbl">DPI</div></div>
@@ -250,58 +221,92 @@ function renderThemes() {
           <div class="preview-stat"><div class="preview-val">360</div><div class="preview-lbl">HZ</div></div>
         </div>
       </div>
-      <div class="theme-info">
-        <div>
-          <div class="theme-name">${th.name}</div>
-          <div class="theme-price">${isFree ? 'ฟรี' : '฿'+th.price}</div>
-        </div>
-        ${isActive
-          ? `<button class="theme-select-btn" style="background:var(--gold);color:#000;" disabled>ใช้งานอยู่</button>`
-          : isFree
-            ? `<button class="theme-select-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`
-            : `<button class="theme-select-btn" onclick="buyTheme('${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`
-        }
-      </div>
+      <div class="theme-info"><div><div class="theme-name">${th.name}</div><div class="theme-price">${isFree?'ฟรี':'฿'+th.price}</div></div>${btn}</div>
     </div>`;
   }).join('');
 }
 
-async function applyTheme(themeId) {
-  if (!_setupId) { showToast('กรุณากรอก Setup ก่อนนะครับ'); return; }
-  const { error } = await _supa.from('setups').update({ card_theme: themeId }).eq('id', _setupId);
-  if (error) { showToast('เกิดข้อผิดพลาด: ' + error.message); return; }
-  _currentTheme = themeId;
-  document.getElementById('currentThemeLabel').textContent = 'Theme ปัจจุบัน: ' + THEMES.find(t=>t.id===themeId)?.name;
-  renderThemes();
-  showToast('✅ เปลี่ยน Theme เรียบร้อยแล้ว!');
+async function applyTheme(id){
+  if(!_sid){toast('กรุณากรอก Setup ก่อนนะครับ');return;}
+  const{error}=await _supa.from('setups').update({card_theme:id}).eq('id',_sid);
+  if(error){toast('เกิดข้อผิดพลาด: '+error.message);return;}
+  _cur=id;
+  document.getElementById('currentLabel').textContent='Theme ปัจจุบัน: '+THEMES.find(t=>t.id===id)?.name;
+  render(); toast('✅ เปลี่ยน Theme เรียบร้อยแล้ว!');
 }
 
-function buyTheme(id, name, price) {
-  document.getElementById('payThemeName').textContent = name + ' Theme';
-  document.getElementById('payAmount').textContent = '฿' + price;
+function buyTheme(id,name,price){
+  _buyId=id; _buyName=name; _buyPrice=price; _slipFile=null;
+  document.getElementById('modalTitle').textContent=name+' Theme';
+  document.getElementById('modalAmount').textContent='฿'+price;
+  document.getElementById('step1').style.display='block';
+  document.getElementById('step2').style.display='none';
+  document.getElementById('slipImg').style.display='none';
+  document.getElementById('slipPlaceholder').style.display='block';
+  document.getElementById('slipArea').classList.remove('has-file');
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('errMsg').style.display='none';
+  document.getElementById('slipInput').value='';
   document.getElementById('payModal').classList.add('show');
 }
 
-function closeModal() {
-  document.getElementById('payModal').classList.remove('show');
+function onSlipSelect(input){
+  const file=input.files[0]; if(!file) return;
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){showErr('รองรับเฉพาะ JPG, PNG, WebP ครับ');return;}
+  if(file.size>5*1024*1024){showErr('ขนาดไฟล์ต้องไม่เกิน 5MB ครับ');return;}
+  _slipFile=file;
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=document.getElementById('slipImg');
+    img.src=e.target.result; img.style.display='block';
+    document.getElementById('slipPlaceholder').style.display='none';
+    document.getElementById('slipArea').classList.add('has-file');
+    document.getElementById('submitBtn').disabled=false;
+    document.getElementById('errMsg').style.display='none';
+  };
+  r.readAsDataURL(file);
 }
 
-async function init() {
-  const { data: { session } } = await _supa.auth.getSession();
-  if (!session) { window.location.href = 'login.html'; return; }
-  _userId = session.user.id;
+function showErr(msg){const e=document.getElementById('errMsg');e.textContent=msg;e.style.display='block';}
 
-  const { data: setup } = await _supa.from('setups').select('id,card_theme').eq('user_id', _userId).single();
-  if (setup) {
-    _setupId = setup.id;
-    _currentTheme = setup.card_theme || 'default';
+async function submitOrder(){
+  if(!_slipFile||!_uid||!_sid) return;
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.textContent='⏳ กำลังส่ง...';
+  try{
+    const ext=_slipFile.name.split('.').pop();
+    const path=`${_uid}_${Date.now()}.${ext}`;
+    const{error:upErr}=await _supa.storage.from('slips').upload(path,_slipFile);
+    if(upErr) throw new Error(upErr.message);
+    const{data:urlData}=_supa.storage.from('slips').getPublicUrl(path);
+    const{error:oErr}=await _supa.from('orders').insert([{
+      user_id:_uid, setup_id:_sid,
+      theme_id:_buyId, theme_name:_buyName,
+      amount:_buyPrice, slip_url:urlData.publicUrl, status:'pending'
+    }]);
+    if(oErr) throw new Error(oErr.message);
+    document.getElementById('step1').style.display='none';
+    document.getElementById('step2').style.display='block';
+    _pending.push(_buyId); render();
+  }catch(err){
+    showErr('เกิดข้อผิดพลาด: '+err.message);
+    btn.disabled=false; btn.textContent='📤 ส่งสลิปและรอ Approve';
   }
-
-  const cur = THEMES.find(t => t.id === _currentTheme);
-  document.getElementById('currentThemeLabel').textContent = 'Theme ปัจจุบัน: ' + (cur?.name || 'Default');
-  renderThemes();
 }
 
+function closeModal(){document.getElementById('payModal').classList.remove('show');}
+
+async function init(){
+  const{data:{session}}=await _supa.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  _uid=session.user.id;
+  const{data:s}=await _supa.from('setups').select('id,card_theme').eq('user_id',_uid).single();
+  if(s){_sid=s.id;_cur=s.card_theme||'default';}
+  const{data:orders}=await _supa.from('orders').select('theme_id').eq('user_id',_uid).eq('status','pending');
+  if(orders) _pending=orders.map(o=>o.theme_id);
+  document.getElementById('currentLabel').textContent='Theme ปัจจุบัน: '+(THEMES.find(t=>t.id===_cur)?.name||'Default');
+  render();
+}
 init();
 </script>
 </body>
