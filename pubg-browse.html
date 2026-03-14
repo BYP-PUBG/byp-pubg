@@ -475,7 +475,7 @@ function mapRow(d) {
     ram:       d.ram,       storage:   d.storage,
     os:        d.os,        avgFps:    d.avg_fps,
     gfx:       d.gfx,       notes:     d.notes,
-    timestamp: d.created_at,
+    timestamp: d.created_at, verified:  d.verified,
   };
 }
 
@@ -627,7 +627,7 @@ function buildCard(d, i) {
   return `
   <div class="setup-card" onclick="openDetail('${escStr(d.ign)}')">
     <div class="card-head">
-      <div class="card-ign">${d.ign||'—'}</div>
+      <div class="card-ign">${d.ign||'—'} ${d.verified ? '<span style="font-size:13px" title="Verified Player">✅</span>' : ''}</div>
       <div style="display:flex;align-items:center;gap:8px;">
         ${window._isAdmin && d.id ? `<button onclick="event.stopPropagation();adminDeleteCard('${d.id}')" style="padding:2px 8px;border:1px solid rgba(239,68,68,.35);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>` : ''}
         <div class="card-time">${timeAgo(d.timestamp)}</div>
@@ -910,7 +910,7 @@ function drawDesktop(canvasId, d, W, H) {
 function openDetail(ign) {
   const d = allData.find(x=>x.ign===ign);
   if (!d) return;
-  document.getElementById('dmIgn').textContent = d.ign||'—';
+  document.getElementById('dmIgn').innerHTML = (d.ign||'—') + (d.verified ? ' <span style="font-size:18px" title="Verified Player">✅</span>' : '');
   document.getElementById('dmSub').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString('th-TH') : '—';
 
   document.getElementById('dmBody').innerHTML = `
