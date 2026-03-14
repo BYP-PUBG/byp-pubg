@@ -63,6 +63,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 .err{color:#fca5a5;font-size:12px;margin-bottom:10px;text-align:center;display:none;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1px solid var(--bord2);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text);z-index:200;transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
+@keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(147,51,234,0)}50%{box-shadow:0 0 16px 4px rgba(147,51,234,.25)}}
+@keyframes wave{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 /* Theme colors */
 .tc-default{background:var(--surf);border:1px solid var(--border);}
 .tc-default .preview-ign{color:var(--text);}
@@ -136,6 +138,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 <div class="page">
   <div class="sec-title" id="currentLabel">Theme ปัจจุบัน: กำลังโหลด...</div>
   <div class="themes-grid" id="themesGrid"></div>
+
+  <div class="sec-title" style="margin-top:8px;">✨ Animated Effects — ซื้อแยกได้เลย</div>
+  <div class="themes-grid" id="effectsGrid"></div>
 </div>
 
 <!-- MODAL -->
@@ -196,21 +201,29 @@ const THEMES = [
   {id:'8bit',       name:'8-Bit Classic', price:49, emoji:'🕹️'},
   {id:'8bit-retro', name:'8-Bit Retro',   price:49, emoji:'👾'},
 ];
-let _cur='default', _pending=[], _uid=null, _sid=null;
-let _buyId=null, _buyName=null, _buyPrice=null, _slipFile=null;
+
+const EFFECTS = [
+  {id:'glow',     name:'Glow Pulse',  price:19, emoji:'💫', color:'#9333ea'},
+  {id:'particle', name:'Particle',    price:19, emoji:'✦',  color:'#3b82f6'},
+  {id:'wave',     name:'Wave',        price:19, emoji:'🌊', color:'#10b981'},
+];
+
+let _cur='default', _curEffect=null, _pending=[], _pendingEffects=[], _uid=null, _sid=null;
+let _buyId=null, _buyName=null, _buyPrice=null, _slipFile=null, _buyType='theme';
 
 function toast(msg,d=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 
 let _previewIGN = 'YOUR IGN';
 
 function render(){
+  // Themes
   document.getElementById('themesGrid').innerHTML = THEMES.map(th=>{
     const isActive=th.id===_cur, isPending=_pending.includes(th.id), isFree=th.price===0;
     let btn='';
     if(isActive) btn=`<button class="theme-btn" style="background:var(--gold);color:#000;cursor:default;" disabled>✓ ใช้อยู่</button>`;
     else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
     else if(isFree) btn=`<button class="theme-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`;
-    else btn=`<button class="theme-btn" onclick="buyTheme('${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`;
+    else btn=`<button class="theme-btn" onclick="buyItem('theme','${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`;
     return `<div class="theme-card tc-${th.id}">
       ${isActive?'<div class="badge-active">✓ ใช้งานอยู่</div>':''}
       ${isPending?'<div class="badge-pending">⏳ รอ Approve</div>':''}
@@ -226,6 +239,62 @@ function render(){
       <div class="theme-info"><div><div class="theme-name">${th.name}</div><div class="theme-price">${isFree?'ฟรี':'฿'+th.price}</div></div>${btn}</div>
     </div>`;
   }).join('');
+
+  // Effects
+  document.getElementById('effectsGrid').innerHTML = EFFECTS.map(ef=>{
+    const isActive=ef.id===_curEffect, isPending=_pendingEffects.includes(ef.id);
+    let btn='';
+    if(isActive) btn=`<button class="theme-btn" style="background:${ef.color};color:#fff;cursor:default;" disabled>✓ ใช้อยู่</button>`;
+    else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
+    else btn=`<button class="theme-btn" style="background:${ef.color}22;color:${ef.color};border:1px solid ${ef.color}44;" onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})">ซื้อ ฿${ef.price}</button>`;
+
+    // Effect preview animation
+    let previewStyle='', extraHtml='';
+    if(ef.id==='glow') previewStyle=`animation:glowpulse 2s infinite;`;
+    if(ef.id==='wave') extraHtml=`<div style="position:absolute;bottom:0;left:0;right:0;height:20px;overflow:hidden;"><svg style="width:200%;animation:wave 3s linear infinite;" viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M0,10 Q37,2 75,10 Q112,18 150,10 Q187,2 225,10 Q262,18 300,10 L300,20 L0,20 Z" fill="${ef.color}" opacity="0.3"/></svg></div>`;
+    if(ef.id==='particle') extraHtml=`<canvas id="efCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>`;
+
+    return `<div class="theme-card" style="background:#0a0a14;border:1px solid ${ef.color}44;position:relative;overflow:hidden;${previewStyle}">
+      ${isActive?`<div class="badge-active" style="color:${ef.color};border-color:${ef.color}44;background:${ef.color}22;">✓ ใช้อยู่</div>`:''}
+      ${isPending?'<div class="badge-pending">⏳ รอ Approve</div>':''}
+      ${extraHtml}
+      <div style="padding:16px;position:relative;z-index:1;">
+        <div class="preview-ign" style="color:#e0e7ff;">${ef.emoji} ${_previewIGN}</div>
+        <div class="preview-stats" style="margin-top:10px;">
+          <div class="preview-stat" style="background:${ef.color}15;"><div class="preview-val" style="color:${ef.color};">400</div><div class="preview-lbl">DPI</div></div>
+          <div class="preview-stat" style="background:${ef.color}15;"><div class="preview-val" style="color:${ef.color};">50</div><div class="preview-lbl">SENS</div></div>
+          <div class="preview-stat" style="background:${ef.color}15;"><div class="preview-val" style="color:${ef.color};">L</div><div class="preview-lbl">PAD</div></div>
+          <div class="preview-stat" style="background:${ef.color}15;"><div class="preview-val" style="color:${ef.color};">360</div><div class="preview-lbl">HZ</div></div>
+        </div>
+      </div>
+      <div class="theme-info" style="border-color:${ef.color}22;">
+        <div><div class="theme-name" style="color:${ef.color};">${ef.name}</div><div class="theme-price" style="color:${ef.color}88;">฿${ef.price}</div></div>
+        ${btn}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Init particle canvas after render
+  setTimeout(()=>{
+    const c=document.getElementById('efCanvas');
+    if(!c) return;
+    const ctx=c.getContext('2d');
+    const r=c.parentElement.getBoundingClientRect();
+    c.width=r.width||240; c.height=r.height||160;
+    const pts=Array.from({length:15},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+    function draw(){
+      ctx.clearRect(0,0,c.width,c.height);
+      pts.forEach(p=>{
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(96,165,250,0.5)`;ctx.fill();
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0||p.x>c.width)p.vx*=-1;
+        if(p.y<0||p.y>c.height)p.vy*=-1;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  },100);
 }
 
 async function applyTheme(id){
@@ -237,9 +306,9 @@ async function applyTheme(id){
   render(); toast('✅ เปลี่ยน Theme เรียบร้อยแล้ว!');
 }
 
-function buyTheme(id,name,price){
-  _buyId=id; _buyName=name; _buyPrice=price; _slipFile=null;
-  document.getElementById('modalTitle').textContent=name+' Theme';
+function buyItem(type,id,name,price){
+  _buyType=type; _buyId=id; _buyName=name; _buyPrice=price; _slipFile=null;
+  document.getElementById('modalTitle').textContent=name+(type==='effect'?' Effect':' Theme');
   document.getElementById('modalAmount').textContent='฿'+price;
   document.getElementById('step1').style.display='block';
   document.getElementById('step2').style.display='none';
@@ -284,12 +353,15 @@ async function submitOrder(){
     const{error:oErr}=await _supa.from('orders').insert([{
       user_id:_uid, setup_id:_sid,
       theme_id:_buyId, theme_name:_buyName,
-      amount:_buyPrice, slip_url:urlData.publicUrl, status:'pending'
+      amount:_buyPrice, slip_url:urlData.publicUrl,
+      status:'pending',
     }]);
     if(oErr) throw new Error(oErr.message);
     document.getElementById('step1').style.display='none';
     document.getElementById('step2').style.display='block';
-    _pending.push(_buyId); render();
+    if(_buyType==='effect') _pendingEffects.push(_buyId);
+    else _pending.push(_buyId);
+    render();
   }catch(err){
     showErr('เกิดข้อผิดพลาด: '+err.message);
     btn.disabled=false; btn.textContent='📤 ส่งสลิปและรอ Approve';
@@ -302,10 +374,15 @@ async function init(){
   const{data:{session}}=await _supa.auth.getSession();
   if(!session){window.location.href='login.html';return;}
   _uid=session.user.id;
-  const{data:s}=await _supa.from('setups').select('id,card_theme,ign').eq('user_id',_uid).single();
-  if(s){_sid=s.id;_cur=s.card_theme||'default';_previewIGN=s.ign||'YOUR IGN';}
-  const{data:orders}=await _supa.from('orders').select('theme_id').eq('user_id',_uid).eq('status','pending');
-  if(orders) _pending=orders.map(o=>o.theme_id);
+  const{data:s}=await _supa.from('setups').select('id,card_theme,card_effect,ign').eq('user_id',_uid).single();
+  if(s){_sid=s.id;_cur=s.card_theme||'default';_curEffect=s.card_effect||null;_previewIGN=s.ign||'YOUR IGN';}
+  const{data:orders}=await _supa.from('orders').select('theme_id,theme_name').eq('user_id',_uid).eq('status','pending');
+  if(orders){
+    orders.forEach(o=>{
+      if(EFFECTS.find(e=>e.id===o.theme_id)) _pendingEffects.push(o.theme_id);
+      else _pending.push(o.theme_id);
+    });
+  }
   document.getElementById('currentLabel').textContent='Theme ปัจจุบัน: '+(THEMES.find(t=>t.id===_cur)?.name||'Default');
   render();
 }
