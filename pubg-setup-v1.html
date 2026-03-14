@@ -750,6 +750,23 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
       </div>
 
+      <!-- Scope แยกแต่ละ zoom — แสดงเมื่อ Universal = Disable -->
+      <div id="scopeZoomSection" style="display:none;">
+        <div class="sub-row" style="margin-top:8px;">Scope Sensitivity แยก Zoom</div>
+        ${[['x2','scopeX2'],['x3','scopeX3'],['x4','scopeX4'],['x6','scopeX6'],['x8','scopeX8'],['x15','scopeX15']].map(([label,id])=>`
+        <div class="field-row">
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">${label}</span> Scope</div>
+          <div class="field-input">
+            <div class="range-wrap">
+              <input type="range" id="${id}" min="1" max="100" value="50"
+                oninput="syncRange('${id}','${id}Val',this.value)">
+              <span class="range-val" id="${id}Val">50</span>
+            </div>
+            <span class="input-unit">/ 100</span>
+          </div>
+        </div>`).join('')}
+      </div>
+
     </div>
   </div>
 
@@ -1086,6 +1103,11 @@ function setToggle(name, val) {
     offBtn.classList.add('selected-toggle');
     onBtn.classList.remove('selected-toggle');
   }
+  // แสดง/ซ่อน scope zoom section
+  if (name === 'univ') {
+    const zoomSec = document.getElementById('scopeZoomSection');
+    if (zoomSec) zoomSec.style.display = val === 'off' ? 'block' : 'none';
+  }
 }
 
 // ===== RANGE SYNC =====
@@ -1158,6 +1180,12 @@ async function submitForm() {
     adsSens:   document.getElementById('adsSens').value,
     scopeSens: document.getElementById('scopeSens').value,
     univScope: toggleState.univ === 'on' ? 'Enable' : 'Disable',
+    scopeX2:  document.getElementById('scopeX2').value,
+    scopeX3:  document.getElementById('scopeX3').value,
+    scopeX4:  document.getElementById('scopeX4').value,
+    scopeX6:  document.getElementById('scopeX6').value,
+    scopeX8:  document.getElementById('scopeX8').value,
+    scopeX15: document.getElementById('scopeX15').value,
     tableH:    document.getElementById('tableH').value + ' cm',
     tableSize: (document.getElementById('tableW').value || '?') + '×' + (document.getElementById('tableD').value || '?') + ' cm',
     pad:       getChip('padChips'),
@@ -1209,7 +1237,9 @@ async function submitForm() {
     dpi: data.dpi, hz: data.hz, grip: data.grip, arm: data.arm,
     invert: data.invert, gen_sens: data.genSens, vert_mult: data.vertMult,
     aim_sens: data.aimSens, ads_sens: data.adsSens, scope_sens: data.scopeSens,
-    univ_scope: data.univScope, table_h: data.tableH, table_size: data.tableSize,
+    univ_scope: data.univScope,
+    scope_x2: data.scopeX2, scope_x3: data.scopeX3, scope_x4: data.scopeX4,
+    scope_x6: data.scopeX6, scope_x8: data.scopeX8, scope_x15: data.scopeX15, table_h: data.tableH, table_size: data.tableSize,
     pad: data.pad, mon_size: data.monSize, mon_hz: data.monHz, mon_dist: data.monDist,
     cpu_brand: data.cpuBrand, cpu_model: data.cpuModel,
     gpu_brand: data.gpuBrand, gpu_model: data.gpuModel,
@@ -1332,7 +1362,9 @@ window.addEventListener('scroll', () => {
   if (existing.dpi) { set('dpi', existing.dpi); syncRange('dpi','dpiVal', existing.dpi); }
 
   // Sens sliders
-  const sensMap = { genSens: existing.gen_sens, aimSens: existing.aim_sens, adsSens: existing.ads_sens, scopeSens: existing.scope_sens, vertMult: existing.vert_mult };
+  const sensMap = { genSens: existing.gen_sens, aimSens: existing.aim_sens, adsSens: existing.ads_sens, scopeSens: existing.scope_sens, vertMult: existing.vert_mult,
+    scopeX2: existing.scope_x2, scopeX3: existing.scope_x3, scopeX4: existing.scope_x4,
+    scopeX6: existing.scope_x6, scopeX8: existing.scope_x8, scopeX15: existing.scope_x15 };
   Object.entries(sensMap).forEach(([id, val]) => { if (val) { set(id, val); syncRange(id, id+'Val', val); } });
 
   // Chips — clear ทั้งหมดก่อน แล้ว set ใหม่ตามข้อมูล user
