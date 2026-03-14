@@ -491,6 +491,8 @@ function mapRow(d) {
     avatarUrl: d.avatar_url,
     youtube: d.youtube, facebook: d.facebook,
     tiktok: d.tiktok, twitch: d.twitch, discord: d.discord,
+    scopeX2: d.scope_x2, scopeX3: d.scope_x3, scopeX4: d.scope_x4,
+    scopeX6: d.scope_x6, scopeX8: d.scope_x8, scopeX15: d.scope_x15,
   };
 }
 
@@ -966,6 +968,14 @@ function openDetail(ign) {
         Invert: <strong style="color:var(--text2)">${d.invert||'—'}</strong> &nbsp;·&nbsp;
         Universal Scope: <strong style="color:var(--text2)">${d.univScope||'—'}</strong>
       </div>
+      ${d.univScope === 'Disable' ? `
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;">
+        ${[['x2',d.scopeX2],['x3',d.scopeX3],['x4',d.scopeX4],['x6',d.scopeX6],['x8',d.scopeX8],['x15',d.scopeX15]].map(([label,val])=>`
+        <div style="background:var(--surf2);border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center;">
+          <div style="font-size:16px;font-weight:700;color:var(--gold);font-family:'Barlow Condensed',sans-serif;">${val||'—'}</div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px;font-family:'Barlow Condensed',sans-serif;">${label}</div>
+        </div>`).join('')}
+      </div>` : ''}
     </div>
 
     <div style="margin-bottom:20px">
