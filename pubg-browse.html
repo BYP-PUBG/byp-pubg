@@ -1404,15 +1404,24 @@ async function renderAuthBtn() {
 
 async function logout() {
   await _supa.auth.signOut();
-  renderAuthBtn();
+  window.location.reload();
 }
 
 // ===== INIT =====
 (async () => {
-  await renderAuthBtn(); // เช็ค admin ก่อน
-  await loadData();      // โหลด data + render cards
-  await loadRatings();   // โหลดดาวทั้งหมด
+  await renderAuthBtn();
+  await loadData();
+  await loadRatings();
 })();
+
+// Re-init เมื่อ auth state เปลี่ยน (login/logout)
+_supa.auth.onAuthStateChange(async (event) => {
+  if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+    await renderAuthBtn();
+    await loadData();
+    await loadRatings();
+  }
+});
 </script>
 </body>
 </html>
