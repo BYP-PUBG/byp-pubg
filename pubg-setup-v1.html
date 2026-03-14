@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — PUBG Setup</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Rajdhani:wght@700&family=Oxanium:wght@700;800&family=Exo+2:wght@700;800&family=Outfit:wght@700;800&family=DM+Sans:wght@700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -620,6 +620,15 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="field-input" style="padding:12px 20px;">
           <div id="effectSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;"><div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div></div>
           <div style="font-size:11px;color:var(--text3);margin-top:6px;">ซื้อเพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a></div>
+        </div>
+      </div>
+
+      <!-- Card Font -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">🔤</span> Card Font</div>
+        <div class="field-input" style="padding:12px 20px;">
+          <div id="fontSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;"></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;">font ของชื่อ IGN บน card ครับ</div>
         </div>
       </div>
 
@@ -1260,8 +1269,42 @@ function previewAvatar(input) {
   reader.readAsDataURL(file);
 }
 
-// ===== THEME & EFFECT SELECTOR =====
-const ALL_THEMES = [
+let _selectedFont = null;
+
+function renderFontSelector(currentFont) {
+  _selectedFont = currentFont || null;
+  const box = document.getElementById('fontSelector');
+  if (!box) return;
+  box.innerHTML = ALL_FONTS.map(f => `
+    <button onclick="selectCardFont(${f.id ? "'"+f.id+"'" : 'null'})" id="fbtn-${f.id||'none'}"
+      style="padding:5px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;
+      font-family:${f.family};
+      border:1px solid ${_selectedFont===f.id?'var(--gold)':'var(--border)'};
+      background:${_selectedFont===f.id?'rgba(245,200,66,.1)':'transparent'};
+      color:${_selectedFont===f.id?'var(--gold)':'var(--text2)'};">
+      ${f.name}
+    </button>`).join('');
+}
+
+function selectCardFont(id) {
+  _selectedFont = id;
+  document.querySelectorAll('[id^="fbtn-"]').forEach(b => {
+    const bid = b.id.replace('fbtn-','');
+    const isActive = (bid==='none' && id===null) || bid===id;
+    b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
+    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
+    b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
+  });
+}
+const ALL_FONTS = [
+  {id:null,           name:'Default',      family:"'Barlow Condensed',sans-serif"},
+  {id:'rajdhani',     name:'Rajdhani',     family:"'Rajdhani',sans-serif"},
+  {id:'oxanium',      name:'Oxanium',      family:"'Oxanium',sans-serif"},
+  {id:'exo2',         name:'Exo 2',        family:"'Exo 2',sans-serif"},
+  {id:'outfit',       name:'Outfit',       family:"'Outfit',sans-serif"},
+  {id:'dmsans',       name:'DM Sans',      family:"'DM Sans',sans-serif"},
+  {id:'spacegrotesk', name:'Space Grotesk',family:"'Space Grotesk',sans-serif"},
+];
   {id:'default',    name:'Default',   emoji:'🎮', free:true},
   {id:'inferno',    name:'Inferno',   emoji:'🔥'},
   {id:'storm',      name:'Storm',     emoji:'⚡'},
@@ -1451,6 +1494,7 @@ async function submitForm() {
     microphone: data.microphone, webcam: data.webcam,
     card_theme: _selectedTheme || 'default',
     card_effect: _selectedEffect || null,
+    card_font: _selectedFont || null,
     user_id: _currentUserId,
   };
 
@@ -1613,6 +1657,7 @@ window.addEventListener('scroll', () => {
 
   // โหลด theme & effect selector
   await loadThemeSelector(existing.card_theme, existing.card_effect, existing.id);
+  renderFontSelector(existing.card_font);
 
   updateProgress();
 })();
@@ -1634,6 +1679,7 @@ window.addEventListener('scroll', () => {
     `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
       style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${e.id===null?'var(--gold)':'var(--border)'};background:${e.id===null?'rgba(245,200,66,.1)':'transparent'};color:${e.id===null?'var(--gold)':'var(--text2)'};">
       ${e.emoji} ${e.name}</button>`).join('');
+  renderFontSelector(null);
 })();
 </script>
 </body>
