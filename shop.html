@@ -856,7 +856,14 @@ async function init(){
     }
   }
   const{data:orders}=await _supa.from('orders').select('theme_id,status').eq('user_id',_uid);
-  if(orders){
+  const{data:profile}=await _supa.from('profiles').select('role').eq('id',_uid).single();
+  const isAdmin = profile?.role === 'admin';
+
+  if(isAdmin){
+    const EFFECT_IDS = EFFECTS.map(e=>e.id).filter(Boolean);
+    _ownedThemes = THEMES.map(t=>t.id).filter(Boolean);
+    _ownedEffects = EFFECT_IDS;
+  } else if(orders){
     const EFFECT_IDS = EFFECTS.map(e=>e.id).filter(Boolean);
     orders.forEach(o=>{
       if(o.status==='approved'){
