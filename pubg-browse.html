@@ -845,9 +845,8 @@ function drawDesktop(canvasId, d, W, H) {
   const [padRealW, padRealH] = padSizeMap[padKey] || padSizeMap['M'];
   let pw = Math.min(padRealW * sc, tw * 0.72);
   let ph = Math.min(padRealH * sc * 0.82, td * 0.72);
-  const padXOff = (+((d.padX||'-10').replace(' cm',''))||0)*sc;
-  const padLeft = cx + padXOff - pw/2;
-  const padTop  = cy - td/4;
+  const padLeft = cx + pw * 0.05;    // ขยับขวาของกลาง — อยู่ทางขวาจอ ห่างจาก KB
+  const padTop  = cy - ph * 0.25;   // Y สมดุล
 
   // Pad shadow
   ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.fillRect(padLeft+3,padTop+3,pw,ph);
@@ -895,7 +894,7 @@ function drawDesktop(canvasId, d, W, H) {
   // Keyboard
   const kbW = Math.min(38*sc, tw*0.36);
   const kbH = 10*sc;
-  const kbX = cx - kbW/2 - 4;
+  const kbX = cx - kbW - pw*0.15;  // KB อยู่ซ้าย ห่างจาก pad
   const kbY = cy - td/2 + (parseFloat(d.kbY||10)*sc*0.5);
   ctx.fillStyle='rgba(245,200,66,0.04)'; ctx.strokeStyle='rgba(245,200,66,0.3)'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.roundRect(kbX,kbY,kbW,kbH,2); ctx.fill(); ctx.stroke();
