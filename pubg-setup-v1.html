@@ -853,10 +853,10 @@ input[type=range]::-webkit-slider-thumb:hover {
       </div>
 
       <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">↔️</span> ตำแหน่งแผ่นรอง X</div>
+        <div class="field-label"><span class="lbl-icon">↕️</span> ตำแหน่งแผ่นรอง Y</div>
         <div class="field-input">
-          <input type="number" id="padX" value="-10" min="-40" max="40" style="max-width:100px">
-          <span class="input-unit">cm จากกึ่งกลาง (ซ้าย = ลบ)</span>
+          <input type="number" id="padY" value="0" min="-20" max="20" style="max-width:100px">
+          <span class="input-unit">cm จากกึ่งกลาง (บน = ลบ)</span>
         </div>
       </div>
 
@@ -890,25 +890,6 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="field-input">
           <input type="number" id="monDist" value="60" min="30" max="120" style="max-width:100px">
           <span class="input-unit">cm</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">↔️</span> ตำแหน่งจอ X (ซ้าย/ขวา)</div>
-        <div class="field-input">
-          <input type="number" id="monX" value="0" min="-30" max="30" style="max-width:100px">
-          <span class="input-unit">cm จากกึ่งกลาง</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🔄</span> องศาจอ</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="monDeg" min="-30" max="30" value="0"
-              oninput="syncRange('monDeg','monDegVal',this.value+'°')">
-            <span class="range-val" id="monDegVal">0°</span>
-          </div>
         </div>
       </div>
 
@@ -1229,6 +1210,7 @@ async function submitForm() {
     monSize:   (document.getElementById('monSize').value ? document.getElementById('monSize').value + '"' : '—'),
     monHz:     getChip('monHzChips'),
     monDist:   document.getElementById('monDist').value + ' cm',
+    padY:      document.getElementById('padY').value,
     cpuBrand:  getChip('cpuBrandChips'),
     cpuModel:  document.getElementById('cpuModel').value || '—',
     gpuBrand:  getChip('gpuBrandChips'),
@@ -1278,6 +1260,7 @@ async function submitForm() {
     scope_x2: data.scopeX2, scope_x3: data.scopeX3, scope_x4: data.scopeX4,
     scope_x6: data.scopeX6, scope_x8: data.scopeX8, scope_x15: data.scopeX15, table_h: data.tableH, table_size: data.tableSize,
     pad: data.pad, mon_size: data.monSize, mon_hz: data.monHz, mon_dist: data.monDist,
+    pad_y: data.padY,
     cpu_brand: data.cpuBrand, cpu_model: data.cpuModel,
     gpu_brand: data.gpuBrand, gpu_model: data.gpuModel,
     ram: data.ram, storage: data.storage, os: data.os,
