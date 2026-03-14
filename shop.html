@@ -305,6 +305,7 @@ const EFFECTS = [
 ];
 
 let _cur='default', _curEffect=null, _pending=[], _pendingEffects=[], _uid=null, _sid=null;
+let _ownedThemes=[], _ownedEffects=[];
 let _buyId=null, _buyName=null, _buyPrice=null, _slipFile=null, _buyType='theme';
 
 let _previewTheme = 'default';
@@ -456,12 +457,16 @@ let _previewIGN = 'YOUR IGN';
 function render(){
   // Themes
   document.getElementById('themesGrid').innerHTML = THEMES.map(th=>{
-    const isActive=th.id===_cur, isPending=_pending.includes(th.id), isFree=th.price===0;
+    const isActive  = th.id === _cur;
+    const isPending = _pending.includes(th.id);
+    const isFree    = th.price === 0;
+    const isOwned   = _ownedThemes.includes(th.id) || isFree;
     let btn='';
-    if(isActive) btn=`<button class="theme-btn" style="background:var(--gold);color:#000;cursor:default;" disabled>✓ ใช้อยู่</button>`;
+    if(isActive)       btn=`<button class="theme-btn" style="background:var(--gold);color:#000;cursor:default;" disabled>✓ ใช้อยู่</button>`;
     else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
-    else if(isFree) btn=`<button class="theme-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`;
-    else btn=`<button class="theme-btn" onclick="buyItem('theme','${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`;
+    else if(isOwned)   btn=`<button class="theme-btn" style="background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);" onclick="applyTheme('${th.id}')">📦 ติดตั้ง</button>`;
+    else if(isFree)    btn=`<button class="theme-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`;
+    else               btn=`<button class="theme-btn" onclick="buyItem('theme','${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`;
     return `<div class="theme-card tc-${th.id}">
       ${isActive?'<div class="badge-active">✓ ใช้งานอยู่</div>':''}
       ${isPending?'<div class="badge-pending">⏳ รอ Approve</div>':''}
@@ -480,11 +485,14 @@ function render(){
 
   // Effects
   document.getElementById('effectsGrid').innerHTML = EFFECTS.map(ef=>{
-    const isActive=ef.id===_curEffect, isPending=_pendingEffects.includes(ef.id);
+    const isActive  = ef.id === _curEffect;
+    const isPending = _pendingEffects.includes(ef.id);
+    const isOwned   = _ownedEffects.includes(ef.id);
     let btn='';
-    if(isActive) btn=`<button class="theme-btn" style="background:${ef.color};color:#fff;cursor:default;" disabled>✓ ใช้อยู่</button>`;
+    if(isActive)       btn=`<button class="theme-btn" style="background:${ef.color};color:#fff;cursor:default;" disabled>✓ ใช้อยู่</button>`;
     else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
-    else btn=`<button class="theme-btn" style="background:${ef.color}22;color:${ef.color};border:1px solid ${ef.color}44;" onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})">ซื้อ ฿${ef.price}</button>`;
+    else if(isOwned)   btn=`<button class="theme-btn" style="background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);" onclick="applyEffect('${ef.id}')">📦 ติดตั้ง</button>`;
+    else               btn=`<button class="theme-btn" style="background:${ef.color}22;color:${ef.color};border:1px solid ${ef.color}44;" onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})">ซื้อ ฿${ef.price}</button>`;
 
     // Effect preview animation
     let previewStyle='', extraHtml='';
@@ -659,6 +667,14 @@ function buyBundle(themeId,themeName,themePrice,effectId,effectName,effectPrice)
   document.getElementById('modalTitle').textContent='🛒 Bundle — ฿'+total;
   document.getElementById('modalAmount').textContent='฿'+total;
   document.getElementById('payModal').classList.add('show');
+}
+
+async function applyEffect(id){
+  if(!_sid){toast('กรุณากรอก Setup ก่อนนะครับ');return;}
+  const{error}=await _supa.from('setups').update({card_effect:id}).eq('id',_sid);
+  if(error){toast('เกิดข้อผิดพลาด: '+error.message);return;}
+  _curEffect=id;
+  render(); toast('✅ ติดตั้ง Effect เรียบร้อยแล้ว!');
 }
 
 async function applyTheme(id){
@@ -839,11 +855,17 @@ async function init(){
       document.getElementById('liveAvatar').innerHTML = `<img src="${s.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
     }
   }
-  const{data:orders}=await _supa.from('orders').select('theme_id,theme_name').eq('user_id',_uid).eq('status','pending');
+  const{data:orders}=await _supa.from('orders').select('theme_id,status').eq('user_id',_uid);
   if(orders){
+    const EFFECT_IDS = EFFECTS.map(e=>e.id).filter(Boolean);
     orders.forEach(o=>{
-      if(EFFECTS.find(e=>e.id===o.theme_id)) _pendingEffects.push(o.theme_id);
-      else _pending.push(o.theme_id);
+      if(o.status==='approved'){
+        if(EFFECT_IDS.includes(o.theme_id)) _ownedEffects.push(o.theme_id);
+        else _ownedThemes.push(o.theme_id);
+      } else if(o.status==='pending'){
+        if(EFFECT_IDS.includes(o.theme_id)) _pendingEffects.push(o.theme_id);
+        else _pending.push(o.theme_id);
+      }
     });
   }
   document.getElementById('currentLabel').textContent='Theme ปัจจุบัน: '+(THEMES.find(t=>t.id===_cur)?.name||'Default');
