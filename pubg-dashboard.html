@@ -1365,20 +1365,30 @@ function exportCSV() {
 
 // ===== INIT — Admin Auth Check =====
 (async () => {
-  const { data: { session } } = await _supa.auth.getSession();
+  // รอ session จาก OAuth redirect ด้วย
+  let { data: { session } } = await _supa.auth.getSession();
+
+  // ถ้าไม่มี session ลอง refresh token อีกครั้ง
+  if (!session) {
+    const { data: refreshed } = await _supa.auth.refreshSession();
+    session = refreshed?.session;
+  }
 
   // ไม่ได้ Login → ไปหน้า Login
   if (!session) { window.location.href = 'login.html'; return; }
 
   // เช็ค Role จากตาราง profiles
-  const { data: profile } = await _supa
+  const { data: profile, error: profileError } = await _supa
     .from('profiles')
     .select('role, email')
     .eq('id', session.user.id)
     .single();
 
+  // Debug log
+  console.log('session user id:', session.user.id);
+  console.log('profile:', profile, 'error:', profileError);
+
   if (!profile || profile.role !== 'admin') {
-    // ไม่ใช่ Admin → แสดง Access Denied
     document.getElementById('accessDenied').style.display = 'flex';
     document.querySelector('aside').style.display = 'none';
     document.querySelector('.main').style.display = 'none';
