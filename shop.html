@@ -379,8 +379,8 @@ function applyLivePreview() {
   const th = THEMES.find(t=>t.id===_previewTheme);
   const ef = EFFECTS.find(e=>e.id===_previewEffect);
 
-  const needBuyTheme  = th && th.price > 0 && !isCurTheme && !_pending.includes(_previewTheme);
-  const needBuyEffect = ef && ef.id && !isCurEffect && !_pendingEffects.includes(_previewEffect);
+  const needBuyTheme  = th && th.price > 0 && !isCurTheme && !_pending.includes(_previewTheme) && !_ownedThemes.includes(_previewTheme);
+  const needBuyEffect = ef && ef.id && !isCurEffect && !_pendingEffects.includes(_previewEffect) && !_ownedEffects.includes(_previewEffect);
   const totalPrice    = (needBuyTheme ? th.price : 0) + (needBuyEffect ? ef.price : 0);
 
   let html = '';
@@ -419,6 +419,11 @@ function applyLivePreview() {
         style="padding:10px;border-radius:8px;border:1px solid var(--bord2);background:var(--surf2);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;width:100%;">
         ใช้ ${th.name} (ฟรี)
       </button>`;
+    } else if (th && !isCurTheme && _ownedThemes.includes(_previewTheme)) {
+      html += `<button onclick="applyTheme('${th.id}')"
+        style="padding:10px;border-radius:8px;border:1px solid rgba(34,197,94,.3);background:rgba(34,197,94,.1);color:#4ade80;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;width:100%;">
+        📦 ติดตั้ง ${th.name}
+      </button>`;
     } else if (isCurTheme) {
       html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;">✓ ใช้ ${th?.name||'Default'} อยู่แล้ว</div>`;
     }
@@ -426,6 +431,11 @@ function applyLivePreview() {
       html += `<button onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})"
         style="padding:10px;border-radius:8px;border:none;background:${ef.color};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;width:100%;margin-top:6px;">
         ซื้อ ${ef.name} Effect ฿${ef.price}
+      </button>`;
+    } else if (ef && ef.id && !isCurEffect && _ownedEffects.includes(_previewEffect)) {
+      html += `<button onclick="applyEffect('${ef.id}')"
+        style="padding:10px;border-radius:8px;border:1px solid rgba(34,197,94,.3);background:rgba(34,197,94,.1);color:#4ade80;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;width:100%;margin-top:6px;">
+        📦 ติดตั้ง ${ef.name} Effect
       </button>`;
     } else if (ef && ef.id && isCurEffect) {
       html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;margin-top:4px;">✓ ใช้ ${ef.name} Effect อยู่แล้ว</div>`;
