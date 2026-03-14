@@ -1458,9 +1458,11 @@ async function loadOrders() {
 }
 
 async function approveOrder(orderId, setupId, themeId) {
-  if (!confirm('Approve order นี้และ unlock theme ให้ user?')) return;
+  if (!confirm('Approve order นี้และ unlock ให้ user?')) return;
+  const EFFECT_IDS = ['glow','particle','wave'];
+  const updateField = EFFECT_IDS.includes(themeId) ? { card_effect: themeId } : { card_theme: themeId };
   const { error: e1 } = await _supa.from('orders').update({ status:'approved', approved_at: new Date().toISOString() }).eq('id', orderId);
-  const { error: e2 } = await _supa.from('setups').update({ card_theme: themeId }).eq('id', setupId);
+  const { error: e2 } = await _supa.from('setups').update(updateField).eq('id', setupId);
   if (e1 || e2) { alert('เกิดข้อผิดพลาด'); return; }
   loadOrders();
 }
