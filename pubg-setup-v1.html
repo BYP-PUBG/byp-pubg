@@ -753,18 +753,55 @@ input[type=range]::-webkit-slider-thumb:hover {
       <!-- Scope แยกแต่ละ zoom — แสดงเมื่อ Universal = Disable -->
       <div id="scopeZoomSection" style="display:none;">
         <div class="sub-row" style="margin-top:8px;">Scope Sensitivity แยก Zoom</div>
-        ${[['x2','scopeX2'],['x3','scopeX3'],['x4','scopeX4'],['x6','scopeX6'],['x8','scopeX8'],['x15','scopeX15']].map(([label,id])=>`
+
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">${label}</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x2</span> Scope</div>
           <div class="field-input">
-            <div class="range-wrap">
-              <input type="range" id="${id}" min="1" max="100" value="50"
-                oninput="syncRange('${id}','${id}Val',this.value)">
-              <span class="range-val" id="${id}Val">50</span>
-            </div>
+            <div class="range-wrap"><input type="range" id="scopeX2" min="1" max="100" value="50" oninput="syncRange('scopeX2','scopeX2Val',this.value)"><span class="range-val" id="scopeX2Val">50</span></div>
             <span class="input-unit">/ 100</span>
           </div>
-        </div>`).join('')}
+        </div>
+
+        <div class="field-row">
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x3</span> Scope</div>
+          <div class="field-input">
+            <div class="range-wrap"><input type="range" id="scopeX3" min="1" max="100" value="50" oninput="syncRange('scopeX3','scopeX3Val',this.value)"><span class="range-val" id="scopeX3Val">50</span></div>
+            <span class="input-unit">/ 100</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x4</span> Scope</div>
+          <div class="field-input">
+            <div class="range-wrap"><input type="range" id="scopeX4" min="1" max="100" value="50" oninput="syncRange('scopeX4','scopeX4Val',this.value)"><span class="range-val" id="scopeX4Val">50</span></div>
+            <span class="input-unit">/ 100</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x6</span> Scope</div>
+          <div class="field-input">
+            <div class="range-wrap"><input type="range" id="scopeX6" min="1" max="100" value="50" oninput="syncRange('scopeX6','scopeX6Val',this.value)"><span class="range-val" id="scopeX6Val">50</span></div>
+            <span class="input-unit">/ 100</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x8</span> Scope</div>
+          <div class="field-input">
+            <div class="range-wrap"><input type="range" id="scopeX8" min="1" max="100" value="50" oninput="syncRange('scopeX8','scopeX8Val',this.value)"><span class="range-val" id="scopeX8Val">50</span></div>
+            <span class="input-unit">/ 100</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x15</span> Scope</div>
+          <div class="field-input">
+            <div class="range-wrap"><input type="range" id="scopeX15" min="1" max="100" value="50" oninput="syncRange('scopeX15','scopeX15Val',this.value)"><span class="range-val" id="scopeX15Val">50</span></div>
+            <span class="input-unit">/ 100</span>
+          </div>
+        </div>
+
       </div>
 
     </div>
