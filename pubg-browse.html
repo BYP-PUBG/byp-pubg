@@ -1008,8 +1008,20 @@ function initEffectCanvas(box, card, type) {
     const ctx = c.getContext('2d');
     c.width = card.offsetWidth||312; c.height = card.offsetHeight||220;
     if(type==='particle'){
-      const pts=Array.from({length:20},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
-      function dp(){ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(96,165,250,0.55)';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;});requestAnimationFrame(dp);}
+      const pts=Array.from({length:20},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*4+2,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+      function dp(){
+        ctx.clearRect(0,0,c.width,c.height);
+        pts.forEach(p=>{
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle='rgba(96,165,250,0.8)';ctx.fill();
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r*2,0,Math.PI*2);
+          ctx.fillStyle='rgba(96,165,250,0.15)';ctx.fill();
+          p.x+=p.vx;p.y+=p.vy;
+          if(p.x<0||p.x>c.width)p.vx*=-1;
+          if(p.y<0||p.y>c.height)p.vy*=-1;
+        });
+        requestAnimationFrame(dp);
+      }
       dp();
     } else if(type==='lightning'){
       let t=0;
