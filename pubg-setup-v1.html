@@ -1010,12 +1010,64 @@ input[type=range]::-webkit-slider-thumb:hover {
     </div>
   </div>
 
-  <!-- SECTION 6: PROFILE & SOCIAL -->
+  <!-- SECTION 6: GAMING GEAR -->
+  <div class="section" id="sec6gear">
+    <div class="section-header">
+      <div class="section-icon">🎧</div>
+      <div><div class="section-title-text">Gaming Gear</div></div>
+      <div class="section-num">06 / 07</div>
+    </div>
+    <div class="card">
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🎧</span> Headset</div>
+        <div class="field-input">
+          <input type="text" id="headset" placeholder="เช่น HyperX Cloud II, Logitech G Pro X"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">⌨️</span> Keyboard</div>
+        <div class="field-input">
+          <input type="text" id="keyboard" placeholder="เช่น Wooting 60HE, Leopold FC660M"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🪑</span> เก้าอี้</div>
+        <div class="field-input">
+          <input type="text" id="chair" placeholder="เช่น Secretlab Titan, DXRacer"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">🎙️</span> Microphone</div>
+        <div class="field-input">
+          <input type="text" id="microphone" placeholder="เช่น Blue Yeti, HyperX QuadCast"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label"><span class="lbl-icon">📷</span> Webcam</div>
+        <div class="field-input">
+          <input type="text" id="webcam" placeholder="เช่น Logitech C920, Elgato Facecam"
+            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 7: PROFILE & SOCIAL -->
   <div class="section" id="sec6">
     <div class="section-header">
       <div class="section-icon">🌐</div>
       <div><div class="section-title-text">โปรไฟล์ & โซเชียล</div></div>
-      <div class="section-num">06 / 06</div>
+      <div class="section-num">07 / 07</div>
     </div>
     <div class="card">
 
@@ -1226,6 +1278,11 @@ async function submitForm() {
     tiktok:    document.getElementById('socialTiktok').value || '',
     twitch:    document.getElementById('socialTwitch').value || '',
     discord:   document.getElementById('socialDiscord').value || '',
+    headset:   document.getElementById('headset').value || '',
+    keyboard:  document.getElementById('keyboard').value || '',
+    chair:     document.getElementById('chair').value || '',
+    microphone:document.getElementById('microphone').value || '',
+    webcam:    document.getElementById('webcam').value || '',
   };
 
   const summaryItems = [
@@ -1267,6 +1324,8 @@ async function submitForm() {
     avg_fps: data.avgFps, gfx: data.gfx, notes: data.notes,
     youtube: data.youtube, facebook: data.facebook,
     tiktok: data.tiktok, twitch: data.twitch, discord: data.discord,
+    headset: data.headset, keyboard: data.keyboard, chair: data.chair,
+    microphone: data.microphone, webcam: data.webcam,
     user_id: _currentUserId,
   };
 
@@ -1315,7 +1374,7 @@ updateProgress();
 
 // Scroll-based progress sync
 window.addEventListener('scroll', () => {
-  const sections = ['sec1','sec2','sec3','sec4','sec5','sec6'];
+  const sections = ['sec1','sec2','sec3','sec4','sec5','sec6gear','sec6'];
   let visible = 0;
   sections.forEach((id, i) => {
     const el = document.getElementById(id);
@@ -1371,6 +1430,11 @@ window.addEventListener('scroll', () => {
   set('socialTiktok',   existing.tiktok);
   set('socialTwitch',   existing.twitch);
   set('socialDiscord',  existing.discord);
+  set('headset',    existing.headset);
+  set('keyboard',   existing.keyboard);
+  set('chair',      existing.chair);
+  set('microphone', existing.microphone);
+  set('webcam',     existing.webcam);
 
   // โหลด avatar
   if (existing.avatar_url) {
