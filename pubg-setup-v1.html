@@ -1071,6 +1071,32 @@ input[type=range]::-webkit-slider-thumb:hover {
     </div>
     <div class="card">
 
+      <!-- Card Theme Selector -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">🎨</span> Card Theme</div>
+        <div class="field-input" style="padding:12px 20px;">
+          <div id="themeSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;">
+            <div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;">
+            ซื้อ theme เพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Effect Selector -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">✨</span> Card Effect</div>
+        <div class="field-input" style="padding:12px 20px;">
+          <div id="effectSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;">
+            <div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;">
+            ซื้อ effect เพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a>
+          </div>
+        </div>
+      </div>
+
       <!-- Avatar Upload -->
       <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
         <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
@@ -1231,6 +1257,88 @@ function previewAvatar(input) {
   reader.readAsDataURL(file);
 }
 
+// ===== THEME & EFFECT SELECTOR =====
+const ALL_THEMES = [
+  {id:'default',    name:'Default',   emoji:'🎮', free:true},
+  {id:'inferno',    name:'Inferno',   emoji:'🔥'},
+  {id:'storm',      name:'Storm',     emoji:'⚡'},
+  {id:'matrix',     name:'Matrix',    emoji:'💚'},
+  {id:'gold',       name:'Gold Elite',emoji:'👑'},
+  {id:'sakura',     name:'Sakura',    emoji:'🌸'},
+  {id:'8bit',       name:'8-Bit',     emoji:'🕹️'},
+  {id:'8bit-retro', name:'8-Bit Retro',emoji:'👾'},
+];
+const ALL_EFFECTS = [
+  {id:null,       name:'ไม่มี',      emoji:'⬜'},
+  {id:'glow',     name:'Glow',       emoji:'💫'},
+  {id:'particle', name:'Particle',   emoji:'✦'},
+  {id:'wave',     name:'Wave',       emoji:'🌊'},
+];
+
+let _selectedTheme = 'default';
+let _selectedEffect = null;
+
+async function loadThemeSelector(currentTheme, currentEffect, setupId) {
+  _selectedTheme = currentTheme || 'default';
+  _selectedEffect = currentEffect || null;
+
+  // โหลด approved orders ของ user
+  const { data: orders } = await _supa.from('orders')
+    .select('theme_id').eq('user_id', _currentUserId).eq('status', 'approved');
+  const owned = orders ? orders.map(o => o.theme_id) : [];
+
+  // Themes
+  const themeBox = document.getElementById('themeSelector');
+  if (themeBox) {
+    themeBox.innerHTML = ALL_THEMES
+      .filter(t => t.free || owned.includes(t.id))
+      .map(t => `
+        <button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
+          style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
+          border:1px solid ${_selectedTheme===t.id?'var(--gold)':'var(--border)'};
+          background:${_selectedTheme===t.id?'rgba(245,200,66,.1)':'transparent'};
+          color:${_selectedTheme===t.id?'var(--gold)':'var(--text2)'};">
+          ${t.emoji} ${t.name}
+        </button>`).join('');
+  }
+
+  // Effects
+  const effectBox = document.getElementById('effectSelector');
+  if (effectBox) {
+    effectBox.innerHTML = ALL_EFFECTS
+      .filter(e => e.id === null || owned.includes(e.id))
+      .map(e => `
+        <button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
+          style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
+          border:1px solid ${_selectedEffect===e.id?'var(--gold)':'var(--border)'};
+          background:${_selectedEffect===e.id?'rgba(245,200,66,.1)':'transparent'};
+          color:${_selectedEffect===e.id?'var(--gold)':'var(--text2)'};">
+          ${e.emoji} ${e.name}
+        </button>`).join('');
+  }
+}
+
+function selectCardTheme(id) {
+  _selectedTheme = id;
+  document.querySelectorAll('[id^="tbtn-"]').forEach(b => {
+    const isActive = b.id === 'tbtn-'+id;
+    b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
+    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
+    b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
+  });
+}
+
+function selectCardEffect(id) {
+  _selectedEffect = id;
+  document.querySelectorAll('[id^="ebtn-"]').forEach(b => {
+    const bid = b.id.replace('ebtn-','');
+    const isActive = (bid === 'none' && id === null) || bid === id;
+    b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
+    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
+    b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
+  });
+}
+
 // ===== GET CHIP VALUE =====
 function getChip(groupId) {
   const sel = document.querySelector('#' + groupId + ' .chip.selected');
@@ -1333,6 +1441,8 @@ async function submitForm() {
     tiktok: data.tiktok, twitch: data.twitch, discord: data.discord,
     headset: data.headset, keyboard: data.keyboard, chair: data.chair,
     microphone: data.microphone, webcam: data.webcam,
+    card_theme: _selectedTheme || 'default',
+    card_effect: _selectedEffect || null,
     user_id: _currentUserId,
   };
 
@@ -1493,7 +1603,29 @@ window.addEventListener('scroll', () => {
   selectChipByVal('osChips',      existing.os);
   selectChipByVal('gfxChips',     existing.gfx);
 
+  // โหลด theme & effect selector
+  await loadThemeSelector(existing.card_theme, existing.card_effect, existing.id);
+
   updateProgress();
+})();
+
+// โหลด theme selector สำหรับ user ใหม่ (ยังไม่มี setup)
+(async () => {
+  const { data: { session } } = await _supa.auth.getSession();
+  if (!session || _existingSetupId) return;
+  const { data: orders } = await _supa.from('orders')
+    .select('theme_id').eq('user_id', session.user.id).eq('status', 'approved');
+  const owned = orders ? orders.map(o => o.theme_id) : [];
+  const themeBox = document.getElementById('themeSelector');
+  const effectBox = document.getElementById('effectSelector');
+  if (themeBox) themeBox.innerHTML = ALL_THEMES.filter(t => t.free || owned.includes(t.id)).map(t =>
+    `<button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
+      style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${t.id==='default'?'var(--gold)':'var(--border)'};background:${t.id==='default'?'rgba(245,200,66,.1)':'transparent'};color:${t.id==='default'?'var(--gold)':'var(--text2)'};">
+      ${t.emoji} ${t.name}</button>`).join('');
+  if (effectBox) effectBox.innerHTML = ALL_EFFECTS.filter(e => e.id === null || owned.includes(e.id)).map(e =>
+    `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
+      style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${e.id===null?'var(--gold)':'var(--border)'};background:${e.id===null?'rgba(245,200,66,.1)':'transparent'};color:${e.id===null?'var(--gold)':'var(--text2)'};">
+      ${e.emoji} ${e.name}</button>`).join('');
 })();
 </script>
 </body>
