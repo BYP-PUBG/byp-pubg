@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — โปรไฟล์</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -13,19 +14,9 @@
   );
 </script>
 <style>
-:root {
-  --bg:#07080a; --bg2:#0e0f12; --surf:#131417; --surf2:#1a1b1f;
-  --border:#272830; --bord2:#32333e;
-  --gold:#f5c842; --golddim:rgba(245,200,66,0.08);
-  --text:#f0f1f5; --text2:#8e8f9e; --text3:#45464f;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Barlow','Noto Sans Thai',sans-serif;min-height:100vh;}
 
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:52px;background:rgba(13,14,18,0.95);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
-.nav-logo span{color:var(--gold);}
 .nav-links{display:flex;gap:4px;}
 .nav-link{padding:6px 14px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;}
 .nav-link:hover{color:var(--text);background:var(--surf2);}
@@ -102,7 +93,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
     <button class="nav-link" onclick="location.href='pubg-browse.html'">Browse</button>
     <button class="nav-link active">โปรไฟล์</button>
   </div>
-  <div id="navRight"></div>
 </nav>
 
 <div class="page" id="mainPage">
@@ -119,7 +109,7 @@ async function init() {
   // โหลด profile และ setup พร้อมกัน
   const [{ data: profile }, { data: setup }] = await Promise.all([
     _supa.from('profiles').select('role, created_at').eq('id', user.id).single(),
-    _supa.from('setups').select('*').eq('user_id', user.id).single(),
+    _supa.from('setups').select('*, avatar_url').eq('user_id', user.id).single(),
   ]);
 
   const role = profile?.role || 'user';
@@ -129,6 +119,10 @@ async function init() {
   const email = user.email || '—';
   const shortName = email.split('@')[0];
 
+  const avatarHtml = setup?.avatar_url
+    ? `<img src="${setup.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+    : (role === 'admin' ? '👑' : '🎮');
+
   document.getElementById('mainPage').innerHTML = `
 
     <!-- Account Info -->
@@ -136,7 +130,7 @@ async function init() {
     <div class="card gold">
       <div class="card-body">
         <div class="profile-header">
-          <div class="avatar">${role === 'admin' ? '👑' : '🎮'}</div>
+          <div class="avatar">${avatarHtml}</div>
           <div>
             <div class="profile-email">${email}</div>
             <div class="profile-role">${role === 'admin' ? 'ADMIN' : 'MEMBER'}</div>
