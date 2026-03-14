@@ -416,6 +416,7 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
     <button class="fchip" onclick="setFilter('NVIDIA',this)">NVIDIA</button>
     <button class="fchip" onclick="setFilter('AMD',this)">AMD GPU</button>
     <button class="fchip" onclick="setFilter('1000Hz',this)">1000Hz+</button>
+    <button class="fchip" onclick="setFilter('Verified',this)" style="border-color:rgba(34,197,94,0.4);color:#4ade80;">✓ Verified</button>
   </div>
 </div>
 
@@ -563,6 +564,7 @@ function applyFilters() {
     if (activeFilter==='NVIDIA')    pass = gpuB==='NVIDIA';
     if (activeFilter==='AMD')       pass = gpuB==='AMD';
     if (activeFilter==='1000Hz')    pass = ['1000Hz','2000Hz','4000Hz'].includes(hz);
+    if (activeFilter==='Verified')  pass = !!d.verified;
     if (q) pass = pass && [d.ign,d.mouse,d.gpuModel,d.cpuModel,d.grip].some(v=>(v||'').toLowerCase().includes(q));
     return pass;
   });
