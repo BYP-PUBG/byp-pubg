@@ -917,6 +917,7 @@ const PER_PAGE = 12;
 
 function mapRow(d) {
   return {
+    id:        d.id,
     ign:       d.ign,        height:    d.height,
     mouse:     d.mouse,      dpi:       d.dpi,
     hz:        d.hz,         grip:      d.grip,
@@ -932,7 +933,7 @@ function mapRow(d) {
     ram:       d.ram,        storage:   d.storage,
     os:        d.os,         avgFps:    d.avg_fps,
     gfx:       d.gfx,        notes:     d.notes,
-    timestamp: d.created_at,
+    timestamp: d.created_at, verified:  d.verified,
   };
 }
 
@@ -1251,7 +1252,7 @@ function renderPlayersTable() {
       const monShort = (d.monHz||'').replace('Hz','');
       return `
       <tr onclick="openModal(${idx})">
-        <td class="td-ign">${d.ign||'—'}</td>
+        <td class="td-ign">${d.ign||'—'} ${d.verified ? '✅' : ''}</td>
         <td class="td-mono td-gold">${d.dpi}</td>
         <td class="td-mono">${d.genSens}</td>
         <td class="td-mono">${d.adsSens}</td>
@@ -1261,7 +1262,8 @@ function renderPlayersTable() {
         <td class="td-mono">${(d.avgFps||'').replace(' FPS','')} <span class="td-dim">fps</span></td>
         <td class="td-dim">${padShort}</td>
         <td class="td-time">${timeAgo(d.timestamp)}</td>
-        <td onclick="event.stopPropagation()">
+        <td onclick="event.stopPropagation()" style="white-space:nowrap">
+          <button onclick="toggleVerify('${d.id}',${!!d.verified})" style="padding:3px 9px;border:1px solid ${d.verified?'rgba(34,197,94,.4)':'rgba(245,200,66,.3)'};border-radius:5px;background:transparent;color:${d.verified?'#86efac':'#f5c842'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:4px;" title="${d.verified?'ยกเลิก Verify':'Verify Player'}">${d.verified?'✅':'☑️'}</button>
           <button onclick="deleteSetup('${d.id}')" style="padding:3px 9px;border:1px solid rgba(239,68,68,.3);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>
         </td>
       </tr>`;
@@ -1396,6 +1398,17 @@ function exportCSV() {
       (payload) => { allData.unshift(mapRow(payload.new)); refresh(); })
     .subscribe();
 })();
+
+async function toggleVerify(id, current) {
+  const newVal = !current;
+  const { error } = await _supa.from('setups').update({ verified: newVal }).eq('id', id);
+  if (error) { alert('เกิดข้อผิดพลาด: ' + error.message); return; }
+  const item = allData.find(d => d.id === id);
+  if (item) item.verified = newVal;
+  const fi = filtered.find(d => d.id === id);
+  if (fi) fi.verified = newVal;
+  renderPlayersTable();
+}
 
 async function deleteSetup(id) {
   if (!confirm('ลบ Setup นี้ออกจากระบบ?')) return;
