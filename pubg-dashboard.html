@@ -1577,9 +1577,48 @@ async function deletePromo(id) {
 }
 
 async function setBadge(id, badge, current) {
-  const newVal = current ? null : badge; // toggle — ถ้ามีแล้วเอาออก
+  const newVal = current ? null : badge;
   const { error } = await _supa.from('setups').update({ badge: newVal }).eq('id', id);
   if (error) { alert('เกิดข้อผิดพลาด: ' + error.message); return; }
+
+  // หา setup_id ของ user นี้เพื่อ unlock theme
+  const setup = allData.find(d => d.id === id);
+  if (setup && newVal) {
+    // หา user_id จาก setup
+    const { data: s } = await _supa.from('setups').select('user_id').eq('id', id).single();
+    if (s) {
+      if (newVal === 'streamer') {
+        // Streamer ได้ Inferno + Sakura ฟรี
+        for (const [themeId, themeName] of [['inferno','Inferno'],['sakura','Sakura']]) {
+          const { data: exists } = await _supa.from('orders')
+            .select('id').eq('user_id', s.user_id).eq('theme_id', themeId).eq('status','approved').single();
+          if (!exists) {
+            await _supa.from('orders').insert([{
+              user_id: s.user_id, setup_id: id,
+              theme_id: themeId, theme_name: themeName,
+              amount: 0, status: 'approved', slip_url: null,
+            }]);
+          }
+        }
+        alert('✅ ให้ Streamer badge แล้ว + unlock Inferno & Sakura ฟรีให้แล้วครับ!');
+      } else if (newVal === 'pro') {
+        // Pro ได้ Inferno + Gold Elite ฟรี
+        for (const [themeId, themeName] of [['inferno','Inferno'],['gold','Gold Elite']]) {
+          const { data: exists } = await _supa.from('orders')
+            .select('id').eq('user_id', s.user_id).eq('theme_id', themeId).eq('status','approved').single();
+          if (!exists) {
+            await _supa.from('orders').insert([{
+              user_id: s.user_id, setup_id: id,
+              theme_id: themeId, theme_name: themeName,
+              amount: 0, status: 'approved', slip_url: null,
+            }]);
+          }
+        }
+        alert('✅ ให้ Pro badge แล้ว + unlock Inferno & Gold Elite ฟรีให้แล้วครับ!');
+      }
+    }
+  }
+
   const item = allData.find(d => d.id === id);
   if (item) item.badge = newVal;
   const fi = filtered.find(d => d.id === id);
