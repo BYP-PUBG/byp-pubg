@@ -540,7 +540,7 @@ function render(){
 
 function initParticleCanvas(box, card, color) {
   const c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   box.appendChild(c);
   setTimeout(()=>{
     const ctx=c.getContext('2d');
@@ -553,7 +553,7 @@ function initParticleCanvas(box, card, color) {
 
 function initLightningCanvas(box, card) {
   const c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   box.appendChild(c);
   setTimeout(()=>{
     const ctx=c.getContext('2d');
@@ -579,7 +579,7 @@ function initLightningCanvas(box, card) {
 
 function initRainCanvas(box, card) {
   const c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   box.appendChild(c);
   setTimeout(()=>{
     const ctx=c.getContext('2d');
@@ -597,7 +597,7 @@ function initRainCanvas(box, card) {
 
 function initFireCanvas(box, card) {
   const c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   box.appendChild(c);
   setTimeout(()=>{
     const ctx=c.getContext('2d');
@@ -619,7 +619,7 @@ function initFireCanvas(box, card) {
 
 function initStarsCanvas(box, card) {
   const c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   box.appendChild(c);
   setTimeout(()=>{
     const ctx=c.getContext('2d');
