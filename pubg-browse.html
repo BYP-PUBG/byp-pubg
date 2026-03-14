@@ -492,6 +492,7 @@ function mapRow(d) {
     tiktok: d.tiktok, twitch: d.twitch, discord: d.discord,
     scopeX2: d.scope_x2, scopeX3: d.scope_x3, scopeX4: d.scope_x4,
     scopeX6: d.scope_x6, scopeX8: d.scope_x8, scopeX15: d.scope_x15,
+    padY: d.pad_y,
   };
 }
 
@@ -856,10 +857,11 @@ function drawDesktop(canvasId, d, W, H) {
   const tableRight = cx + tw/2;
   const tableBot   = cy + td/2;
 
+  const padYOff = (+((d.padY||'0'))||0) * sc;
   let padLeft = cx + pw * 0.05;
-  padLeft = Math.min(padLeft, tableRight - pw - 4); // ไม่เลยขอบขวา
-  let padTop = cy - ph * 0.25;
-  padTop = Math.min(padTop, tableBot - ph - 4);     // ไม่เลยขอบล่าง
+  padLeft = Math.min(padLeft, tableRight - pw - 4);
+  let padTop = cy - ph * 0.25 + padYOff;
+  padTop = Math.min(padTop, tableBot - ph - 4);
 
   // Pad shadow
   ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.fillRect(padLeft+3,padTop+3,pw,ph);
