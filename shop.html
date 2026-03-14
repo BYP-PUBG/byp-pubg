@@ -63,8 +63,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 .err{color:#fca5a5;font-size:12px;margin-bottom:10px;text-align:center;display:none;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1px solid var(--bord2);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text);z-index:200;transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
-@keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(147,51,234,0)}50%{box-shadow:0 0 16px 4px rgba(147,51,234,.25)}}
+@keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(147,51,234,0)}50%{box-shadow:0 0 20px 6px rgba(147,51,234,.3)}}
 @keyframes wave{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes infernoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,69,0,0)}50%{box-shadow:0 0 20px 6px rgba(255,69,0,.25)}}
+@keyframes stormPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,0)}50%{box-shadow:0 0 20px 6px rgba(79,70,229,.3)}}
+.preview-sel-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
+.preview-sel-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,.08);}
+.preview-sel-btn:hover{border-color:var(--bord2);color:var(--text);}
 /* Theme colors */
 .tc-default{background:var(--surf);border:1px solid var(--border);}
 .tc-default .preview-ign{color:var(--text);}
@@ -137,8 +142,51 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 </div>
 <div class="page">
   <div class="sec-title" id="currentLabel">Theme ปัจจุบัน: กำลังโหลด...</div>
-  <div class="themes-grid" id="themesGrid"></div>
 
+  <!-- LIVE PREVIEW -->
+  <div style="background:var(--surf2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:32px;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;">🔍 Live Preview — ลองดูก่อนซื้อ</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+
+      <!-- Card Preview -->
+      <div>
+        <div id="liveCard" style="border-radius:12px;overflow:hidden;position:relative;transition:all .3s;">
+          <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;" id="liveHead">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div id="liveAvatar" style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;">🎮</div>
+              <div id="liveIgn" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;">—</div>
+            </div>
+          </div>
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border);">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);">
+              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="liveDpi" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">DPI</div></div>
+              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="liveSens" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">SENS</div></div>
+              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="livePad" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">PAD</div></div>
+              <div style="padding:8px 4px;text-align:center;"><div id="liveHz" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">HZ</div></div>
+            </div>
+          </div>
+          <div id="liveEffect" style="position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:12px;overflow:hidden;"></div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div>
+        <div style="margin-bottom:14px;">
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:8px;">เลือก Theme</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="previewThemeBtns"></div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:8px;">เลือก Effect</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="previewEffectBtns"></div>
+        </div>
+        <div id="previewBuyArea" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sec-title">🎨 Card Themes</div>
+  <div class="themes-grid" id="themesGrid"></div>
   <div class="sec-title" style="margin-top:8px;">✨ Animated Effects — ซื้อแยกได้เลย</div>
   <div class="themes-grid" id="effectsGrid"></div>
 </div>
@@ -193,11 +241,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 <script>
 const THEMES = [
   {id:'default',    name:'Default',      price:0,  emoji:'🎮'},
-  {id:'inferno',    name:'Inferno',       price:29, emoji:'🔥'},
-  {id:'storm',      name:'Storm',         price:29, emoji:'⚡'},
+  {id:'inferno',    name:'Inferno',       price:19, emoji:'🔥'},
+  {id:'storm',      name:'Storm',         price:19, emoji:'⚡'},
   {id:'matrix',     name:'Matrix',        price:39, emoji:'💚'},
   {id:'gold',       name:'Gold Elite',    price:49, emoji:'👑'},
-  {id:'sakura',     name:'Sakura',        price:29, emoji:'🌸'},
+  {id:'sakura',     name:'Sakura',        price:19, emoji:'🌸'},
   {id:'8bit',       name:'8-Bit Classic', price:49, emoji:'🕹️'},
   {id:'8bit-retro', name:'8-Bit Retro',   price:49, emoji:'👾'},
 ];
@@ -210,6 +258,105 @@ const EFFECTS = [
 
 let _cur='default', _curEffect=null, _pending=[], _pendingEffects=[], _uid=null, _sid=null;
 let _buyId=null, _buyName=null, _buyPrice=null, _slipFile=null, _buyType='theme';
+
+let _previewTheme = 'default';
+let _previewEffect = null;
+
+const THEME_STYLES = {
+  default:    { bg:'#131417', border:'#272830', ign:'#f0f1f5', val:'#f5c842', head:'#272830' },
+  inferno:    { bg:'#1a0a00', border:'#ff4500', ign:'#ffddcc', val:'#ff6b35', head:'rgba(255,69,0,.15)', anim:'infernoPulse 2s infinite' },
+  storm:      { bg:'#060b1a', border:'#4f46e5', ign:'#e0e7ff', val:'#818cf8', head:'rgba(79,70,229,.15)', anim:'stormPulse 2s infinite' },
+  matrix:     { bg:'#001a00', border:'#00ff41', ign:'#00ff41', val:'#00ff41', head:'rgba(0,255,65,.08)', ignFont:"'Courier New',monospace" },
+  gold:       { bg:'#0d0900', border:'#f5c842', ign:'#ffe680', val:'#f5c842', head:'rgba(245,200,66,.08)' },
+  sakura:     { bg:'#1a0a0f', border:'#f472b6', ign:'#fce7f3', val:'#f472b6', head:'rgba(244,114,182,.08)' },
+  '8bit':     { bg:'#0a0a1a', border:'#fff', ign:'#fff', val:'#ffe600', head:'rgba(255,255,255,.05)', ignFont:"'Press Start 2P',monospace", ignSize:'10px', valFont:"'Press Start 2P',monospace", valSize:'11px', borderWidth:'3px', radius:'0' },
+  '8bit-retro':{ bg:'#0d0020', border:'#cc44ff', ign:'#ee88ff', val:'#ee88ff', head:'rgba(204,68,255,.08)', ignFont:"'Press Start 2P',monospace", ignSize:'10px', valFont:"'Press Start 2P',monospace", valSize:'11px', borderWidth:'3px', radius:'0' },
+};
+
+function applyLivePreview() {
+  const card = document.getElementById('liveCard');
+  const st = THEME_STYLES[_previewTheme] || THEME_STYLES.default;
+
+  card.style.background = st.bg;
+  card.style.border = `${st.borderWidth||'1px'} solid ${st.border}`;
+  card.style.borderRadius = st.radius || '12px';
+  card.style.animation = st.anim || '';
+
+  const ign = document.getElementById('liveIgn');
+  ign.style.color = st.ign;
+  ign.style.fontFamily = st.ignFont || "'Barlow Condensed',sans-serif";
+  ign.style.fontSize = st.ignSize || '18px';
+
+  document.getElementById('liveHead').style.borderColor = st.border+'44';
+  document.getElementById('liveHead').style.background = st.head || 'transparent';
+
+  ['liveDpi','liveSens','livePad','liveHz'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.style.color = st.val;
+    if(st.valFont) el.style.fontFamily = st.valFont;
+    if(st.valSize) el.style.fontSize = st.valSize;
+  });
+
+  // Apply effect
+  const efBox = document.getElementById('liveEffect');
+  efBox.innerHTML = '';
+  efBox.style.animation = '';
+  if(_previewEffect === 'glow') {
+    card.style.animation = 'glowpulse 2s infinite';
+  } else if(_previewEffect === 'wave') {
+    efBox.innerHTML = `<div style="position:absolute;bottom:0;left:0;right:0;height:24px;overflow:hidden;">
+      <svg style="width:200%;animation:wave 3s linear infinite;" viewBox="0 0 300 24" preserveAspectRatio="none">
+        <path d="M0,12 Q37,3 75,12 Q112,21 150,12 Q187,3 225,12 Q262,21 300,12 L300,24 L0,24 Z" fill="#10b981" opacity="0.35"/>
+      </svg></div>`;
+  } else if(_previewEffect === 'particle') {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+    efBox.appendChild(canvas);
+    setTimeout(()=>{
+      const ctx = canvas.getContext('2d');
+      canvas.width = card.offsetWidth; canvas.height = card.offsetHeight;
+      const pts = Array.from({length:18},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+      function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(96,165,250,0.5)';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;});requestAnimationFrame(draw);}
+      draw();
+    },50);
+  }
+
+  // Update buy buttons
+  const buyArea = document.getElementById('previewBuyArea');
+  const isCurTheme = _previewTheme === _cur;
+  const isCurEffect = _previewEffect === _curEffect;
+  const th = THEMES.find(t=>t.id===_previewTheme);
+  const ef = EFFECTS.find(e=>e.id===_previewEffect);
+  let html = '';
+  if(th && th.price > 0 && !isCurTheme && !_pending.includes(_previewTheme)) {
+    html += `<button onclick="buyItem('theme','${th.id}','${th.name}',${th.price})" style="padding:10px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">ซื้อ ${th.name} ฿${th.price}</button>`;
+  } else if(th && th.price === 0 && !isCurTheme) {
+    html += `<button onclick="applyTheme('${th.id}')" style="padding:10px;border-radius:8px;border:none;background:var(--surf2);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;border:1px solid var(--bord2);">ใช้ ${th.name} (ฟรี)</button>`;
+  } else if(isCurTheme) {
+    html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">✓ ใช้ ${th?.name||'Default'} อยู่แล้ว</div>`;
+  }
+  if(ef && !isCurEffect && !_pendingEffects.includes(_previewEffect)) {
+    html += `<button onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})" style="padding:10px;border-radius:8px;border:none;background:${ef.color};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">ซื้อ ${ef.name} Effect ฿${ef.price}</button>`;
+  } else if(ef && isCurEffect) {
+    html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">✓ ใช้ ${ef.name} Effect อยู่แล้ว</div>`;
+  }
+  buyArea.innerHTML = html || `<div style="font-size:12px;color:var(--text3);">เลือก theme หรือ effect ที่ต้องการ</div>`;
+}
+
+function renderPreviewBtns() {
+  // Theme buttons
+  document.getElementById('previewThemeBtns').innerHTML = THEMES.map(th=>`
+    <button class="preview-sel-btn${_previewTheme===th.id?' active':''}" onclick="setPreviewTheme('${th.id}')">${th.emoji} ${th.name}</button>
+  `).join('');
+  // Effect buttons
+  document.getElementById('previewEffectBtns').innerHTML = `
+    <button class="preview-sel-btn${!_previewEffect?' active':''}" onclick="setPreviewEffect(null)">ไม่มี</button>
+    ${EFFECTS.map(ef=>`<button class="preview-sel-btn${_previewEffect===ef.id?' active':''}" onclick="setPreviewEffect('${ef.id}')" style="${_previewEffect===ef.id?'border-color:'+ef.color+';color:'+ef.color+';background:'+ef.color+'22;':''}">${ef.emoji} ${ef.name}</button>`).join('')}
+  `;
+}
+
+function setPreviewTheme(id) { _previewTheme=id; renderPreviewBtns(); applyLivePreview(); }
+function setPreviewEffect(id) { _previewEffect=id; renderPreviewBtns(); applyLivePreview(); }
 
 function toast(msg,d=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 
@@ -374,8 +521,21 @@ async function init(){
   const{data:{session}}=await _supa.auth.getSession();
   if(!session){window.location.href='login.html';return;}
   _uid=session.user.id;
-  const{data:s}=await _supa.from('setups').select('id,card_theme,card_effect,ign').eq('user_id',_uid).single();
-  if(s){_sid=s.id;_cur=s.card_theme||'default';_curEffect=s.card_effect||null;_previewIGN=s.ign||'YOUR IGN';}
+  const{data:s}=await _supa.from('setups').select('id,card_theme,card_effect,ign,dpi,gen_sens,pad,mon_hz,avatar_url').eq('user_id',_uid).single();
+  if(s){
+    _sid=s.id; _cur=s.card_theme||'default'; _curEffect=s.card_effect||null;
+    _previewIGN=s.ign||'YOUR IGN';
+    _previewTheme=_cur; _previewEffect=_curEffect;
+    // โหลด stats
+    document.getElementById('liveIgn').textContent = s.ign||'—';
+    document.getElementById('liveDpi').textContent  = s.dpi||'—';
+    document.getElementById('liveSens').textContent = s.gen_sens||'—';
+    document.getElementById('livePad').textContent  = (s.pad||'—').charAt(0);
+    document.getElementById('liveHz').textContent   = (s.mon_hz||'—').replace('Hz','');
+    if(s.avatar_url) {
+      document.getElementById('liveAvatar').innerHTML = `<img src="${s.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    }
+  }
   const{data:orders}=await _supa.from('orders').select('theme_id,theme_name').eq('user_id',_uid).eq('status','pending');
   if(orders){
     orders.forEach(o=>{
@@ -384,6 +544,8 @@ async function init(){
     });
   }
   document.getElementById('currentLabel').textContent='Theme ปัจจุบัน: '+(THEMES.find(t=>t.id===_cur)?.name||'Default');
+  renderPreviewBtns();
+  applyLivePreview();
   render();
 }
 init();
