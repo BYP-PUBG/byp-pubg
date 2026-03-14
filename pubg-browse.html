@@ -576,7 +576,7 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
   <div class="nav-links">
     <button class="nav-link active">Explore</button>
     <button class="nav-link" id="setupBtn" onclick="goToForm()">My Setup</button>
-    <a href="shop.html" class="nav-link" style="text-decoration:none;">🎨 Shop</a>
+    <a href="shop.html" class="nav-link" style="text-decoration:none;" onclick="if(!window._isLoggedIn){event.preventDefault();location.href='login.html?return=shop.html';}">🎨 Shop</a>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
@@ -1391,6 +1391,7 @@ async function renderAuthBtn() {
     // เช็ค role
     const { data: profile } = await _supa.from('profiles').select('role').eq('id', session.user.id).single();
     window._isAdmin = profile?.role === 'admin';
+    window._isLoggedIn = true;
 
     // เช็คว่ามี setup แล้วหรือยัง
     const { data: mySetup } = await _supa
@@ -1426,6 +1427,7 @@ async function renderAuthBtn() {
       </div>`;
   } else {
     window._isAdmin = false;
+    window._isLoggedIn = false;
     el.innerHTML = `<button onclick="location.href='login.html?return=pubg-browse.html'" style="padding:5px 14px;border:1px solid var(--gold);border-radius:6px;background:transparent;color:var(--gold);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='var(--gold)';this.style.color='#08090b'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">LOGIN</button>`;
   }
 }
