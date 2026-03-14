@@ -977,7 +977,7 @@ function openDetail(ign) {
         Invert: <strong style="color:var(--text2)">${d.invert||'—'}</strong> &nbsp;·&nbsp;
         Universal Scope: <strong style="color:var(--text2)">${d.univScope||'—'}</strong>
       </div>
-      ${d.univScope === 'Disable' ? `
+      ${d.univScope === 'Enable' ? `
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;">
         ${[['x2',d.scopeX2],['x3',d.scopeX3],['x4',d.scopeX4],['x6',d.scopeX6],['x8',d.scopeX8],['x15',d.scopeX15]].map(([label,val])=>`
         <div style="background:var(--surf2);border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center;">
