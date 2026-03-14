@@ -477,7 +477,7 @@ canvas.dv{
 @keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(147,51,234,0)}50%{box-shadow:0 0 20px 6px rgba(147,51,234,.25)}}
 @keyframes wavemove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .setup-card.effect-glow{animation:glowpulse 2s infinite;}
-.effect-wave-wrap{position:absolute;bottom:0;left:0;right:0;height:30px;overflow:hidden;pointer-events:none;z-index:0;}
+.effect-wave-wrap{position:absolute;bottom:0;left:0;right:0;height:40px;overflow:hidden;pointer-events:none;z-index:2;}
 .effect-wave-svg{width:200%;animation:wavemove 3s linear infinite;}
 .effect-particle-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
 .star { font-size:15px; cursor:pointer; color:var(--text3); transition:color .15s; line-height:1; }
@@ -862,7 +862,7 @@ function buildCard(d, i) {
   const monShort = (d.monHz||'').replace('Hz','');
   return `
   <div class="setup-card${d.cardTheme && d.cardTheme !== 'default' ? ' theme-'+d.cardTheme : ''}${d.cardEffect === 'glow' ? ' effect-glow' : ''}${d.cardEffect === 'fire' ? ' effect-fire' : ''}" onclick="openDetail('${escStr(d.ign)}')">
-    ${d.cardEffect === 'wave' ? `<div class="effect-wave-wrap"><svg class="effect-wave-svg" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/></svg></div>` : ''}
+    ${d.cardEffect === 'wave' ? `<div class="effect-wave-wrap"><svg class="effect-wave-svg" viewBox="0 0 300 40" preserveAspectRatio="none"><path d="M0,20 Q37,5 75,20 Q112,35 150,20 Q187,5 225,20 Q262,35 300,20 L300,40 L0,40 Z" fill="#10b981" opacity="0.45"/></svg></div>` : ''}
     ${d.cardTheme === 'space' ? `<canvas class="effect-particle-canvas" id="sp-${d.id}"></canvas>` : ''}
     ${d.cardTheme === 'horror' ? `<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center bottom,rgba(139,0,0,.25),transparent 70%);pointer-events:none;z-index:0;"></div>` : ''}
     ${d.cardTheme === 'dragon' ? `<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(251,146,60,.15),transparent 60%);pointer-events:none;z-index:0;"></div>` : ''}
@@ -1008,8 +1008,8 @@ function initEffectCanvas(box, card, type) {
     const ctx = c.getContext('2d');
     c.width = card.offsetWidth||312; c.height = card.offsetHeight||220;
     if(type==='particle'){
-      const pts=Array.from({length:15},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
-      function dp(){ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(96,165,250,0.45)';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;});requestAnimationFrame(dp);}
+      const pts=Array.from({length:20},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+      function dp(){ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(96,165,250,0.55)';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;});requestAnimationFrame(dp);}
       dp();
     } else if(type==='lightning'){
       let t=0;
@@ -1347,7 +1347,7 @@ function openDetail(ign) {
     const waveEl = document.createElement('div');
     waveEl.id = 'modalWave';
     waveEl.className = 'effect-wave-wrap';
-    waveEl.innerHTML = `<svg class="effect-wave-svg" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/></svg>`;
+    waveEl.innerHTML = `<svg class="effect-wave-svg" viewBox="0 0 300 40" preserveAspectRatio="none"><path d="M0,20 Q37,5 75,20 Q112,35 150,20 Q187,5 225,20 Q262,35 300,20 L300,40 L0,40 Z" fill="#10b981" opacity="0.45"/></svg>`;
     modal.appendChild(waveEl);
   } else if (['particle','lightning','rain','stars'].includes(d.cardEffect)) {
     const box = {appendChild: el => { el.id='modalEffect'; modal.appendChild(el); }};
