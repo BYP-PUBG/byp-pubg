@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BYP : Build Your Play — PUBG Setup</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<title>BYP : Build Your Play — Browse Setups</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -14,1604 +13,1383 @@
   );
 </script>
 <style>
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
+:root {
+  --bg:     #07080a;
+  --bg2:    #0e0f12;
+  --surf:   #131417;
+  --surf2:  #1a1b1f;
+  --surf3:  #21222a;
+  --border: #272830;
+  --bord2:  #32333e;
+  --gold:   #f5c842;
+  --goldf:  rgba(245,200,66,0.10);
+  --golddim:rgba(245,200,66,0.08);
+  --red:    #ef4444;
+  --green:  #22c55e;
+  --blue:   #3b82f6;
+  --purple: #a855f7;
+  --text:   #f0f1f5;
+  --text2:  #8e8f9e;
+  --text3:  #45464f;
+  --r:      10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow','Noto Sans Thai',sans-serif;
+  min-height:100vh;
 }
 
-/* Subtle noise texture overlay */
-body::after {
-  content:'';
-  position:fixed; inset:0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:0; opacity:0.4;
+/* noise overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+/* ===== NAV ===== */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:52px;
+  background:rgba(13,14,18,0.97);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:100;
 }
-
-/* ===== HEADER ===== */
-header {
-  position: relative;
-  padding: 0;
-  overflow: hidden;
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
+.nav-logo span{color:var(--gold);}
+.nav-link,.nav-item{
+  padding:6px 14px;border-radius:6px;border:none;
+  background:transparent;color:var(--text2);
+  font-size:12px;font-weight:600;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;
+  transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
 }
-
-.hero {
-  background: linear-gradient(135deg, #0f0f0f 0%, #1a1209 50%, #0f0f0f 100%);
-  border-bottom: 1px solid var(--border);
-  padding: 40px 0 32px;
-  position: relative;
+.nav-link:hover,.nav-item:hover{color:var(--text);background:var(--surf2);}
+.nav-link.active,.nav-item.active{color:var(--gold);}
+.nav-back{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text2);text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;
+  padding:5px 12px;border:1px solid var(--border);border-radius:6px;
+  transition:all .15s;
 }
+.nav-back:hover{color:var(--gold);border-color:var(--gold);}
 
-.hero::before {
-  content:'';
-  position:absolute; inset:0;
-  background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(245,200,66,0.07) 0%, transparent 70%);
+/* ===== FORM ELEMENTS ===== */
+.form-group{margin-bottom:16px;}
+.form-label{
+  display:block;font-size:11px;color:var(--text2);
+  letter-spacing:1.5px;text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;margin-bottom:7px;
 }
-
-.hero-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
+.form-input{
+  width:100%;background:var(--surf2);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-size:14px;padding:11px 14px;
+  outline:none;font-family:'Barlow','Noto Sans Thai',sans-serif;
+  transition:border-color .2s;
 }
+.form-input:focus{border-color:var(--gold);}
+.form-input::placeholder{color:var(--text3);}
 
-.version-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(245,200,66,0.1);
-  border: 1px solid rgba(245,200,66,0.25);
-  border-radius: 4px;
-  padding: 3px 10px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 14px;
+/* ===== BUTTONS ===== */
+.btn-primary,.btn-gold{
+  display:inline-block;padding:12px 24px;border-radius:8px;border:none;
+  background:var(--gold);color:#08090b;
+  font-size:14px;font-weight:700;letter-spacing:.5px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;
+  transition:all .15s;text-decoration:none;
 }
-
-.hero-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(36px, 6vw, 64px);
-  font-weight: 800;
-  letter-spacing: -1px;
-  line-height: 1;
-  color: var(--text);
-  margin-bottom: 10px;
+.btn-primary:hover,.btn-gold:hover{background:#e8a820;transform:translateY(-1px);}
+.btn-primary:active,.btn-gold:active{transform:translateY(0);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-outline{
+  display:inline-block;padding:10px 22px;background:transparent;
+  color:var(--text2);border-radius:8px;text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.5px;border:1px solid var(--bord2);cursor:pointer;transition:all .15s;
 }
+.btn-outline:hover{color:var(--gold);border-color:var(--gold);}
 
-.hero-title span { color: var(--gold); }
-
-.hero-sub {
-  color: var(--text2);
-  font-size: 15px;
-  font-weight: 400;
-  max-width: 480px;
-  line-height: 1.6;
+/* ===== MESSAGE / TOAST ===== */
+.msg{padding:10px 14px;border-radius:7px;font-size:13px;margin-bottom:16px;display:none;}
+.msg.show{display:block;}
+.msg.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.msg.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;}
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--surf);border:1px solid var(--bord2);border-radius:8px;
+  padding:12px 20px;font-size:13px;color:var(--text);
+  z-index:200;transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;
 }
+.toast.show{opacity:1;}
 
-/* Progress bar */
-.progress-bar-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 28px;
+/* ===== SPINNER ===== */
+.spinner{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(0,0,0,.3);border-top-color:#08090b;
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:6px;
 }
-
-.steps {
-  display: flex;
-  gap: 4px;
-}
-
-.step-dot {
-  width: 28px; height: 4px;
-  border-radius: 2px;
-  background: var(--border2);
-  transition: background 0.3s;
-}
-.step-dot.done { background: var(--gold); }
-.step-dot.active { background: var(--gold); opacity: 0.5; }
-
-.progress-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--text3);
-  text-transform: uppercase;
-}
-.progress-label span { color: var(--gold); }
-
-/* ===== MAIN LAYOUT ===== */
-main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 24px 80px;
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== SECTION ===== */
-.section {
-  margin-bottom: 40px;
-  animation: fadeUp 0.5s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(16px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-.section:nth-child(2) { animation-delay: 0.05s; }
-.section:nth-child(3) { animation-delay: 0.10s; }
-.section:nth-child(4) { animation-delay: 0.15s; }
-.section:nth-child(5) { animation-delay: 0.20s; }
-
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
-}
-
-.section-icon {
-  width: 36px; height: 36px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.section-title-text {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.section-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text3);
-  margin-left: auto;
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ===== CARD ===== */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0;
-  overflow: hidden;
+.card{background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.card::before{content:'';display:block;height:3px;}
+.card.gold::before{background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.15));}
+.card.purple::before{background:linear-gradient(90deg,#6366f1,rgba(99,102,241,0.15));}
+.card.green::before{background:linear-gradient(90deg,#22c55e,rgba(34,197,94,0.15));}
+.card-body{padding:24px;}
+
+/* ===== SECTION TITLE ===== */
+.sec-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:12px;
 }
 
-/* ===== FIELD ROWS ===== */
-.field-row {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  align-items: center;
-  min-height: 52px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
+
+/* ===== TOPNAV ===== */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:52px;
+  background:rgba(13,14,18,0.97);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(12px);
+  gap:8px;
+}
+.nav-links{display:flex;gap:2px;flex-shrink:0;}
+.nav-link{
+  padding:5px 10px;border-radius:6px;
+  font-size:12px;font-weight:600;
+  color:var(--text2);cursor:pointer;border:none;background:none;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;transition:all .15s;
+  white-space:nowrap;
+}
+.nav-link:hover{color:var(--text);background:var(--surf2);}
+.nav-link.active{color:var(--gold);background:var(--goldf);}
+.nav-count{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;letter-spacing:1px;color:var(--text3);
+  white-space:nowrap;
+}
+.nav-count span{color:var(--gold);}
+@media(max-width:600px){
+  .nav-logo span{ display:none; }
+  .nav-count{ display:none; }
 }
 
-.field-row:last-child { border-bottom: none; }
-.field-row:hover { background: rgba(255,255,255,0.015); }
+/* ===== HERO ===== */
+.hero{
+  padding:48px 32px 36px;
+  background:linear-gradient(180deg,rgba(245,200,66,.04) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.hero-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(32px,5vw,56px);font-weight:900;
+  letter-spacing:-1px;line-height:1;
+  color:var(--text);margin-bottom:10px;
+}
+.hero-title span{color:var(--gold);}
+.hero-sub{color:var(--text2);font-size:15px;max-width:500px;margin:0 auto 28px;line-height:1.6;}
 
-.field-label {
-  padding: 12px 20px;
-  font-size: 14px;
-  color: var(--text2);
-  font-weight: 500;
-  border-right: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 52px;
+/* Search bar */
+.search-wrap{
+  display:flex;gap:10px;max-width:580px;margin:0 auto;
+  align-items:center;
+}
+.search-box{
+  flex:1;display:flex;align-items:center;gap:10px;
+  background:var(--surf2);border:1px solid var(--bord2);
+  border-radius:10px;padding:10px 16px;
+  transition:border-color .2s;
+}
+.search-box:focus-within{border-color:var(--gold);}
+.search-icon{color:var(--text3);font-size:14px;}
+.search-box input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-size:14px;font-family:'Barlow','Noto Sans Thai',sans-serif;
+}
+.search-box input::placeholder{color:var(--text3);}
+
+.sort-select{
+  background:var(--surf2);border:1px solid var(--bord2);
+  border-radius:8px;padding:10px 12px;
+  color:var(--text2);font-size:13px;
+  font-family:'Barlow',sans-serif;outline:none;cursor:pointer;
+  transition:border-color .2s;
+}
+.sort-select:focus{border-color:var(--gold);}
+.sort-select option{background:var(--surf3);}
+
+/* Filter chips */
+.filter-row{
+  display:flex;gap:8px;justify-content:center;
+  flex-wrap:wrap;margin-top:16px;
+}
+.fchip{
+  padding:5px 14px;border-radius:20px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text2);font-size:12px;font-weight:500;
+  cursor:pointer;font-family:'Barlow',sans-serif;
+  transition:all .15s;white-space:nowrap;
+}
+.fchip:hover{border-color:var(--gold);color:var(--text);}
+.fchip.on{background:var(--goldf);border-color:rgba(245,200,66,.4);color:var(--gold);font-weight:600;}
+
+/* ===== GRID ===== */
+.page-wrap{max-width:1200px;margin:0 auto;padding:32px 24px 80px;}
+
+.results-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;font-size:13px;color:var(--text3);
+}
+.results-bar strong{color:var(--text2);}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:18px;
 }
 
-.field-label .lbl-icon { font-size: 13px; opacity: 0.7; }
+/* ===== SETUP CARD ===== */
+.setup-card{
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  cursor:pointer;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+  position:relative;
+}
+.setup-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0));
+  opacity:0;transition:opacity .2s;
+}
+.setup-card:hover{
+  border-color:rgba(245,200,66,.35);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.4);
+}
+.setup-card:hover::before{opacity:1;}
 
-.field-input {
-  padding: 8px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Card header */
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 10px;
+  border-bottom:1px solid var(--border);
+}
+.card-ign{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:800;letter-spacing:.3px;
+  color:var(--text);
+}
+.card-time{font-size:11px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;}
+
+/* Desktop 2D view */
+.desktop-view{
+  padding:12px 14px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+}
+canvas.dv{
+  display:block;width:100%;border-radius:6px;
+  background:#0a0b0e;
 }
 
-/* inputs */
-input[type=text],
-input[type=number],
-select,
-textarea {
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  color: var(--text);
-  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
-  font-size: 14px;
-  padding: 6px 10px;
-  outline: none;
-  transition: all 0.2s;
-  width: 100%;
+/* Stats row */
+.card-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--border);
+}
+.cstat{
+  padding:10px 8px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.cstat:last-child{border-right:none;}
+.cstat-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:19px;font-weight:800;color:var(--gold);
+  line-height:1;
+}
+.cstat-lbl{font-size:9px;color:var(--text3);margin-top:3px;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
+
+/* PUBG sens */
+.sens-strip{
+  display:flex;gap:0;
+  border-bottom:1px solid var(--border);
+}
+.sblk{
+  flex:1;padding:8px 6px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.sblk:last-child{border-right:none;}
+.sblk-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:700;color:var(--text);line-height:1;
+}
+.sblk-lbl{font-size:8px;color:var(--text3);margin-top:2px;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
+
+/* Card footer */
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;
+}
+.foot-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{
+  padding:2px 8px;border-radius:4px;
+  font-size:10px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;letter-spacing:.5px;
+}
+.t-grip-Palm{background:rgba(59,130,246,.14);color:#60a5fa;}
+.t-grip-Claw{background:rgba(168,85,247,.14);color:#c084fc;}
+.t-grip-Fingertip{background:rgba(34,197,94,.14);color:#4ade80;}
+.t-nvidia{background:rgba(118,185,0,.14);color:#84cc16;}
+.t-amd{background:rgba(239,68,68,.14);color:#f87171;}
+.t-intel{background:rgba(59,130,246,.14);color:#60a5fa;}
+.t-fps{background:rgba(245,200,66,.1);color:var(--gold);}
+
+.foot-arrow{
+  font-size:16px;color:var(--text3);
+  transition:color .15s,transform .15s;
+}
+.setup-card:hover .foot-arrow{color:var(--gold);transform:translateX(3px);}
+
+/* ===== CARD THEMES ===== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.setup-card.theme-inferno { background:#1a0a00; border-color:#ff4500; }
+.setup-card.theme-inferno .card-head { border-color:rgba(255,69,0,.3); }
+.setup-card.theme-inferno .card-ign { color:#ffddcc; }
+.setup-card.theme-inferno .cstat-val { color:#ff6b35; }
+.setup-card.theme-inferno .desktop-view,.setup-card.theme-inferno .card-stats,.setup-card.theme-inferno .sens-strip { background:rgba(255,69,0,.04); border-color:rgba(255,69,0,.2); }
+.setup-card.theme-inferno .cstat,.setup-card.theme-inferno .sblk { border-color:rgba(255,69,0,.2); }
+.setup-card.theme-inferno .card-foot { border-color:rgba(255,69,0,.2); }
+.setup-card.theme-inferno::before { background:linear-gradient(90deg,#ff4500,rgba(255,69,0,0)); opacity:1; }
+.setup-card.theme-inferno:hover { border-color:#ff6b35; box-shadow:0 12px 32px rgba(255,69,0,.2); }
+
+.setup-card.theme-storm { background:#060b1a; border-color:#4f46e5; }
+.setup-card.theme-storm .card-head { border-color:rgba(79,70,229,.3); }
+.setup-card.theme-storm .card-ign { color:#e0e7ff; }
+.setup-card.theme-storm .cstat-val { color:#818cf8; }
+.setup-card.theme-storm .desktop-view,.setup-card.theme-storm .card-stats,.setup-card.theme-storm .sens-strip { background:rgba(79,70,229,.04); border-color:rgba(79,70,229,.2); }
+.setup-card.theme-storm .cstat,.setup-card.theme-storm .sblk { border-color:rgba(79,70,229,.2); }
+.setup-card.theme-storm .card-foot { border-color:rgba(79,70,229,.2); }
+.setup-card.theme-storm::before { background:linear-gradient(90deg,#4f46e5,rgba(79,70,229,0)); opacity:1; }
+.setup-card.theme-storm:hover { border-color:#818cf8; box-shadow:0 12px 32px rgba(79,70,229,.25); }
+
+.setup-card.theme-matrix { background:#001a00; border-color:#00ff41; }
+.setup-card.theme-matrix .card-head { border-color:rgba(0,255,65,.3); }
+.setup-card.theme-matrix .card-ign { color:#00ff41; font-family:'Courier New',monospace; }
+.setup-card.theme-matrix .cstat-val { color:#00ff41; }
+.setup-card.theme-matrix .desktop-view,.setup-card.theme-matrix .card-stats,.setup-card.theme-matrix .sens-strip { background:rgba(0,255,65,.03); border-color:rgba(0,255,65,.15); }
+.setup-card.theme-matrix .cstat,.setup-card.theme-matrix .sblk { border-color:rgba(0,255,65,.15); }
+.setup-card.theme-matrix .card-foot { border-color:rgba(0,255,65,.15); }
+.setup-card.theme-matrix::before { background:linear-gradient(90deg,#00ff41,rgba(0,255,65,0)); opacity:1; }
+.setup-card.theme-matrix:hover { border-color:#00ff41; box-shadow:0 12px 32px rgba(0,255,65,.2); }
+
+.setup-card.theme-gold { background:#0d0900; border-color:#f5c842; }
+.setup-card.theme-gold .card-head { border-color:rgba(245,200,66,.3); }
+.setup-card.theme-gold .card-ign { color:#ffe680; }
+.setup-card.theme-gold .cstat-val { color:#f5c842; }
+.setup-card.theme-gold .desktop-view,.setup-card.theme-gold .card-stats,.setup-card.theme-gold .sens-strip { background:rgba(245,200,66,.04); border-color:rgba(245,200,66,.2); }
+.setup-card.theme-gold .cstat,.setup-card.theme-gold .sblk { border-color:rgba(245,200,66,.2); }
+.setup-card.theme-gold .card-foot { border-color:rgba(245,200,66,.2); }
+.setup-card.theme-gold::before { background:linear-gradient(90deg,#f5c842,rgba(245,200,66,0)); opacity:1; }
+.setup-card.theme-gold:hover { border-color:#f5c842; box-shadow:0 12px 32px rgba(245,200,66,.2); }
+
+.setup-card.theme-sakura { background:#1a0a0f; border-color:#f472b6; }
+.setup-card.theme-sakura .card-head { border-color:rgba(244,114,182,.3); }
+.setup-card.theme-sakura .card-ign { color:#fce7f3; }
+.setup-card.theme-sakura .cstat-val { color:#f472b6; }
+.setup-card.theme-sakura .desktop-view,.setup-card.theme-sakura .card-stats,.setup-card.theme-sakura .sens-strip { background:rgba(244,114,182,.04); border-color:rgba(244,114,182,.2); }
+.setup-card.theme-sakura .cstat,.setup-card.theme-sakura .sblk { border-color:rgba(244,114,182,.2); }
+.setup-card.theme-sakura .card-foot { border-color:rgba(244,114,182,.2); }
+.setup-card.theme-sakura::before { background:linear-gradient(90deg,#f472b6,rgba(244,114,182,0)); opacity:1; }
+.setup-card.theme-sakura:hover { border-color:#f472b6; box-shadow:0 12px 32px rgba(244,114,182,.2); }
+
+.setup-card.theme-8bit { background:#0a0a1a; border:3px solid #fff; border-radius:0 !important; box-shadow:4px 4px 0 rgba(255,255,255,.3); }
+.setup-card.theme-8bit .card-head { border-color:rgba(255,255,255,.2); }
+.setup-card.theme-8bit .card-ign { font-family:'Press Start 2P',monospace; font-size:10px; color:#fff; text-shadow:2px 2px 0 #000; }
+.setup-card.theme-8bit .cstat-val { font-family:'Press Start 2P',monospace; font-size:11px; color:#ffe600; }
+.setup-card.theme-8bit .cstat-lbl,.setup-card.theme-8bit .sblk-lbl { font-family:'Press Start 2P',monospace; font-size:5px; }
+.setup-card.theme-8bit .sblk-val { font-family:'Press Start 2P',monospace; font-size:10px; }
+.setup-card.theme-8bit .desktop-view,.setup-card.theme-8bit .card-stats,.setup-card.theme-8bit .sens-strip { border-color:rgba(255,255,255,.15); }
+.setup-card.theme-8bit .cstat,.setup-card.theme-8bit .sblk { border-color:rgba(255,255,255,.15); }
+.setup-card.theme-8bit::before { display:none; }
+.setup-card.theme-8bit:hover { border-color:#ffe600; box-shadow:4px 4px 0 rgba(255,230,0,.5); transform:translate(-2px,-2px); }
+
+.setup-card.theme-8bit-retro { background:#0d0020; border:3px solid #cc44ff; border-radius:0 !important; box-shadow:4px 4px 0 rgba(204,68,255,.3); }
+.setup-card.theme-8bit-retro .card-head { border-color:rgba(204,68,255,.3); }
+.setup-card.theme-8bit-retro .card-ign { font-family:'Press Start 2P',monospace; font-size:10px; color:#ee88ff; text-shadow:2px 2px 0 #000; }
+.setup-card.theme-8bit-retro .cstat-val { font-family:'Press Start 2P',monospace; font-size:11px; color:#ee88ff; }
+.setup-card.theme-8bit-retro .cstat-lbl,.setup-card.theme-8bit-retro .sblk-lbl { font-family:'Press Start 2P',monospace; font-size:5px; color:#884499; }
+.setup-card.theme-8bit-retro .sblk-val { font-family:'Press Start 2P',monospace; font-size:10px; color:#ee88ff; }
+.setup-card.theme-8bit-retro .desktop-view,.setup-card.theme-8bit-retro .card-stats,.setup-card.theme-8bit-retro .sens-strip { border-color:rgba(204,68,255,.2); }
+.setup-card.theme-8bit-retro .cstat,.setup-card.theme-8bit-retro .sblk { border-color:rgba(204,68,255,.2); }
+.setup-card.theme-8bit-retro::before { display:none; }
+.setup-card.theme-8bit-retro:hover { border-color:#ee88ff; box-shadow:4px 4px 0 rgba(238,136,255,.4); transform:translate(-2px,-2px); }
+
+/* ===== DETAIL MODAL THEMES ===== */
+.detail-modal.theme-inferno { background:#1a0a00; border-color:#ff4500; }
+.detail-modal.theme-inferno .dm-ign { color:#ffddcc; }
+.detail-modal.theme-inferno .dm-head { border-color:rgba(255,69,0,.3); background:rgba(255,69,0,.06); }
+.detail-modal.theme-inferno .dm-sec-title { color:#ff9966; }
+.detail-modal.theme-inferno .dmf { background:rgba(255,69,0,.08); border-color:rgba(255,69,0,.2); }
+.detail-modal.theme-inferno .dmsbox { background:rgba(255,69,0,.1); border-color:rgba(255,69,0,.2); }
+.detail-modal.theme-inferno .dmsbox-val { color:#ff6b35; }
+
+.detail-modal.theme-storm { background:#060b1a; border-color:#4f46e5; }
+.detail-modal.theme-storm .dm-ign { color:#e0e7ff; }
+.detail-modal.theme-storm .dm-head { border-color:rgba(79,70,229,.3); background:rgba(79,70,229,.06); }
+.detail-modal.theme-storm .dm-sec-title { color:#a5b4fc; }
+.detail-modal.theme-storm .dmf { background:rgba(79,70,229,.08); border-color:rgba(79,70,229,.2); }
+.detail-modal.theme-storm .dmsbox { background:rgba(79,70,229,.1); border-color:rgba(79,70,229,.2); }
+.detail-modal.theme-storm .dmsbox-val { color:#818cf8; }
+
+.detail-modal.theme-matrix { background:#001a00; border-color:#00ff41; }
+.detail-modal.theme-matrix .dm-ign { color:#00ff41; font-family:'Courier New',monospace; }
+.detail-modal.theme-matrix .dm-head { border-color:rgba(0,255,65,.3); }
+.detail-modal.theme-matrix .dm-sec-title { color:#00aa2b; }
+.detail-modal.theme-matrix .dmf { background:rgba(0,255,65,.05); border-color:rgba(0,255,65,.15); }
+.detail-modal.theme-matrix .dmsbox { background:rgba(0,255,65,.08); }
+.detail-modal.theme-matrix .dmsbox-val { color:#00ff41; }
+
+.detail-modal.theme-gold { background:#0d0900; border-color:#f5c842; }
+.detail-modal.theme-gold .dm-ign { color:#ffe680; }
+.detail-modal.theme-gold .dm-head { border-color:rgba(245,200,66,.3); }
+.detail-modal.theme-gold .dm-sec-title { color:#c9a227; }
+.detail-modal.theme-gold .dmf { background:rgba(245,200,66,.06); border-color:rgba(245,200,66,.2); }
+.detail-modal.theme-gold .dmsbox { background:rgba(245,200,66,.08); }
+.detail-modal.theme-gold .dmsbox-val { color:#f5c842; }
+
+.detail-modal.theme-sakura { background:#1a0a0f; border-color:#f472b6; }
+.detail-modal.theme-sakura .dm-ign { color:#fce7f3; }
+.detail-modal.theme-sakura .dm-head { border-color:rgba(244,114,182,.3); }
+.detail-modal.theme-sakura .dm-sec-title { color:#f9a8d4; }
+.detail-modal.theme-sakura .dmf { background:rgba(244,114,182,.06); border-color:rgba(244,114,182,.2); }
+.detail-modal.theme-sakura .dmsbox { background:rgba(244,114,182,.08); }
+.detail-modal.theme-sakura .dmsbox-val { color:#f472b6; }
+
+.detail-modal.theme-8bit { background:#0a0a1a; border:3px solid #fff; border-radius:0 !important; }
+.detail-modal.theme-8bit .dm-ign { font-family:'Press Start 2P',monospace; font-size:13px; color:#fff; text-shadow:2px 2px 0 #000; }
+.detail-modal.theme-8bit .dm-head { border-color:rgba(255,255,255,.15); }
+.detail-modal.theme-8bit .dm-sec-title { font-family:'Press Start 2P',monospace; font-size:7px; color:#ffe600; letter-spacing:1px; }
+.detail-modal.theme-8bit .dmf { background:#000; border:2px solid rgba(255,255,255,.3); border-radius:0; }
+.detail-modal.theme-8bit .dmsbox { background:#000; border:2px solid #fff; border-radius:0; }
+.detail-modal.theme-8bit .dmsbox-val { font-family:'Press Start 2P',monospace; font-size:10px; color:#ffe600; }
+
+.detail-modal.theme-8bit-retro { background:#0d0020; border:3px solid #cc44ff; border-radius:0 !important; }
+.detail-modal.theme-8bit-retro .dm-ign { font-family:'Press Start 2P',monospace; font-size:13px; color:#ee88ff; text-shadow:2px 2px 0 #000; }
+.detail-modal.theme-8bit-retro .dm-head { border-color:rgba(204,68,255,.3); }
+.detail-modal.theme-8bit-retro .dm-sec-title { font-family:'Press Start 2P',monospace; font-size:7px; color:#cc44ff; letter-spacing:1px; }
+.detail-modal.theme-8bit-retro .dmf { background:#000; border:2px solid rgba(204,68,255,.4); border-radius:0; }
+.detail-modal.theme-8bit-retro .dmsbox { background:#000; border:2px solid #cc44ff; border-radius:0; }
+.detail-modal.theme-8bit-retro .dmsbox-val { font-family:'Press Start 2P',monospace; font-size:10px; color:#ee88ff; }
+
+.detail-modal.effect-glow { animation:glowpulse 2s infinite; }
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-t{font-family:'Barlow Condensed',sans-serif;font-size:20px;margin-bottom:8px;color:var(--text2);}
+
+/* Load more */
+.load-more-wrap{text-align:center;margin-top:32px;}
+.btn-more{
+  padding:12px 36px;border-radius:8px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text2);font-size:14px;font-weight:600;
+  cursor:pointer;font-family:'Barlow',sans-serif;
+  transition:all .2s;
+}
+.btn-more:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ===== DETAIL OVERLAY ===== */
+.overlay{
+  display:none;position:fixed;inset:0;z-index:50;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;
+  padding:20px;overflow:hidden;
+}
+.overlay.show{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+
+@keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(147,51,234,0)}50%{box-shadow:0 0 20px 6px rgba(147,51,234,.25)}}
+@keyframes wavemove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.setup-card.effect-glow{animation:glowpulse 2s infinite;}
+.effect-wave-wrap{position:absolute;bottom:0;left:0;right:0;height:30px;overflow:hidden;pointer-events:none;z-index:0;}
+.effect-wave-svg{width:200%;animation:wavemove 3s linear infinite;}
+.effect-particle-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.star { font-size:15px; cursor:pointer; color:var(--text3); transition:color .15s; line-height:1; }
+.star.on { color:var(--gold); }
+.star:hover, .star:hover ~ .star { color:var(--gold); }
+.star-row:hover .star { color:var(--gold); }
+.star-row .star:hover ~ .star { color:var(--text3); }
+.star-count { font-size:10px; color:var(--text2); font-family:'Barlow Condensed',sans-serif; margin-left:2px; }
+.dm-star-row { display:flex; align-items:center; gap:4px; margin-bottom:16px; }
+.dm-star { font-size:22px; cursor:pointer; color:var(--text3); transition:color .15s; }
+.dm-star.on { color:var(--gold); }
+.dm-star-count { font-size:13px; color:var(--text2); font-family:'Barlow Condensed',sans-serif; margin-left:6px; }
+.detail-modal{
+  background:var(--surf);
+  border:1px solid var(--bord2);
+  border-radius:14px;
+  width:100%;max-width:720px;
+  height:88vh;
+  overflow-y:auto;
+  overscroll-behavior:contain;
 }
 
-input[type=text]:hover, input[type=number]:hover, select:hover {
-  border-color: var(--border2);
-  background: var(--bg2);
+.dm-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:22px 26px 18px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--surf);z-index:1;
 }
-
-input[type=text]:focus, input[type=number]:focus, select:focus {
-  border-color: var(--gold);
-  background: var(--bg2);
-  box-shadow: 0 0 0 2px rgba(245,200,66,0.08);
+.dm-ign{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:900;color:var(--gold);letter-spacing:.5px;
 }
-
-select option { background: var(--surface2); color: var(--text); }
-
-.input-unit {
-  font-size: 12px;
-  color: var(--text3);
-  white-space: nowrap;
-  flex-shrink: 0;
+.dm-sub{font-size:12px;color:var(--text3);margin-top:4px;}
+.dm-close{
+  width:34px;height:34px;border-radius:7px;
+  border:1px solid var(--bord2);background:transparent;
+  color:var(--text2);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
 }
+.dm-close:hover{border-color:var(--red);color:var(--red);}
 
-/* Range slider */
-.range-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
+.dm-body{padding:22px 26px;}
+
+/* 2D big view */
+.dm-desktop{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:16px;margin-bottom:22px;
+  text-align:center;
 }
-
-input[type=range] {
-  flex: 1;
-  -webkit-appearance: none;
-  height: 3px;
-  background: var(--border2);
-  border-radius: 2px;
-  outline: none;
-  padding: 0;
-  border: none;
-  cursor: pointer;
+.dm-desktop-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;
 }
+canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
 
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--gold);
-  cursor: pointer;
-  box-shadow: 0 0 0 3px rgba(245,200,66,0.15);
-  transition: box-shadow 0.2s;
+/* PUBG big sens */
+.dm-sens-row{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px;
 }
-
-input[type=range]::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 0 5px rgba(245,200,66,0.2);
+.dmsbox{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 8px;text-align:center;
 }
+.dmsbox-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--gold);}
+.dmsbox-lbl{font-size:9px;color:var(--text3);margin-top:4px;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
 
-.range-val {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--gold);
-  min-width: 44px;
-  text-align: right;
+/* Detail grid */
+.dm-sec-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);
 }
+.dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.dmf{background:var(--surf2);border-radius:7px;padding:11px 13px;}
+.dmf-lbl{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-family:'Barlow Condensed',sans-serif;}
+.dmf-val{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--text);}
+.dmf-val.gold{color:var(--gold);}
+.dm-notes{background:var(--surf2);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--text2);line-height:1.7;font-style:italic;}
 
-/* Toggle */
-.toggle-wrap {
-  display: flex;
-  gap: 6px;
-}
-
-.toggle-btn {
-  padding: 5px 16px;
-  border-radius: 5px;
-  border: 1px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Barlow', sans-serif;
-  transition: all 0.15s;
-}
-
-.toggle-btn.on  { background: rgba(245,200,66,0.12); border-color: var(--gold); color: var(--gold); }
-.toggle-btn.off { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.4); color: var(--red); }
-
-/* Chip selector */
-.chip-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip {
-  padding: 5px 14px;
-  border-radius: 5px;
-  border: 1px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: 'Barlow', sans-serif;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.chip:hover { border-color: var(--gold); color: var(--text); }
-.chip.selected { background: rgba(245,200,66,0.1); border-color: var(--gold); color: var(--gold); font-weight: 600; }
-
-/* Sub-label */
-.sub-row {
-  background: rgba(0,0,0,0.2);
-  border-bottom: 1px solid var(--border);
-  padding: 8px 20px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text3);
-}
-.sub-row:last-child { border-bottom: none; }
-
-/* Info tip */
-.info-tip {
-  font-size: 11px;
-  color: var(--text3);
-  margin-left: 4px;
-}
-
-/* ===== SUBMIT ===== */
-.submit-section {
-  margin-top: 48px;
-  padding: 32px;
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(245,200,66,0.04) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  text-align: center;
-}
-
-.submit-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-
-.submit-sub {
-  color: var(--text2);
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
-.btn-submit {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 40px;
-  background: var(--gold);
-  color: #09090b;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-submit:hover {
-  background: var(--gold2);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(245,200,66,0.25);
-}
-
-.btn-submit:active { transform: translateY(0); }
-
-/* ===== SUCCESS SCREEN ===== */
-#successScreen {
-  display: none;
-  position: fixed; inset: 0;
-  background: var(--bg);
-  z-index: 100;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  padding: 40px 24px 60px;
-  overflow-y: auto;
-}
-
-#successScreen.show { display: flex; animation: fadeUp 0.5s ease; }
-
-.success-icon {
-  width: 80px; height: 80px;
-  background: rgba(245,200,66,0.1);
-  border: 2px solid var(--gold);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 36px;
-  margin-bottom: 24px;
-}
-
-.success-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-
-.success-sub {
-  color: var(--text2);
-  font-size: 16px;
-  margin-bottom: 32px;
-  max-width: 400px;
-}
-
-.summary-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px 32px;
-  text-align: left;
-  max-width: 520px;
-  width: 100%;
-  margin-bottom: 28px;
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-}
-
-.summary-row:last-child { border-bottom: none; }
-.summary-row .s-lbl { color: var(--text2); }
-.summary-row .s-val { color: var(--text); font-weight: 600; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; letter-spacing: 0.5px; }
-.summary-row .s-val.gold { color: var(--gold); }
-
-.btn-new {
-  padding: 12px 32px;
-  background: transparent;
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  color: var(--text2);
-  font-size: 14px;
-  font-family: 'Barlow', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-new:hover { border-color: var(--gold); color: var(--gold); }
-
-/* Responsive */
-@media(max-width: 600px) {
-  .field-row { grid-template-columns: 1fr; }
-  .field-label { border-right: none; border-bottom: 1px solid var(--border); min-height: auto; padding: 10px 16px; }
-  .field-input { padding: 10px 16px 14px; }
+@media(max-width:600px){
+  .cards-grid{grid-template-columns:1fr;}
+  .dm-sens-row{grid-template-columns:repeat(3,1fr);}
+  nav{padding:0 16px;}
+  .hero{padding:32px 16px 24px;}
+  .page-wrap{padding:24px 16px 60px;}
 }
 </style>
 </head>
 <body>
 
-<!-- SUCCESS SCREEN -->
-<div id="successScreen">
-  <div class="success-icon">✓</div>
-  <div class="success-title">บันทึกแล้ว!</div>
-  <div class="success-sub">ข้อมูล Setup ของคุณถูกบันทึกเรียบร้อยแล้ว</div>
-  <div class="summary-box" id="summaryBox"></div>
-  <button class="btn-new" onclick="resetForm()">+ กรอกข้อมูลใหม่</button>
-  <a href="pubg-browse.html" onclick="document.body.style.overflow=''" style="display:inline-block;margin-top:10px;padding:10px 28px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">← กลับหน้าหลัก</a>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BYP<span> : BUILD YOUR PLAY</span></div>
+  <div class="nav-links">
+    <button class="nav-link active">Explore</button>
+    <button class="nav-link" id="setupBtn" onclick="goToForm()">My Setup</button>
+    <a href="shop.html" class="nav-link" style="text-decoration:none;">🎨 Shop</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
+    <div id="authBtn"></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Build Your Play · PUBG Edition</div>
+  <h1 class="hero-title"><span>Build Your Play</span></h1>
+  <p class="hero-sub">รวม Setup จริงจากนักเล่น PUBG — ค้นหา เปรียบเทียบ และปรับ Config ของคุณ</p>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="ค้นหา IGN, Mouse, GPU..." oninput="applyFilters()">
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+      <option value="newest">ล่าสุด</option>
+      <option value="dpi_asc">DPI น้อย→มาก</option>
+      <option value="dpi_desc">DPI มาก→น้อย</option>
+      <option value="fps_desc">FPS สูงสุด</option>
+      <option value="sens_asc">Sens น้อย→มาก</option>
+    </select>
+  </div>
+
+  <div class="filter-row">
+    <button class="fchip on" onclick="setFilter('all',this)">ทั้งหมด</button>
+    <button class="fchip" onclick="setFilter('dpi400',this)">DPI 400</button>
+    <button class="fchip" onclick="setFilter('dpi800',this)">DPI 800</button>
+    <button class="fchip" onclick="setFilter('Verified',this)" style="border-color:rgba(34,197,94,0.4);color:#4ade80;">✓ Verified</button>
+    <button class="fchip" onclick="setFilter('streamer',this)" style="border-color:rgba(168,85,247,0.4);color:#c084fc;">🎥 Streamer</button>
+    <button class="fchip" onclick="setFilter('pro',this)" style="border-color:rgba(245,200,66,0.4);color:#f5c842;">🏆 Pro Player</button>
+  </div>
 </div>
 
-<!-- HEADER -->
-<header>
-  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;">
-    <a href="pubg-browse.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;padding:6px 14px;border:1px solid var(--border2);border-radius:6px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">
-      ← หน้าหลัก
-    </a>
-    <span style="margin-left:16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--text);letter-spacing:1px;">BYP <span style="color:#f5c842">: BUILD YOUR PLAY</span></span>
+<!-- GRID -->
+<div class="page-wrap">
+  <div class="results-bar">
+    <span id="resultsText">โหลดข้อมูล...</span>
+
   </div>
-  <div class="hero">
-    <div class="hero-inner">
-      <div class="version-badge">● Version 1.0 &nbsp;·&nbsp; PUBG Edition</div>
-      <h1 class="hero-title">BYP<br><span>BUILD YOUR PLAY</span></h1>
-      <p class="hero-sub">บันทึก Mouse Settings และ Desktop Setup ของคุณ เพื่อหาค่าที่เหมาะสมกับ Playstyle</p>
-
-      <!-- Theme & Effect Quick Selector -->
-      <div id="heroThemeBar" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;">
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <div style="font-size:10px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;flex-shrink:0;">🎨 Theme</div>
-          <div id="heroThemeBtns" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
-          <div style="width:1px;height:20px;background:var(--border);flex-shrink:0;"></div>
-          <div style="font-size:10px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;flex-shrink:0;">✨ Effect</div>
-          <div id="heroEffectBtns" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
-        </div>
-      </div>
-
-      <div class="progress-bar-wrap">
-        <div class="steps">
-          <div class="step-dot done" id="dot1"></div>
-          <div class="step-dot" id="dot2"></div>
-          <div class="step-dot" id="dot3"></div>
-          <div class="step-dot" id="dot4"></div>
-          <div class="step-dot" id="dot5"></div>
-          <div class="step-dot" id="dot6"></div>
-        </div>
-        <span class="progress-label"><span id="progressText">1</span> / 6 หัวข้อ</span>
-      </div>
-    </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+  <div class="empty" id="emptyState" style="display:none">
+    <div class="empty-icon">🎮</div>
+    <div class="empty-t">ยังไม่มี Setup</div>
+    <div style="font-size:14px;margin-bottom:20px">เป็นคนแรกที่แชร์ Setup ของคุณ!</div>
+    <button class="btn-more" onclick="location.href='pubg-setup-v1.html'">+ กรอก Setup ของฉัน</button>
   </div>
-</header>
-
-<main>
-
-  <!-- SECTION 1: PLAYER INFO -->
-  <div class="section" id="sec1">
-    <div class="section-header">
-      <div class="section-icon">👤</div>
-      <div><div class="section-title-text">ข้อมูลผู้เล่น</div></div>
-      <div class="section-num">01 / 06</div>
-    </div>
-    <div class="card">
-
-      <!-- รูปโปรไฟล์ -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
-        <div class="field-input" style="padding:16px 20px;">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
-            <div>
-              <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
-              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
-              <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card Theme -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">🎨</span> Card Theme</div>
-        <div class="field-input" style="padding:12px 20px;">
-          <div id="themeSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;"><div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div></div>
-          <div style="font-size:11px;color:var(--text3);margin-top:6px;">ซื้อเพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a></div>
-        </div>
-      </div>
-
-      <!-- Card Effect -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">✨</span> Card Effect</div>
-        <div class="field-input" style="padding:12px 20px;">
-          <div id="effectSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;"><div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div></div>
-          <div style="font-size:11px;color:var(--text3);margin-top:6px;">ซื้อเพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a></div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🏷️</span> ชื่อในเกม (IGN)</div>
-        <div class="field-input">
-          <input type="text" id="ign" placeholder="Your in-game name...">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📐</span> ส่วนสูง</div>
-        <div class="field-input">
-          <input type="number" id="height" value="170" min="140" max="220" style="max-width:100px">
-          <span class="input-unit">cm</span>
-        </div>
-      </div>
-    </div>
+  <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+    <button class="btn-more" onclick="loadMore()">โหลดเพิ่ม →</button>
   </div>
+</div>
 
-  <!-- SECTION 2: MOUSE HARDWARE -->
-  <div class="section" id="sec2">
-    <div class="section-header">
-      <div class="section-icon">🖱️</div>
-      <div>
-        <div class="section-title-text">Mouse Hardware</div>
+<!-- DETAIL OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="detail-modal" id="detailModal">
+    <div class="dm-head">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div id="dmAvatar"></div>
+        <div>
+          <div class="dm-ign" id="dmIgn">—</div>
+          <div class="dm-sub" id="dmSub">—</div>
+        </div>
       </div>
-      <div class="section-num">02 / 06</div>
+      <button class="dm-close" onclick="document.getElementById('overlay').classList.remove('show')">✕</button>
     </div>
-    <div class="card">
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📛</span> ยี่ห้อ / รุ่น</div>
-        <div class="field-input">
-          <input type="text" id="mouseName" placeholder="e.g. Logitech G Pro X Superlight">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">⚡</span> DPI ที่ใช้</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="dpi" min="100" max="3200" step="100" value="800"
-              oninput="syncRange('dpi','dpiVal',this.value)">
-            <span class="range-val" id="dpiVal">800</span>
-          </div>
-          <span class="input-unit">DPI</span>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🔄</span> Polling Rate</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="hzChips">
-            <button class="chip" onclick="selectChip(this,'hzChips','125Hz')">125Hz</button>
-            <button class="chip selected" onclick="selectChip(this,'hzChips','500Hz')">500Hz</button>
-            <button class="chip" onclick="selectChip(this,'hzChips','1000Hz')">1000Hz</button>
-            <button class="chip" onclick="selectChip(this,'hzChips','2000Hz')">2000Hz</button>
-            <button class="chip" onclick="selectChip(this,'hzChips','4000Hz')">4000Hz</button>
-          </div>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">✋</span> Grip Style</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="gripChips">
-            <button class="chip" onclick="selectChip(this,'gripChips','Palm')">Palm</button>
-            <button class="chip selected" onclick="selectChip(this,'gripChips','Claw')">Claw</button>
-            <button class="chip" onclick="selectChip(this,'gripChips','Fingertip')">Fingertip</button>
-          </div>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">💪</span> Arm Style</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="armChips">
-            <button class="chip" onclick="selectChip(this,'armChips','Wrist Only')">Wrist Only</button>
-            <button class="chip selected" onclick="selectChip(this,'armChips','Arm Aim')">Arm Aim</button>
-            <button class="chip" onclick="selectChip(this,'armChips','Hybrid')">Hybrid</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="dm-body" id="dmBody"></div>
   </div>
-
-  <!-- SECTION 3: PUBG MOUSE SENSITIVITY -->
-  <div class="section" id="sec3">
-    <div class="section-header">
-      <div class="section-icon">🎯</div>
-      <div>
-        <div class="section-title-text">PUBG Mouse Sensitivity</div>
-      </div>
-      <div class="section-num">03 / 06</div>
-    </div>
-    <div class="card">
-
-      <div class="sub-row">Mouse Settings</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🔄</span> Invert Mouse</div>
-        <div class="field-input">
-          <div class="toggle-wrap">
-            <button class="toggle-btn off selected-toggle" id="invertOff" onclick="setToggle('invert','off')">Disable</button>
-            <button class="toggle-btn on" id="invertOn" onclick="setToggle('invert','on')">Enable</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🖱️</span> General Sensitivity</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="genSens" min="1" max="100" value="50"
-              oninput="syncRange('genSens','genSensVal',this.value)">
-            <span class="range-val" id="genSensVal">50</span>
-          </div>
-          <span class="input-unit">/ 100</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">↕️</span> Vertical Sensitivity Multiplier</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="vertMult" min="0.1" max="2.0" step="0.1" value="1.0"
-              oninput="syncRange('vertMult','vertMultVal',this.value)">
-            <span class="range-val" id="vertMultVal">1.0</span>
-          </div>
-          <span class="input-unit">x</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🎯</span> Aim Sensitivity</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="aimSens" min="1" max="100" value="50"
-              oninput="syncRange('aimSens','aimSensVal',this.value)">
-            <span class="range-val" id="aimSensVal">50</span>
-          </div>
-          <span class="input-unit">/ 100</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🔭</span> ADS Sensitivity</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="adsSens" min="1" max="100" value="50"
-              oninput="syncRange('adsSens','adsSensVal',this.value)">
-            <span class="range-val" id="adsSensVal">50</span>
-          </div>
-          <span class="input-unit">/ 100</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🔬</span> Scoping Sensitivity</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="scopeSens" min="1" max="100" value="50"
-              oninput="syncRange('scopeSens','scopeSensVal',this.value)">
-            <span class="range-val" id="scopeSensVal">50</span>
-          </div>
-          <span class="input-unit">/ 100</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🌐</span> Universal Sensitivity for All Scopes</div>
-        <div class="field-input">
-          <div class="toggle-wrap">
-            <button class="toggle-btn off" id="univOff" onclick="setToggle('univ','off')">Disable</button>
-            <button class="toggle-btn on selected-toggle" id="univOn" onclick="setToggle('univ','on')">Enable</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Scope แยกแต่ละ zoom — แสดงเมื่อ Universal = Disable -->
-      <div id="scopeZoomSection" style="display:none;">
-        <div class="sub-row" style="margin-top:8px;">Scope Sensitivity แยก Zoom</div>
-
-        <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x2</span> Scope</div>
-          <div class="field-input">
-            <div class="range-wrap"><input type="range" id="scopeX2" min="1" max="100" value="50" oninput="syncRange('scopeX2','scopeX2Val',this.value)"><span class="range-val" id="scopeX2Val">50</span></div>
-            <span class="input-unit">/ 100</span>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x3</span> Scope</div>
-          <div class="field-input">
-            <div class="range-wrap"><input type="range" id="scopeX3" min="1" max="100" value="50" oninput="syncRange('scopeX3','scopeX3Val',this.value)"><span class="range-val" id="scopeX3Val">50</span></div>
-            <span class="input-unit">/ 100</span>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x4</span> Scope</div>
-          <div class="field-input">
-            <div class="range-wrap"><input type="range" id="scopeX4" min="1" max="100" value="50" oninput="syncRange('scopeX4','scopeX4Val',this.value)"><span class="range-val" id="scopeX4Val">50</span></div>
-            <span class="input-unit">/ 100</span>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x6</span> Scope</div>
-          <div class="field-input">
-            <div class="range-wrap"><input type="range" id="scopeX6" min="1" max="100" value="50" oninput="syncRange('scopeX6','scopeX6Val',this.value)"><span class="range-val" id="scopeX6Val">50</span></div>
-            <span class="input-unit">/ 100</span>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x8</span> Scope</div>
-          <div class="field-input">
-            <div class="range-wrap"><input type="range" id="scopeX8" min="1" max="100" value="50" oninput="syncRange('scopeX8','scopeX8Val',this.value)"><span class="range-val" id="scopeX8Val">50</span></div>
-            <span class="input-unit">/ 100</span>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x15</span> Scope</div>
-          <div class="field-input">
-            <div class="range-wrap"><input type="range" id="scopeX15" min="1" max="100" value="50" oninput="syncRange('scopeX15','scopeX15Val',this.value)"><span class="range-val" id="scopeX15Val">50</span></div>
-            <span class="input-unit">/ 100</span>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SECTION 4: DESKTOP SETUP -->
-  <div class="section" id="sec4">
-    <div class="section-header">
-      <div class="section-icon">🖥️</div>
-      <div>
-        <div class="section-title-text">Desktop Setup</div>
-      </div>
-      <div class="section-num">04 / 06</div>
-    </div>
-    <div class="card">
-
-      <div class="sub-row">โต๊ะ & ที่นั่ง</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📏</span> ความสูงโต๊ะ</div>
-        <div class="field-input">
-          <input type="number" id="tableH" value="75" min="50" max="120" style="max-width:100px">
-          <span class="input-unit">cm</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📐</span> ขนาดโต๊ะ (กว้าง × ลึก)</div>
-        <div class="field-input">
-          <input type="number" id="tableW" placeholder="120" min="60" max="300" style="max-width:90px">
-          <span class="input-unit">×</span>
-          <input type="number" id="tableD" placeholder="60" min="40" max="120" style="max-width:90px">
-          <span class="input-unit">cm</span>
-        </div>
-      </div>
-
-      <div class="sub-row">แผ่นรองเม้าส์</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🟫</span> ขนาดแผ่นรอง</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="padChips">
-            <button class="chip" onclick="selectChip(this,'padChips','S (250×210mm)')">S</button>
-            <button class="chip selected" onclick="selectChip(this,'padChips','M (350×300mm)')">M</button>
-            <button class="chip" onclick="selectChip(this,'padChips','L (450×400mm)')">L</button>
-            <button class="chip" onclick="selectChip(this,'padChips','XL (900×400mm)')">XL / All Desk</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">↕️</span> ตำแหน่งแผ่นรอง Y</div>
-        <div class="field-input">
-          <input type="number" id="padY" value="0" min="-20" max="20" style="max-width:100px">
-          <span class="input-unit">cm จากกึ่งกลาง (บน = ลบ)</span>
-        </div>
-      </div>
-
-      <div class="sub-row">จอและระยะ</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🖥️</span> ขนาดจอ</div>
-        <div class="field-input">
-          <input type="number" id="monSize" min="17" max="55" step="0.1" placeholder="เช่น 27"
-            style="width:100px;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:16px;padding:8px 12px;outline:none;font-family:'Barlow',sans-serif;transition:border-color .2s;"
-            onfocus="this.style.borderColor='#f5c842'" onblur="this.style.borderColor=''">
-          <span style="color:var(--text2);font-size:13px;margin-left:8px;">นิ้ว</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📺</span> Hz จอ</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="monHzChips">
-            <button class="chip" onclick="selectChip(this,'monHzChips','60Hz')">60Hz</button>
-            <button class="chip" onclick="selectChip(this,'monHzChips','144Hz')">144Hz</button>
-            <button class="chip selected" onclick="selectChip(this,'monHzChips','165Hz')">165Hz</button>
-            <button class="chip" onclick="selectChip(this,'monHzChips','240Hz')">240Hz</button>
-            <button class="chip" onclick="selectChip(this,'monHzChips','360Hz')">360Hz</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📡</span> ระยะจอ (ห่างจากตา)</div>
-        <div class="field-input">
-          <input type="number" id="monDist" value="60" min="30" max="120" style="max-width:100px">
-          <span class="input-unit">cm</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SECTION 5: NOTES -->
-  <div class="section" id="sec5">
-    <div class="section-header">
-      <div class="section-icon">📝</div>
-      <div>
-        <div class="section-title-text">หมายเหตุเพิ่มเติม</div>
-      </div>
-      <div class="section-num">05 / 06</div>
-    </div>
-    <div class="card">
-
-      <div class="sub-row">CPU</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">⚙️</span> CPU ยี่ห้อ</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="cpuBrandChips">
-            <button class="chip selected" onclick="selectChip(this,'cpuBrandChips','Intel')">Intel</button>
-            <button class="chip" onclick="selectChip(this,'cpuBrandChips','AMD')">AMD</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🏷️</span> CPU รุ่น</div>
-        <div class="field-input">
-          <input type="text" id="cpuModel" placeholder="e.g. i7-13700K / Ryzen 7 7700X">
-        </div>
-      </div>
-
-      <div class="sub-row">GPU</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🎴</span> GPU ยี่ห้อ</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="gpuBrandChips">
-            <button class="chip selected" onclick="selectChip(this,'gpuBrandChips','NVIDIA')">NVIDIA</button>
-            <button class="chip" onclick="selectChip(this,'gpuBrandChips','AMD')">AMD</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🏷️</span> GPU รุ่น</div>
-        <div class="field-input">
-          <input type="text" id="gpuModel" placeholder="e.g. RTX 4070 Ti / RX 7900 XT">
-        </div>
-      </div>
-
-      <div class="sub-row">RAM & Storage</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🧠</span> RAM</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="ramChips">
-            <button class="chip" onclick="selectChip(this,'ramChips','8GB')">8GB</button>
-            <button class="chip" onclick="selectChip(this,'ramChips','16GB')">16GB</button>
-            <button class="chip selected" onclick="selectChip(this,'ramChips','32GB')">32GB</button>
-            <button class="chip" onclick="selectChip(this,'ramChips','64GB')">64GB</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">💾</span> Storage ประเภท</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="storageChips">
-            <button class="chip" onclick="selectChip(this,'storageChips','HDD')">HDD</button>
-            <button class="chip" onclick="selectChip(this,'storageChips','SSD SATA')">SSD SATA</button>
-            <button class="chip selected" onclick="selectChip(this,'storageChips','NVMe SSD')">NVMe SSD</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="sub-row">OS & FPS</div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🪟</span> ระบบปฏิบัติการ</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="osChips">
-            <button class="chip" onclick="selectChip(this,'osChips','Windows 10')">Win 10</button>
-            <button class="chip selected" onclick="selectChip(this,'osChips','Windows 11')">Win 11</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📊</span> FPS เฉลี่ยใน PUBG</div>
-        <div class="field-input">
-          <div class="range-wrap">
-            <input type="range" id="avgFps" min="30" max="240" step="10" value="120"
-              oninput="syncRange('avgFps','avgFpsVal',this.value)">
-            <span class="range-val" id="avgFpsVal">120</span>
-          </div>
-          <span class="input-unit">FPS</span>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🎮</span> Graphics Preset ใน PUBG</div>
-        <div class="field-input">
-          <div class="chip-wrap" id="gfxChips">
-            <button class="chip" onclick="selectChip(this,'gfxChips','Very Low')">Very Low</button>
-            <button class="chip" onclick="selectChip(this,'gfxChips','Low')">Low</button>
-            <button class="chip selected" onclick="selectChip(this,'gfxChips','Medium')">Medium</button>
-            <button class="chip" onclick="selectChip(this,'gfxChips','High')">High</button>
-            <button class="chip" onclick="selectChip(this,'gfxChips','Ultra')">Ultra</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SECTION 6: GAMING GEAR -->
-  <div class="section" id="sec6gear">
-    <div class="section-header">
-      <div class="section-icon">🎧</div>
-      <div><div class="section-title-text">Gaming Gear</div></div>
-      <div class="section-num">06 / 07</div>
-    </div>
-    <div class="card">
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🎧</span> Headset</div>
-        <div class="field-input">
-          <input type="text" id="headset" placeholder="เช่น HyperX Cloud II, Logitech G Pro X"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">⌨️</span> Keyboard</div>
-        <div class="field-input">
-          <input type="text" id="keyboard" placeholder="เช่น Wooting 60HE, Leopold FC660M"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🪑</span> เก้าอี้</div>
-        <div class="field-input">
-          <input type="text" id="chair" placeholder="เช่น Secretlab Titan, DXRacer"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">🎙️</span> Microphone</div>
-        <div class="field-input">
-          <input type="text" id="microphone" placeholder="เช่น Blue Yeti, HyperX QuadCast"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon">📷</span> Webcam</div>
-        <div class="field-input">
-          <input type="text" id="webcam" placeholder="เช่น Logitech C920, Elgato Facecam"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SECTION 7: PROFILE & SOCIAL -->
-  <div class="section" id="sec6">
-    <div class="section-header">
-      <div class="section-icon">🌐</div>
-      <div><div class="section-title-text">โปรไฟล์ & โซเชียล</div></div>
-      <div class="section-num">07 / 07</div>
-    </div>
-    <div class="card">
-
-      <!-- Social Links -->
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon"><img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=16" style="width:16px;height:16px;vertical-align:middle;border-radius:3px;"></span> YouTube</div>
-        <div class="field-input">
-          <input type="text" id="socialYoutube" placeholder="https://youtube.com/@ชื่อช่อง"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon"><img src="https://www.google.com/s2/favicons?domain=facebook.com&sz=16" style="width:16px;height:16px;vertical-align:middle;border-radius:3px;"></span> Facebook</div>
-        <div class="field-input">
-          <input type="text" id="socialFacebook" placeholder="https://facebook.com/ชื่อเพจ"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon"><img src="https://www.google.com/s2/favicons?domain=tiktok.com&sz=16" style="width:16px;height:16px;vertical-align:middle;border-radius:3px;"></span> TikTok</div>
-        <div class="field-input">
-          <input type="text" id="socialTiktok" placeholder="https://tiktok.com/@ชื่อ"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon"><img src="https://www.google.com/s2/favicons?domain=twitch.tv&sz=16" style="width:16px;height:16px;vertical-align:middle;border-radius:3px;"></span> Twitch</div>
-        <div class="field-input">
-          <input type="text" id="socialTwitch" placeholder="https://twitch.tv/ชื่อ"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-label"><span class="lbl-icon"><img src="https://www.google.com/s2/favicons?domain=discord.com&sz=16" style="width:16px;height:16px;vertical-align:middle;border-radius:3px;"></span> Discord</div>
-        <div class="field-input">
-          <input type="text" id="socialDiscord" placeholder="https://discord.gg/invite"
-            style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:15px;padding:4px 0;outline:none;font-family:'Barlow',sans-serif;">
-        </div>
-      </div>
-
-      <!-- Notes -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">📝</span> หมายเหตุ</div>
-        <div class="field-input" style="padding:16px 20px;">
-          <textarea id="notes" rows="3" placeholder="เช่น ปัญหาที่เจอ, สิ่งที่อยากปรับ..."
-            style="width:100%;resize:vertical;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:12px;font-size:14px;font-family:'Barlow','Noto Sans Thai',sans-serif;outline:none;line-height:1.6;"></textarea>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SUBMIT -->
-  <div class="submit-section">
-    <div class="submit-title">พร้อมบันทึก Setup ของคุณ?</div>
-    <div class="submit-sub">ข้อมูลจะถูกเก็บไว้เพื่อวิเคราะห์และหา Setting ที่เหมาะสมที่สุด</div>
-    <button class="btn-submit" onclick="submitForm()">
-      <span>💾</span> บันทึก Setup
-    </button>
-  </div>
-
-</main>
+</div>
 
 <script>
-// ===== CHIP SELECT =====
-function selectChip(el, groupId, val) {
-  document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  el.dataset.val = val;
-  updateProgress();
-}
+// ===== DATA =====
+let allData = [], filtered = [], visibleCount = 12;
+let activeFilter = 'all';
 
-// ===== TOGGLE =====
-const toggleState = { invert: 'off', univ: 'on' };
-
-function setToggle(name, val) {
-  toggleState[name] = val;
-  const onBtn  = document.getElementById(name + 'On');
-  const offBtn = document.getElementById(name + 'Off');
-  if (val === 'on') {
-    onBtn.classList.add('selected-toggle');
-    offBtn.classList.remove('selected-toggle');
-  } else {
-    offBtn.classList.add('selected-toggle');
-    onBtn.classList.remove('selected-toggle');
-  }
-  // แสดง/ซ่อน scope zoom section
-  if (name === 'univ') {
-    const zoomSec = document.getElementById('scopeZoomSection');
-    if (zoomSec) zoomSec.style.display = val === 'on' ? 'block' : 'none';
-  }
-}
-
-// ===== RANGE SYNC =====
-function syncRange(id, valId, val) {
-  document.getElementById(valId).textContent = val;
-  updateProgress();
-}
-
-// ===== PROGRESS =====
-function updateProgress() {
-  const filled = [
-    document.getElementById('ign').value.trim() !== '',
-    document.getElementById('mouseName').value.trim() !== '',
-    document.getElementById('genSens').value !== '50',
-    document.getElementById('tableH').value !== '',
-    document.getElementById('notes').value.trim() !== ''
-  ];
-  const count = filled.filter(Boolean).length + 1;
-  const display = Math.min(count, 6);
-  document.getElementById('progressText').textContent = display;
-  for (let i = 1; i <= 6; i++) {
-    const dot = document.getElementById('dot' + i);
-    dot.className = 'step-dot';
-    if (i < display) dot.classList.add('done');
-    else if (i === display) dot.classList.add('active');
-  }
-}
-
-// Attach input listeners for progress
-['ign','mouseName','notes'].forEach(id => {
-  document.getElementById(id).addEventListener('input', updateProgress);
-});
-
-// ===== AVATAR PREVIEW =====
-function previewAvatar(input) {
-  if (!input.files || !input.files[0]) return;
-  const file = input.files[0];
-  // เช็ค MIME type จริง ไม่ใช่แค่ extension
-  const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
-  if (!allowed.includes(file.type)) {
-    alert('รองรับเฉพาะไฟล์ JPG, PNG, WebP, GIF เท่านั้นครับ');
-    input.value = '';
-    return;
-  }
-  if (file.size > 2 * 1024 * 1024) { alert('รูปต้องไม่เกิน 2MB ครับ'); input.value = ''; return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    const prev = document.getElementById('avatarPreview');
-    prev.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+function mapRow(d) {
+  return {
+    id:        d.id,
+    ign:       d.ign,       height:    d.height,
+    mouse:     d.mouse,     dpi:       d.dpi,
+    hz:        d.hz,        grip:      d.grip,
+    arm:       d.arm,       invert:    d.invert,
+    genSens:   d.gen_sens,  vertMult:  d.vert_mult,
+    aimSens:   d.aim_sens,  adsSens:   d.ads_sens,
+    scopeSens: d.scope_sens,univScope: d.univ_scope,
+    tableH:    d.table_h,   tableSize: d.table_size,
+    pad:       d.pad,       monSize:   d.mon_size,
+    monHz:     d.mon_hz,    monDist:   d.mon_dist,
+    monX:      d.mon_x,     monDeg:    d.mon_deg,
+    cpuBrand:  d.cpu_brand, cpuModel:  d.cpu_model,
+    gpuBrand:  d.gpu_brand, gpuModel:  d.gpu_model,
+    ram:       d.ram,       storage:   d.storage,
+    os:        d.os,        avgFps:    d.avg_fps,
+    gfx:       d.gfx,       notes:     d.notes,
+    timestamp: d.created_at, verified:  d.verified,
+    badge: d.badge,
+    avatarUrl: d.avatar_url,
+    youtube: d.youtube, facebook: d.facebook,
+    tiktok: d.tiktok, twitch: d.twitch, discord: d.discord,
+    scopeX2: d.scope_x2, scopeX3: d.scope_x3, scopeX4: d.scope_x4,
+    scopeX6: d.scope_x6, scopeX8: d.scope_x8, scopeX15: d.scope_x15,
+    padY: d.pad_y,
+    headset: d.headset, keyboard: d.keyboard, chair: d.chair,
+    microphone: d.microphone, webcam: d.webcam,
+    cardTheme: d.card_theme || 'default',
+    cardEffect: d.card_effect || null,
   };
-  reader.readAsDataURL(file);
 }
 
-// ===== THEME & EFFECT SELECTOR =====
-const ALL_THEMES = [
-  {id:'default',    name:'Default',   emoji:'🎮', free:true},
-  {id:'inferno',    name:'Inferno',   emoji:'🔥'},
-  {id:'storm',      name:'Storm',     emoji:'⚡'},
-  {id:'matrix',     name:'Matrix',    emoji:'💚'},
-  {id:'gold',       name:'Gold Elite',emoji:'👑'},
-  {id:'sakura',     name:'Sakura',    emoji:'🌸'},
-  {id:'8bit',       name:'8-Bit',     emoji:'🕹️'},
-  {id:'8bit-retro', name:'8-Bit Retro',emoji:'👾'},
-];
-const ALL_EFFECTS = [
-  {id:null,       name:'ไม่มี',      emoji:'⬜'},
-  {id:'glow',     name:'Glow',       emoji:'💫'},
-  {id:'particle', name:'Particle',   emoji:'✦'},
-  {id:'wave',     name:'Wave',       emoji:'🌊'},
-];
-
-let _selectedTheme = 'default';
-let _selectedEffect = null;
-
-async function loadThemeSelector(currentTheme, currentEffect, setupId) {
-  _selectedTheme = currentTheme || 'default';
-  _selectedEffect = currentEffect || null;
-
-  const { data: orders } = await _supa.from('orders')
-    .select('theme_id').eq('user_id', _currentUserId).eq('status', 'approved');
-  const owned = orders ? orders.map(o => o.theme_id) : [];
-
-  const ownedThemes  = ALL_THEMES.filter(t => t.free || owned.includes(t.id));
-  const ownedEffects = ALL_EFFECTS.filter(e => e.id === null || owned.includes(e.id));
-
-  const themeBtn = (t) => `<button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
-    style="padding:4px 10px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
-    border:1px solid ${_selectedTheme===t.id?'var(--gold)':'var(--border)'};
-    background:${_selectedTheme===t.id?'rgba(245,200,66,.1)':'transparent'};
-    color:${_selectedTheme===t.id?'var(--gold)':'var(--text2)'};">${t.emoji} ${t.name}</button>`;
-
-  const effectBtn = (e) => `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
-    style="padding:4px 10px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
-    border:1px solid ${_selectedEffect===e.id?'var(--gold)':'var(--border)'};
-    background:${_selectedEffect===e.id?'rgba(245,200,66,.1)':'transparent'};
-    color:${_selectedEffect===e.id?'var(--gold)':'var(--text2)'};">${e.emoji} ${e.name}</button>`;
-
-  // Hero bar
-  const heroBar = document.getElementById('heroThemeBar');
-  if (heroBar) heroBar.style.display = 'block';
-  const heroTheme = document.getElementById('heroThemeBtns');
-  if (heroTheme) heroTheme.innerHTML = ownedThemes.map(themeBtn).join('');
-  const heroEffect = document.getElementById('heroEffectBtns');
-  if (heroEffect) heroEffect.innerHTML = ownedEffects.map(effectBtn).join('');
-
-  // Section 7 selectors
-  const themeBox = document.getElementById('themeSelector');
-  if (themeBox) themeBox.innerHTML = ownedThemes.map(themeBtn).join('');
-  const effectBox = document.getElementById('effectSelector');
-  if (effectBox) effectBox.innerHTML = ownedEffects.map(effectBtn).join('');
-}
-
-function selectCardTheme(id) {
-  _selectedTheme = id;
-  document.querySelectorAll('[id^="tbtn-"]').forEach(b => {
-    const isActive = b.id === 'tbtn-'+id;
-    b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
-    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
-    b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
-  });
-}
-
-function selectCardEffect(id) {
-  _selectedEffect = id;
-  document.querySelectorAll('[id^="ebtn-"]').forEach(b => {
-    const bid = b.id.replace('ebtn-','');
-    const isActive = (bid === 'none' && id === null) || bid === id;
-    b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
-    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
-    b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
-  });
-}
-
-// ===== GET CHIP VALUE =====
-function getChip(groupId) {
-  const sel = document.querySelector('#' + groupId + ' .chip.selected');
-  return sel ? (sel.dataset.val || sel.textContent.trim()) : '—';
-}
-
-// ===== SUBMIT =====
-let _currentUserId = null;
-let _existingSetupId = null;
-
-async function submitForm() {
-  const data = {
-    ign:       document.getElementById('ign').value || '—',
-    height:    document.getElementById('height').value + ' cm',
-    mouse:     document.getElementById('mouseName').value || '—',
-    dpi:       document.getElementById('dpi').value,
-    hz:        getChip('hzChips'),
-    grip:      getChip('gripChips'),
-    arm:       getChip('armChips'),
-    invert:    toggleState.invert === 'on' ? 'Enable' : 'Disable',
-    genSens:   document.getElementById('genSens').value,
-    vertMult:  document.getElementById('vertMult').value,
-    aimSens:   document.getElementById('aimSens').value,
-    adsSens:   document.getElementById('adsSens').value,
-    scopeSens: document.getElementById('scopeSens').value,
-    univScope: toggleState.univ === 'on' ? 'Enable' : 'Disable',
-    scopeX2:  document.getElementById('scopeX2').value,
-    scopeX3:  document.getElementById('scopeX3').value,
-    scopeX4:  document.getElementById('scopeX4').value,
-    scopeX6:  document.getElementById('scopeX6').value,
-    scopeX8:  document.getElementById('scopeX8').value,
-    scopeX15: document.getElementById('scopeX15').value,
-    tableH:    document.getElementById('tableH').value + ' cm',
-    tableSize: (document.getElementById('tableW').value || '?') + '×' + (document.getElementById('tableD').value || '?') + ' cm',
-    pad:       getChip('padChips'),
-    monSize:   (document.getElementById('monSize').value ? document.getElementById('monSize').value + '"' : '—'),
-    monHz:     getChip('monHzChips'),
-    monDist:   document.getElementById('monDist').value + ' cm',
-    padY:      document.getElementById('padY').value,
-    cpuBrand:  getChip('cpuBrandChips'),
-    cpuModel:  document.getElementById('cpuModel').value || '—',
-    gpuBrand:  getChip('gpuBrandChips'),
-    gpuModel:  document.getElementById('gpuModel').value || '—',
-    ram:       getChip('ramChips'),
-    storage:   getChip('storageChips'),
-    os:        getChip('osChips'),
-    avgFps:    document.getElementById('avgFps').value + ' FPS',
-    gfx:       getChip('gfxChips'),
-    notes:     document.getElementById('notes').value || '—',
-    youtube:   document.getElementById('socialYoutube').value || '',
-    facebook:  document.getElementById('socialFacebook').value || '',
-    tiktok:    document.getElementById('socialTiktok').value || '',
-    twitch:    document.getElementById('socialTwitch').value || '',
-    discord:   document.getElementById('socialDiscord').value || '',
-    headset:   document.getElementById('headset').value || '',
-    keyboard:  document.getElementById('keyboard').value || '',
-    chair:     document.getElementById('chair').value || '',
-    microphone:document.getElementById('microphone').value || '',
-    webcam:    document.getElementById('webcam').value || '',
-  };
-
-  const summaryItems = [
-    ['IGN', data.ign, true],
-    ['Mouse', data.mouse, false],
-    ['DPI', data.dpi, true],
-    ['Grip / Arm', data.grip + ' / ' + data.arm, false],
-    ['General Sens', data.genSens, true],
-    ['ADS Sens', data.adsSens, false],
-    ['CPU', data.cpuBrand + ' ' + data.cpuModel, false],
-    ['GPU', data.gpuBrand + ' ' + data.gpuModel, false],
-    ['RAM', data.ram, false],
-    ['FPS เฉลี่ย', data.avgFps, true],
-    ['Monitor', data.monSize + ' · ' + data.monHz, false],
-    ['Pad Size', data.pad, false],
-  ];
-
-  document.getElementById('summaryBox').innerHTML =
-    summaryItems.map(([l, v, g]) =>
-      `<div class="summary-row"><span class="s-lbl">${l}</span><span class="s-val${g?' gold':''}">${v}</span></div>`
-    ).join('');
-
-  document.getElementById('successScreen').classList.add('show');
-  document.body.style.overflow = 'hidden';
-
-  const payload = {
-    ign: data.ign, height: data.height, mouse: data.mouse,
-    dpi: data.dpi, hz: data.hz, grip: data.grip, arm: data.arm,
-    invert: data.invert, gen_sens: data.genSens, vert_mult: data.vertMult,
-    aim_sens: data.aimSens, ads_sens: data.adsSens, scope_sens: data.scopeSens,
-    univ_scope: data.univScope,
-    scope_x2: data.scopeX2, scope_x3: data.scopeX3, scope_x4: data.scopeX4,
-    scope_x6: data.scopeX6, scope_x8: data.scopeX8, scope_x15: data.scopeX15, table_h: data.tableH, table_size: data.tableSize,
-    pad: data.pad, mon_size: data.monSize, mon_hz: data.monHz, mon_dist: data.monDist,
-    pad_y: data.padY,
-    cpu_brand: data.cpuBrand, cpu_model: data.cpuModel,
-    gpu_brand: data.gpuBrand, gpu_model: data.gpuModel,
-    ram: data.ram, storage: data.storage, os: data.os,
-    avg_fps: data.avgFps, gfx: data.gfx, notes: data.notes,
-    youtube: data.youtube, facebook: data.facebook,
-    tiktok: data.tiktok, twitch: data.twitch, discord: data.discord,
-    headset: data.headset, keyboard: data.keyboard, chair: data.chair,
-    microphone: data.microphone, webcam: data.webcam,
-    card_theme: _selectedTheme || 'default',
-    card_effect: _selectedEffect || null,
-    user_id: _currentUserId,
-  };
-
-  // Upload avatar ถ้ามีไฟล์ใหม่
-  const avatarFile = document.getElementById('avatarFile').files[0];
-  if (avatarFile && _currentUserId) {
-    const ext = avatarFile.name.split('.').pop();
-    const path = `${_currentUserId}.${ext}`;
-    const { error: upErr } = await _supa.storage
-      .from('avatars').upload(path, avatarFile, { upsert: true });
-    if (!upErr) {
-      const { data: urlData } = _supa.storage.from('avatars').getPublicUrl(path);
-      payload.avatar_url = urlData.publicUrl;
-    }
-  }
-
-  let error;
-  if (_existingSetupId) {
-    // มี setup แล้ว → UPDATE
-    ({ error } = await _supa.from('setups').update(payload).eq('id', _existingSetupId));
-  } else {
-    // ยังไม่มี → INSERT
-    ({ error } = await _supa.from('setups').insert([payload]));
-  }
-  if (error) { alert('❌ เกิดข้อผิดพลาด: ' + error.message); return; }
-}
-
-// ===== RESET =====
-function resetForm() {
-  document.getElementById('successScreen').classList.remove('show');
-  document.body.style.overflow = '';
-  document.getElementById('ign').value = '';
-  document.getElementById('mouseName').value = '';
-  document.getElementById('notes').value = '';
-  ['genSens','aimSens','adsSens','scopeSens'].forEach(id => {
-    document.getElementById(id).value = 50;
-    syncRange(id, id+'Val', 50);
-  });
-  document.getElementById('vertMult').value = 1.0;
-  syncRange('vertMult','vertMultVal','1.0');
-  updateProgress();
-}
-
-// Init progress
-updateProgress();
-
-// Scroll-based progress sync
-window.addEventListener('scroll', () => {
-  const sections = ['sec1','sec2','sec3','sec4','sec5','sec6gear','sec6'];
-  let visible = 0;
-  sections.forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.8) visible = i + 1;
-    }
-  });
-  document.getElementById('progressText').textContent = visible || 1;
-  for (let i = 1; i <= 6; i++) {
-    const dot = document.getElementById('dot' + i);
-    dot.className = 'step-dot';
-    if (i < visible) dot.classList.add('done');
-    else if (i === visible) dot.classList.add('active');
-  }
-});
-
-// AUTH CHECK + โหลดข้อมูลเดิม (ถ้ามี)
-(async () => {
-  const { data: { session } } = await _supa.auth.getSession();
-  if (!session) { window.location.href = 'login.html'; return; }
-
-  _currentUserId = session.user.id;
-
-  // เช็คว่ามี setup ของ user นี้แล้วหรือยัง
-  const { data: existing } = await _supa
+async function loadData() {
+  const { data, error } = await _supa
     .from('setups')
     .select('*')
-    .eq('user_id', session.user.id)
-    .limit(1)
-    .single();
+    .order('created_at', { ascending: false });
+  if (error) { return; }
+  allData = data.map(mapRow);
+  applyFilters();
+}
 
-  if (!existing) return; // ยังไม่มี → กรอกใหม่ได้เลย
+  loadData();
+}
 
-  // มีแล้ว → โหลดข้อมูลเดิมมาใส่ฟอร์ม
-  _existingSetupId = existing.id;
+// ===== FILTER & SORT =====
+function setFilter(val, el) {
+  activeFilter = val;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  visibleCount = 12;
+  applyFilters();
+}
 
-  // เปลี่ยน title และปุ่ม submit
-  document.querySelector('.hero-title').innerHTML = 'BYP<br><span>แก้ไข SETUP</span>';
-  document.querySelector('.btn-submit').innerHTML = '💾 &nbsp;บันทึกการแก้ไข';
+function applyFilters() {
+  const q   = (document.getElementById('searchInput').value||'').toLowerCase();
+  const srt = document.getElementById('sortSelect').value;
 
-  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
-  set('ign',       existing.ign);
-  set('height',    existing.height?.replace(' cm',''));
-  set('mouseName', existing.mouse);
-  set('cpuModel',  existing.cpu_model);
-  set('gpuModel',  existing.gpu_model);
-  set('monDist',   existing.mon_dist?.replace(' cm',''));
-  set('tableH',    existing.table_h?.replace(' cm',''));
-  set('notes',     existing.notes === '—' ? '' : existing.notes);
-  set('socialYoutube',  existing.youtube);
-  set('socialFacebook', existing.facebook);
-  set('socialTiktok',   existing.tiktok);
-  set('socialTwitch',   existing.twitch);
-  set('socialDiscord',  existing.discord);
-  set('headset',    existing.headset);
-  set('keyboard',   existing.keyboard);
-  set('chair',      existing.chair);
-  set('microphone', existing.microphone);
-  set('webcam',     existing.webcam);
+  filtered = allData.filter(d => {
+    const dpi = parseInt(d.dpi)||0;
+    let pass = true;
+    if (activeFilter==='dpi400')   pass = dpi >= 350 && dpi <= 450;
+    if (activeFilter==='dpi800')   pass = dpi >= 700 && dpi <= 900;
+    if (activeFilter==='Verified') pass = !!d.verified;
+    if (activeFilter==='streamer') pass = d.badge === 'streamer';
+    if (activeFilter==='pro')      pass = d.badge === 'pro';
+    if (q) pass = pass && [d.ign,d.mouse,d.gpuModel,d.cpuModel,d.grip].some(v=>(v||'').toLowerCase().includes(q));
+    return pass;
+  });
 
-  // โหลด avatar
-  if (existing.avatar_url) {
-    document.getElementById('avatarPreview').innerHTML =
-      `<img src="${existing.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`;
+  filtered.sort((a,b)=>{
+    if (srt==='newest')    return new Date(b.timestamp||0)-new Date(a.timestamp||0);
+    if (srt==='dpi_asc')   return +a.dpi - +b.dpi;
+    if (srt==='dpi_desc')  return +b.dpi - +a.dpi;
+    if (srt==='fps_desc')  return parseFloat(b.avgFps)-parseFloat(a.avgFps);
+    if (srt==='sens_asc')  return +a.genSens - +b.genSens;
+    return 0;
+  });
+
+  document.getElementById('navCount').textContent = allData.length;
+  document.getElementById('resultsText').innerHTML = `พบ <strong>${filtered.length}</strong> setups`;
+  renderCards();
+}
+
+function loadMore(){
+  visibleCount += 12;
+  renderCards();
+}
+
+// ===== RENDER CARDS =====
+function renderCards() {
+  const grid  = document.getElementById('cardsGrid');
+  const empty = document.getElementById('emptyState');
+  const lmw   = document.getElementById('loadMoreWrap');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    lmw.style.display = 'none';
+    return;
   }
+  empty.style.display = 'none';
 
-  // Restore toggle states
-  if (existing.invert === 'Enable') setToggle('invert', 'on');
-  if (existing.univ_scope === 'Enable') {
-    setToggle('univ', 'on');
-  } else if (existing.univ_scope === 'Disable') {
-    setToggle('univ', 'off');
-  }
+  const slice = filtered.slice(0, visibleCount);
+  grid.innerHTML = slice.map((d,i) => buildCard(d,i)).join('');
 
-  // Sens sliders
-  const sensMap = { genSens: existing.gen_sens, aimSens: existing.aim_sens, adsSens: existing.ads_sens, scopeSens: existing.scope_sens, vertMult: existing.vert_mult,
-    scopeX2: existing.scope_x2, scopeX3: existing.scope_x3, scopeX4: existing.scope_x4,
-    scopeX6: existing.scope_x6, scopeX8: existing.scope_x8, scopeX15: existing.scope_x15 };
-  Object.entries(sensMap).forEach(([id, val]) => { if (val) { set(id, val); syncRange(id, id+'Val', val); } });
+  // Draw canvases after render
+  slice.forEach((d,i) => drawDesktop('dvc-'+i, d, 312, 160));
 
-  // Chips — clear ทั้งหมดก่อน แล้ว set ใหม่ตามข้อมูล user
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  // Init particle effects
+  slice.forEach(d => {
+    if (d.cardEffect !== 'particle' || !d.id) return;
+    const c = document.getElementById('pc-'+d.id);
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const r = c.parentElement.getBoundingClientRect();
+    c.width = r.width||312; c.height = r.height||220;
+    const pts = Array.from({length:15},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+    function draw(){ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(96,165,250,0.45)';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;});requestAnimationFrame(draw);}
+    draw();
+  });
 
-  const selectChipByVal = (groupId, val) => {
-    if (!val || val === '—') return;
-    // clear group ก่อนทุกครั้ง
-    document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
-    // หา chip ที่ตรงกัน
-    document.querySelectorAll('#' + groupId + ' .chip').forEach(c => {
-      const chipVal = c.dataset.val || c.textContent.trim();
-      if (chipVal === val) c.classList.add('selected');
-    });
-  };
-  selectChipByVal('hzChips',      existing.hz);
-  selectChipByVal('gripChips',    existing.grip);
-  selectChipByVal('armChips',     existing.arm);
-  selectChipByVal('padChips',     existing.pad);
-  selectChipByVal('monHzChips',   existing.mon_hz);
-  if (existing.mon_size) {
-    const sizeNum = existing.mon_size.replace('"','').replace(' Ultra','').trim();
-    const el = document.getElementById('monSize');
-    if (el) el.value = sizeNum;
-  }
-  selectChipByVal('cpuBrandChips',existing.cpu_brand);
-  selectChipByVal('gpuBrandChips',existing.gpu_brand);
-  selectChipByVal('ramChips',     existing.ram);
-  selectChipByVal('storageChips', existing.storage);
-  selectChipByVal('osChips',      existing.os);
-  selectChipByVal('gfxChips',     existing.gfx);
+  lmw.style.display = visibleCount < filtered.length ? 'block' : 'none';
+}
 
-  // โหลด theme & effect selector
-  await loadThemeSelector(existing.card_theme, existing.card_effect, existing.id);
+function timeAgo(ts){
+  if(!ts) return '—';
+  const s = Math.floor((Date.now()-new Date(ts))/1000);
+  if(s<60) return s+'s ago';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
 
-  updateProgress();
-})();
+function buildCard(d, i) {
+  const grip = d.grip||'—';
+  const gpuB = d.gpuBrand||'—';
+  const fps  = (d.avgFps||'—').replace(' FPS','');
+  const padShort = (d.pad||'').split(' ')[0]||'—';
+  const monShort = (d.monHz||'').replace('Hz','');
+  return `
+  <div class="setup-card${d.cardTheme && d.cardTheme !== 'default' ? ' theme-'+d.cardTheme : ''}${d.cardEffect === 'glow' ? ' effect-glow' : ''}" onclick="openDetail('${escStr(d.ign)}')">
+    ${d.cardEffect === 'wave' ? `<div class="effect-wave-wrap"><svg class="effect-wave-svg" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/></svg></div>` : ''}
+    ${d.cardEffect === 'particle' ? `<canvas class="effect-particle-canvas" id="pc-${d.id}"></canvas>` : ''}
+    <div class="card-head">
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${d.avatarUrl ? `<img src="${d.avatarUrl}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);flex-shrink:0;">` : `<div style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🎮</div>`}
+        <div class="card-ign">${esc(d.ign)||'—'}
+          ${d.verified ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : ''}
+          ${d.badge==='streamer' ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;">🎥 STREAMER</span>' : ''}
+          ${d.badge==='pro' ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;">🏆 PRO</span>' : ''}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${window._isAdmin && d.id ? `<button onclick="event.stopPropagation();adminDeleteCard('${d.id}')" style="padding:2px 8px;border:1px solid rgba(239,68,68,.35);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>` : ''}
+        <div class="card-time">${timeAgo(d.timestamp)}</div>
+      </div>
+    </div>
+    <div class="desktop-view">
+      <canvas class="dv" id="dvc-${i}" width="312" height="160"></canvas>
+    </div>
+    <div class="card-stats">
+      <div class="cstat"><div class="cstat-val">${d.dpi||'—'}</div><div class="cstat-lbl">DPI</div></div>
+      <div class="cstat"><div class="cstat-val">${d.genSens||'—'}</div><div class="cstat-lbl">Gen Sens</div></div>
+      <div class="cstat"><div class="cstat-val">${padShort}</div><div class="cstat-lbl">Pad</div></div>
+      <div class="cstat"><div class="cstat-val">${monShort}<span style="font-size:11px">Hz</span></div><div class="cstat-lbl">Monitor</div></div>
+    </div>
+    <div class="sens-strip">
+      <div class="sblk"><div class="sblk-val">${d.genSens||'—'}</div><div class="sblk-lbl">General</div></div>
+      <div class="sblk"><div class="sblk-val">${d.aimSens||'—'}</div><div class="sblk-lbl">Aim</div></div>
+      <div class="sblk"><div class="sblk-val">${d.adsSens||'—'}</div><div class="sblk-lbl">ADS</div></div>
+      <div class="sblk"><div class="sblk-val">${d.scopeSens||'—'}</div><div class="sblk-lbl">Scope</div></div>
+      <div class="sblk"><div class="sblk-val">${d.vertMult||'1.0'}</div><div class="sblk-lbl">V.Mult</div></div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-tags">
+        <span class="tag t-grip-${grip}">${grip}</span>
+        <span class="tag t-${gpuB.toLowerCase()}">${gpuB}</span>
+        <span class="tag t-fps">${fps} FPS</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="star-row" id="stars-${d.id}" onclick="event.stopPropagation()">
+          ${[1,2,3,4,5].map(s=>`<span class="star" data-id="${d.id}" data-s="${s}" onclick="rateStar('${d.id}',${s})">☆</span>`).join('')}
+          <span class="star-count" id="sc-${d.id}"></span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
 
-// โหลด theme selector สำหรับ user ใหม่ (ยังไม่มี setup)
-(async () => {
+// ===== RATINGS =====
+let _myRatings = {}; // setup_id → stars
+let _allRatings = {}; // setup_id → {avg, count}
+let _currentUserId = null;
+
+async function loadRatings() {
   const { data: { session } } = await _supa.auth.getSession();
-  if (!session || _existingSetupId) return;
-  const { data: orders } = await _supa.from('orders')
-    .select('theme_id').eq('user_id', session.user.id).eq('status', 'approved');
-  const owned = orders ? orders.map(o => o.theme_id) : [];
-  const themeBox = document.getElementById('themeSelector');
-  const effectBox = document.getElementById('effectSelector');
-  if (themeBox) themeBox.innerHTML = ALL_THEMES.filter(t => t.free || owned.includes(t.id)).map(t =>
-    `<button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
-      style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${t.id==='default'?'var(--gold)':'var(--border)'};background:${t.id==='default'?'rgba(245,200,66,.1)':'transparent'};color:${t.id==='default'?'var(--gold)':'var(--text2)'};">
-      ${t.emoji} ${t.name}</button>`).join('');
-  if (effectBox) effectBox.innerHTML = ALL_EFFECTS.filter(e => e.id === null || owned.includes(e.id)).map(e =>
-    `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
-      style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;border:1px solid ${e.id===null?'var(--gold)':'var(--border)'};background:${e.id===null?'rgba(245,200,66,.1)':'transparent'};color:${e.id===null?'var(--gold)':'var(--text2)'};">
-      ${e.emoji} ${e.name}</button>`).join('');
+  _currentUserId = session?.user?.id || null;
+
+  // โหลด ratings ทั้งหมด
+  const { data: rows } = await _supa.from('ratings').select('setup_id, stars, user_id');
+  if (!rows) return;
+
+  // คำนวณ avg + count ต่อ setup
+  _allRatings = {};
+  rows.forEach(r => {
+    if (!_allRatings[r.setup_id]) _allRatings[r.setup_id] = { total:0, count:0 };
+    _allRatings[r.setup_id].total += r.stars;
+    _allRatings[r.setup_id].count += 1;
+    if (_currentUserId && r.user_id === _currentUserId) _myRatings[r.setup_id] = r.stars;
+  });
+
+  // render ดาวใน cards
+  allData.forEach(d => { if (d.id) renderStars(d.id); });
+}
+
+function renderStars(setupId) {
+  const row = document.getElementById('stars-' + setupId);
+  if (!row) return;
+  const r = _allRatings[setupId];
+  const avg = r ? Math.round(r.total / r.count) : 0;
+  const my  = _myRatings[setupId] || 0;
+  const display = my || avg;
+
+  row.querySelectorAll('.star').forEach(s => {
+    s.textContent = parseInt(s.dataset.s) <= display ? '★' : '☆';
+    s.classList.toggle('on', parseInt(s.dataset.s) <= display);
+    s.style.cursor = 'pointer';
+  });
+  const sc = document.getElementById('sc-' + setupId);
+  if (sc) sc.textContent = r ? `${(r.total/r.count).toFixed(1)} (${r.count})` : '';
+}
+
+async function rateStar(setupId, stars) {
+  if (!_currentUserId) { alert('กรุณา Login ก่อนให้ดาวครับ'); return; }
+
+  const existing = _myRatings[setupId];
+
+  if (existing) {
+    // มีแล้ว → UPDATE
+    await _supa.from('ratings').update({ stars }).eq('setup_id', setupId).eq('user_id', _currentUserId);
+    if (_allRatings[setupId]) _allRatings[setupId].total += (stars - existing);
+  } else {
+    // ยังไม่มี → INSERT
+    await _supa.from('ratings').insert([{ setup_id: setupId, user_id: _currentUserId, stars }]);
+    if (!_allRatings[setupId]) _allRatings[setupId] = { total:0, count:0 };
+    _allRatings[setupId].total += stars;
+    _allRatings[setupId].count += 1;
+  }
+
+  _myRatings[setupId] = stars;
+  renderStars(setupId);
+  const dmStars = document.querySelectorAll('.dm-star');
+  if (dmStars.length && dmStars[0].dataset.id === setupId) renderDmStars(setupId);
+}
+
+function renderDmStars(setupId) {
+  const r   = _allRatings[setupId];
+  const my  = _myRatings[setupId] || 0;
+  const avg = r ? r.total / r.count : 0;
+  document.querySelectorAll('.dm-star').forEach(s => {
+    const v = parseInt(s.dataset.s);
+    s.textContent = v <= (my || Math.round(avg)) ? '★' : '☆';
+    s.classList.toggle('on', v <= (my || Math.round(avg)));
+  });
+  const sc = document.getElementById('dm-star-count');
+  if (sc) sc.textContent = r ? `${avg.toFixed(1)} ★ (${r.count} รีวิว)${my?' · คุณให้ '+my+' ดาว':''}` : 'ยังไม่มีรีวิว';
+}
+
+async function adminDeleteCard(id) {
+  if (!confirm('ลบ Setup นี้ออกจากระบบ?')) return;
+  const { error } = await _supa.from('setups').delete().eq('id', id);
+  if (error) { alert('เกิดข้อผิดพลาด: ' + error.message); return; }
+  allSetups = allSetups.filter(d => d.id !== id);
+  filtered  = filtered.filter(d => d.id !== id);
+  renderCards();
+}
+
+function escStr(s){ return (s||'').replace(/'/g,"\\'"); }
+
+// XSS escape สำหรับ innerHTML
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ===== 2D DESKTOP DRAW =====
+function drawDesktop(canvasId, d, W, H) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  // BG
+  ctx.fillStyle = '#0a0b0e';
+  ctx.fillRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle = 'rgba(245,200,66,0.04)';
+  ctx.lineWidth = 1;
+  for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  const sc = W/120; // 120cm table width baseline
+  const cx = W/2, cy = H*0.58;
+
+  // Parse table
+  const twStr = (d.tableSize||'120×60').split('×')[0];
+  const tdStr = (d.tableSize||'120×60').split('×')[1]||'60';
+  const tw = Math.min((parseFloat(twStr)||120)*sc, W-10);
+  const td = Math.min((parseFloat(tdStr)||60)*sc*0.85, H*0.55);
+
+  // Table shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(cx-tw/2+3, cy-td/2+3, tw, td);
+
+  // Table surface
+  ctx.fillStyle = 'rgba(245,200,66,0.03)';
+  ctx.strokeStyle = 'rgba(245,200,66,0.25)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.roundRect(cx-tw/2, cy-td/2, tw, td, 3); ctx.fill(); ctx.stroke();
+
+  // Table legs
+  ctx.fillStyle = 'rgba(245,200,66,0.08)';
+  [[cx-tw/2+4,cy+td/2],[cx+tw/2-4,cy+td/2],[cx-tw/2+4,cy-td/2],[cx+tw/2-4,cy-td/2]].forEach(([lx,ly])=>{
+    ctx.fillRect(lx-3,ly-3,6,6);
+  });
+
+  // Monitor
+  const monX = (+d.monX||0)*sc;
+  const monW = Math.min(55*sc, tw*0.55);
+  const monDeg = (+((d.monDeg||'0°').replace('°','')))*Math.PI/180;
+  const mY = cy - td/2 - 4;
+  ctx.save();
+  ctx.translate(cx+monX, mY);
+  ctx.rotate(monDeg);
+  // Monitor glow
+  ctx.shadowColor = 'rgba(123,97,255,0.4)'; ctx.shadowBlur = 8;
+  ctx.fillStyle = '#7b61ff';
+  ctx.fillRect(-monW/2,-2,monW,5);
+  ctx.shadowBlur = 0;
+  // Screen tint
+  ctx.fillStyle = 'rgba(123,97,255,0.08)';
+  ctx.fillRect(-monW/2,-12,monW,10);
+  // Stand
+  ctx.fillStyle = 'rgba(123,97,255,0.3)';
+  ctx.fillRect(-4,2,8,5);
+  ctx.restore();
+
+  // Monitor label
+  ctx.fillStyle = 'rgba(123,97,255,0.7)';
+  ctx.font = `${Math.max(7,sc*3.5)}px Barlow Condensed,sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('MONITOR', cx+monX, mY-14);
+
+  // Mousepad — ขนาดจริง (cm) scaled
+  const padSizeMap = {
+    'S': [25, 21], 'M': [35, 30], 'L': [45, 40], 'XL': [90, 40]
+  };
+  const padKey = (d.pad||'M').charAt(0);
+  const [padRealW, padRealH] = padSizeMap[padKey] || padSizeMap['M'];
+  let pw = Math.min(padRealW * sc, tw * 0.72);
+  let ph = Math.min(padRealH * sc * 0.82, td * 0.72);
+  const tableRight = cx + tw/2;
+  const tableBot   = cy + td/2;
+
+  const padYOff = (+((d.padY||'0'))||0) * sc;
+  let padLeft = cx + pw * 0.05;
+  padLeft = Math.min(padLeft, tableRight - pw - 4);
+  let padTop = cy - ph * 0.25 + padYOff;
+  padTop = Math.min(padTop, tableBot - ph - 4);
+
+  // Pad shadow
+  ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.fillRect(padLeft+3,padTop+3,pw,ph);
+  // Pad surface
+  ctx.fillStyle='rgba(239,68,68,0.07)'; ctx.strokeStyle='rgba(239,68,68,0.5)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(padLeft,padTop,pw,ph,3); ctx.fill(); ctx.stroke();
+  // Pad texture
+  ctx.strokeStyle='rgba(239,68,68,0.04)'; ctx.lineWidth=1;
+  for(let lx=padLeft+8;lx<padLeft+pw;lx+=10){ctx.beginPath();ctx.moveTo(lx,padTop);ctx.lineTo(lx,padTop+ph);ctx.stroke();}
+  ctx.fillStyle='rgba(239,68,68,0.5)'; ctx.font=`${Math.max(6,sc*3)}px Barlow Condensed,sans-serif`; ctx.textAlign='center';
+  ctx.fillText('PAD', padLeft+pw/2, padTop+ph-4);
+
+  // Mouse on pad — ขนาดจริงเมาส์ประมาณ 6x12 cm top view
+  const mx = padLeft + pw*0.65;
+  const my = padTop  + ph*0.42;
+  const mw = Math.max(4, sc * 3.0);   // กว้าง ~6cm
+  const mhh = mw * 1.8;               // ยาว ~12cm
+  ctx.save(); ctx.translate(mx,my);
+  // Shadow
+  ctx.fillStyle='rgba(0,0,0,0.5)';
+  ctx.beginPath(); ctx.ellipse(1.5,2,mw,mhh,0,0,Math.PI*2); ctx.fill();
+  // Body
+  const mg = ctx.createRadialGradient(-mw*.2,-mhh*.3,1,0,0,mw*1.5);
+  mg.addColorStop(0,'#3a3f4a'); mg.addColorStop(.5,'#242830'); mg.addColorStop(1,'#141720');
+  ctx.fillStyle=mg;
+  ctx.beginPath();
+  ctx.moveTo(0,-mhh);
+  ctx.bezierCurveTo(mw*.7,-mhh*.8,mw,-mhh*.2,mw*.85,mhh*.3);
+  ctx.bezierCurveTo(mw*.6,mhh*.9,-mw*.6,mhh*.9,-mw*.85,mhh*.3);
+  ctx.bezierCurveTo(-mw,-mhh*.2,-mw*.7,-mhh*.8,0,-mhh);
+  ctx.closePath(); ctx.fill();
+  // Seam
+  ctx.strokeStyle='rgba(255,255,255,.1)'; ctx.lineWidth=.7; ctx.stroke();
+  // Center line
+  ctx.strokeStyle='rgba(0,0,0,.5)'; ctx.lineWidth=.8;
+  ctx.beginPath(); ctx.moveTo(0,-mhh); ctx.lineTo(0,-mhh*.1); ctx.stroke();
+  // Scroll wheel
+  ctx.fillStyle='#181c24'; ctx.strokeStyle='rgba(245,200,66,.4)'; ctx.lineWidth=.6;
+  ctx.beginPath(); ctx.roundRect(-mw*.18,-mhh*.55,mw*.36,mhh*.28,2); ctx.fill(); ctx.stroke();
+  // LED dot
+  ctx.fillStyle='rgba(245,200,66,0.7)';
+  ctx.beginPath(); ctx.arc(0,mhh*.1,mw*.1,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  // Keyboard
+  const kbW = Math.min(38*sc, tw*0.36);
+  const kbH = 10*sc;
+  const kbX = cx - kbW - pw*0.15;  // KB อยู่ซ้าย ห่างจาก pad
+  const kbY = cy - td/2 + (parseFloat(d.kbY||10)*sc*0.5);
+  ctx.fillStyle='rgba(245,200,66,0.04)'; ctx.strokeStyle='rgba(245,200,66,0.3)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(kbX,kbY,kbW,kbH,2); ctx.fill(); ctx.stroke();
+  // Key dots
+  ctx.fillStyle='rgba(245,200,66,0.15)';
+  for(let ki=0;ki<4;ki++) for(let kj=0;kj<10;kj++){
+    if(ki===0&&kj>8) continue;
+    ctx.fillRect(kbX+4+kj*(kbW-8)/10, kbY+2+ki*(kbH-4)/4, (kbW-8)/10-1, (kbH-4)/4-1);
+  }
+  ctx.fillStyle='rgba(245,200,66,0.4)'; ctx.textAlign='center';
+  ctx.font=`${Math.max(5,sc*2.8)}px Barlow Condensed,sans-serif`;
+  ctx.fillText('KB', kbX+kbW/2, kbY+kbH/2+2);
+
+  // Player circle
+  const pY = cy + td/2 + 12;
+  ctx.beginPath(); ctx.arc(cx, pY, 9, 0, Math.PI*2);
+  ctx.fillStyle='rgba(245,200,66,0.1)'; ctx.fill();
+  ctx.strokeStyle='rgba(245,200,66,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='rgba(245,200,66,0.7)'; ctx.font=`bold ${Math.max(5,sc*2.8)}px Barlow Condensed,sans-serif`;
+  ctx.textAlign='center'; ctx.fillText('YOU', cx, pY+3);
+
+  // Legend (mini)
+  const legItems=[['rgba(245,200,66,0.3)','Table'],['rgba(123,97,255,0.7)','Monitor'],['rgba(239,68,68,0.5)','Pad'],['rgba(100,110,130,0.8)','Mouse']];
+  legItems.forEach(([c,l],i)=>{
+    ctx.fillStyle=c; ctx.fillRect(6,6+i*12,7,7);
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font=`${Math.max(6,sc*2.6)}px Barlow Condensed,sans-serif`;
+    ctx.textAlign='left';
+    ctx.fillText(l,16,12+i*12);
+  });
+}
+
+// ===== DETAIL MODAL =====
+function openDetail(ign) {
+  const d = allData.find(x=>x.ign===ign);
+  if (!d) return;
+  document.getElementById('dmIgn').innerHTML = esc(d.ign||'—')
+    + (d.verified ? ' <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : '')
+    + (d.badge==='streamer' ? ' <span style="font-size:11px;background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;">🎥 STREAMER</span>' : '')
+    + (d.badge==='pro' ? ' <span style="font-size:11px;background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;">🏆 PRO PLAYER</span>' : '');
+
+  // Avatar ใน popup header
+  const avatarEl = document.getElementById('dmAvatar');
+  if (avatarEl) {
+    avatarEl.innerHTML = d.avatarUrl
+      ? `<img src="${d.avatarUrl}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);">`
+      : `<div style="width:48px;height:48px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;">🎮</div>`;
+  }
+  document.getElementById('dmSub').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString('th-TH') : '—';
+
+  document.getElementById('dmBody').innerHTML = `
+    <div class="dm-desktop">
+      <div class="dm-desktop-label">Desktop Top View</div>
+      <canvas class="dv-big" id="dvBig" width="640" height="280"></canvas>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">PUBG Mouse Sensitivity</div>
+      <div class="dm-sens-row">
+        <div class="dmsbox"><div class="dmsbox-val">${d.genSens||'—'}</div><div class="dmsbox-lbl">General</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.vertMult||'1.0'}</div><div class="dmsbox-lbl">Vert Mult</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.aimSens||'—'}</div><div class="dmsbox-lbl">Aim</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.adsSens||'—'}</div><div class="dmsbox-lbl">ADS</div></div>
+        <div class="dmsbox"><div class="dmsbox-val">${d.scopeSens||'—'}</div><div class="dmsbox-lbl">Scope</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px">
+        Invert: <strong style="color:var(--text2)">${d.invert||'—'}</strong> &nbsp;·&nbsp;
+        Universal Scope: <strong style="color:var(--text2)">${d.univScope||'—'}</strong>
+      </div>
+      ${d.univScope === 'Enable' ? `
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;">
+        ${[['x2',d.scopeX2],['x3',d.scopeX3],['x4',d.scopeX4],['x6',d.scopeX6],['x8',d.scopeX8],['x15',d.scopeX15]].map(([label,val])=>`
+        <div style="background:var(--surf2);border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center;">
+          <div style="font-size:16px;font-weight:700;color:var(--gold);font-family:'Barlow Condensed',sans-serif;">${val||'—'}</div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px;font-family:'Barlow Condensed',sans-serif;">${label}</div>
+        </div>`).join('')}
+      </div>` : ''}
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">Mouse Hardware</div>
+      <div class="dm-grid">
+        <div class="dmf"><div class="dmf-lbl">Mouse</div><div class="dmf-val">${d.mouse||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">DPI</div><div class="dmf-val gold">${d.dpi||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Polling Rate</div><div class="dmf-val">${d.hz||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Grip / Arm Style</div><div class="dmf-val">${d.grip||'—'} / ${d.arm||'—'}</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">Desktop Setup</div>
+      <div class="dm-grid">
+        <div class="dmf"><div class="dmf-lbl">Mousepad</div><div class="dmf-val">${(d.pad||'—').split('(')[0]}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Monitor</div><div class="dmf-val">${d.monSize||'—'} · ${d.monHz||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ความสูงโต๊ะ</div><div class="dmf-val">${d.tableH||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ขนาดโต๊ะ</div><div class="dmf-val">${d.tableSize||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ระยะจอ</div><div class="dmf-val">${d.monDist||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">ส่วนสูง</div><div class="dmf-val">${d.height||'—'}</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:${d.notes?'20':'0'}px">
+      <div class="dm-sec-title">Spec PC</div>
+      <div class="dm-grid">
+        <div class="dmf"><div class="dmf-lbl">CPU</div><div class="dmf-val">${d.cpuBrand||''} ${d.cpuModel||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">GPU</div><div class="dmf-val gold">${d.gpuBrand||''} ${d.gpuModel||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">RAM</div><div class="dmf-val">${d.ram||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">Storage</div><div class="dmf-val">${d.storage||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">OS</div><div class="dmf-val">${d.os||'—'}</div></div>
+        <div class="dmf"><div class="dmf-lbl">FPS เฉลี่ย · Graphics</div><div class="dmf-val gold">${d.avgFps||'—'} · ${d.gfx||'—'}</div></div>
+      </div>
+    </div>
+
+    ${(d.headset||d.keyboard||d.chair||d.microphone||d.webcam) ? `
+    <div style="margin-bottom:20px">
+      <div class="dm-sec-title">Gaming Gear</div>
+      <div class="dm-grid">
+        ${d.headset    ? `<div class="dmf"><div class="dmf-lbl">🎧 Headset</div><div class="dmf-val">${d.headset}</div></div>` : ''}
+        ${d.keyboard   ? `<div class="dmf"><div class="dmf-lbl">⌨️ Keyboard</div><div class="dmf-val">${d.keyboard}</div></div>` : ''}
+        ${d.chair      ? `<div class="dmf"><div class="dmf-lbl">🪑 Chair</div><div class="dmf-val">${d.chair}</div></div>` : ''}
+        ${d.microphone ? `<div class="dmf"><div class="dmf-lbl">🎙️ Microphone</div><div class="dmf-val">${d.microphone}</div></div>` : ''}
+        ${d.webcam     ? `<div class="dmf"><div class="dmf-lbl">📷 Webcam</div><div class="dmf-val">${d.webcam}</div></div>` : ''}
+      </div>
+    </div>` : ''}
+
+    ${d.notes?`<div><div class="dm-sec-title">หมายเหตุ</div><div class="dm-notes">"${d.notes}"</div></div>`:''}
+
+    ${(d.youtube||d.facebook||d.tiktok||d.twitch||d.discord) ? `
+    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+      <div class="dm-sec-title">ติดตาม & โซเชียล</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
+        ${d.youtube  ? `<a href="${d.youtube}"  target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:7px;background:rgba(255,0,0,0.08);border:1px solid rgba(255,0,0,0.2);color:#ff6b6b;font-size:12px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;"><img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=16" style="width:14px;height:14px;border-radius:2px;">YouTube</a>` : ''}
+        ${d.facebook ? `<a href="${d.facebook}" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:7px;background:rgba(24,119,242,0.08);border:1px solid rgba(24,119,242,0.2);color:#60a5fa;font-size:12px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;"><img src="https://www.google.com/s2/favicons?domain=facebook.com&sz=16" style="width:14px;height:14px;border-radius:2px;">Facebook</a>` : ''}
+        ${d.tiktok   ? `<a href="${d.tiktok}"   target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text2);font-size:12px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;"><img src="https://www.google.com/s2/favicons?domain=tiktok.com&sz=16" style="width:14px;height:14px;border-radius:2px;">TikTok</a>` : ''}
+        ${d.twitch   ? `<a href="${d.twitch}"   target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:7px;background:rgba(145,70,255,0.08);border:1px solid rgba(145,70,255,0.2);color:#c084fc;font-size:12px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;"><img src="https://www.google.com/s2/favicons?domain=twitch.tv&sz=16" style="width:14px;height:14px;border-radius:2px;">Twitch</a>` : ''}
+        ${d.discord  ? `<a href="${d.discord}"  target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:7px;background:rgba(88,101,242,0.08);border:1px solid rgba(88,101,242,0.2);color:#818cf8;font-size:12px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;"><img src="https://www.google.com/s2/favicons?domain=discord.com&sz=16" style="width:14px;height:14px;border-radius:2px;">Discord</a>` : ''}
+      </div>
+    </div>` : ''}
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <div class="dm-sec-title">ให้คะแนน Setup นี้</div>
+      <div class="dm-star-row">
+        ${[1,2,3,4,5].map(s=>`<span class="dm-star" data-id="${d.id}" data-s="${s}" onclick="rateStar('${d.id}',${s});renderDmStars('${d.id}')">☆</span>`).join('')}
+        <span class="dm-star-count" id="dm-star-count"></span>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('overlay').classList.add('show');
+
+  // Apply theme + effect to popup
+  const modal = document.getElementById('detailModal');
+  modal.className = 'detail-modal';
+  if (d.cardTheme && d.cardTheme !== 'default') modal.classList.add('theme-'+d.cardTheme);
+  if (d.cardEffect === 'glow') modal.classList.add('effect-glow');
+
+  // Wave effect in popup
+  let waveEl = document.getElementById('modalWave');
+  if (waveEl) waveEl.remove();
+  if (d.cardEffect === 'wave') {
+    waveEl = document.createElement('div');
+    waveEl.id = 'modalWave';
+    waveEl.className = 'effect-wave-wrap';
+    waveEl.innerHTML = `<svg class="effect-wave-svg" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/></svg>`;
+    modal.appendChild(waveEl);
+  }
+
+  // Particle effect in popup
+  let pcEl = document.getElementById('modalParticle');
+  if (pcEl) pcEl.remove();
+  if (d.cardEffect === 'particle') {
+    setTimeout(() => {
+      const c = document.createElement('canvas');
+      c.id = 'modalParticle';
+      c.className = 'effect-particle-canvas';
+      modal.appendChild(c);
+      const ctx = c.getContext('2d');
+      c.width = modal.offsetWidth;
+      c.height = modal.offsetHeight;
+      const pts = Array.from({length:25},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+      function draw(){
+        ctx.clearRect(0,0,c.width,c.height);
+        pts.forEach(p=>{
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle='rgba(96,165,250,0.45)';ctx.fill();
+          p.x+=p.vx;p.y+=p.vy;
+          if(p.x<0||p.x>c.width)p.vx*=-1;
+          if(p.y<0||p.y>c.height)p.vy*=-1;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }, 100);
+  }
+  setTimeout(() => { drawDesktop('dvBig', d, 640, 280); renderDmStars(d.id); }, 50);
+}
+
+function closeOverlay(e){
+  if(e.target===document.getElementById('overlay'))
+    document.getElementById('overlay').classList.remove('show');
+}
+
+// ===== AUTH UI =====
+function goToForm() {
+  _supa.auth.getSession().then(({ data: { session } }) => {
+    window.location.href = session ? 'pubg-setup-v1.html' : 'login.html';
+  });
+}
+
+async function renderAuthBtn() {
+  const { data: { session } } = await _supa.auth.getSession();
+  const el = document.getElementById('authBtn');
+  if (!el) return;
+  if (session) {
+    const email = session.user.email || '';
+    const short = email.split('@')[0].substring(0, 12);
+
+    // เช็ค role
+    const { data: profile } = await _supa.from('profiles').select('role').eq('id', session.user.id).single();
+    window._isAdmin = profile?.role === 'admin';
+
+    // เช็คว่ามี setup แล้วหรือยัง
+    const { data: mySetup } = await _supa
+      .from('setups')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .limit(1)
+      .single();
+
+    // เปลี่ยนชื่อปุ่มตาม status
+    const setupBtn = document.getElementById('setupBtn');
+    if (setupBtn) {
+      setupBtn.textContent = mySetup ? '⚙️ ตั้งค่าของฉัน' : '+ กรอก Setup ของฉัน';
+    }
+
+    // re-render cards ถ้าโหลดเสร็จแล้ว — ไม่จำเป็นแล้ว (init เช็ค admin ก่อน loadData)
+
+    // โหลด avatar
+    const { data: mySetupData } = await _supa
+      .from('setups').select('avatar_url').eq('user_id', session.user.id).single();
+    const avatarUrl = mySetupData?.avatar_url;
+    const avatarHtml = avatarUrl
+      ? `<img src="${avatarUrl}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);">`
+      : `<span style="font-size:14px;">👤</span>`;
+
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:6px;">
+        ${window._isAdmin ? `<span style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:3px 7px;border:1px solid rgba(245,200,66,.3);border-radius:5px;white-space:nowrap;">👑 ADMIN</span>` : ''}
+        <a href="profile.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:20px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.borderColor='#f5c842'" onmouseout="this.style.borderColor=''">
+          ${avatarHtml}<span class="hide-xs" style="font-size:11px;">${email.split('@')[0].substring(0,10)}</span>
+        </a>
+        <button onclick="logout()" style="padding:5px 10px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;white-space:nowrap;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#fca5a5'" onmouseout="this.style.borderColor='';this.style.color=''">ออก</button>
+      </div>`;
+  } else {
+    window._isAdmin = false;
+    el.innerHTML = `<button onclick="location.href='login.html'" style="padding:5px 14px;border:1px solid var(--gold);border-radius:6px;background:transparent;color:var(--gold);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='var(--gold)';this.style.color='#08090b'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">LOGIN</button>`;
+  }
+}
+
+async function logout() {
+  await _supa.auth.signOut();
+  renderAuthBtn();
+}
+
+// ===== INIT =====
+(async () => {
+  await renderAuthBtn(); // เช็ค admin ก่อน
+  await loadData();      // โหลด data + render cards
+  await loadRatings();   // โหลดดาวทั้งหมด
 })();
 </script>
 </body>
