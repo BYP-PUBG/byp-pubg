@@ -257,13 +257,15 @@ let currentTab = 'login';
 
 // Check if already logged in
 _supa.auth.getSession().then(({ data: { session } }) => {
-  if (session) window.location.href = 'pubg-setup-v1.html';
+  const returnTo = new URLSearchParams(window.location.search).get('return') || 'pubg-browse.html';
+  if (session) window.location.href = returnTo;
 });
 
 // Handle OAuth redirect
 _supa.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_IN' && session) {
-    window.location.href = 'pubg-setup-v1.html';
+    const returnTo = new URLSearchParams(window.location.search).get('return') || 'pubg-browse.html';
+    window.location.href = returnTo;
   }
 });
 
