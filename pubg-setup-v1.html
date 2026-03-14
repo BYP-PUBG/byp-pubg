@@ -1215,7 +1215,14 @@ function updateProgress() {
 function previewAvatar(input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
-  if (file.size > 2 * 1024 * 1024) { alert('รูปต้องไม่เกิน 2MB ครับ'); return; }
+  // เช็ค MIME type จริง ไม่ใช่แค่ extension
+  const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
+  if (!allowed.includes(file.type)) {
+    alert('รองรับเฉพาะไฟล์ JPG, PNG, WebP, GIF เท่านั้นครับ');
+    input.value = '';
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) { alert('รูปต้องไม่เกิน 2MB ครับ'); input.value = ''; return; }
   const reader = new FileReader();
   reader.onload = e => {
     const prev = document.getElementById('avatarPreview');
