@@ -202,35 +202,54 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
       <div id="step1">
         <div style="text-align:center;margin-bottom:14px;">
           <div style="font-size:26px;font-weight:900;color:var(--gold);font-family:'Barlow Condensed',sans-serif;" id="modalAmount">฿29</div>
-          <div style="font-size:12px;color:var(--text2);margin-top:2px;">โอนเงินแล้วอัพโหลดสลิปด้านล่างได้เลย</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="modalSubtext">โอนเงินแล้วอัพโหลดสลิปด้านล่างได้เลย</div>
         </div>
-        <div class="bank-box">
-          <div class="bank-label">ธนาคารกรุงไทย</div>
-          <div class="bank-num">986-3-40661-9</div>
-          <div class="bank-name">ภีมภูพัฒน์</div>
-        </div>
-        <div class="bank-box" style="background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);">
-          <div class="bank-label">True Wallet</div>
-          <div class="bank-num" style="color:#60a5fa;">061-478-9089</div>
-          <div class="bank-name">ภีมภูพัฒน์</div>
-        </div>
-        <div class="slip-area" id="slipArea" onclick="document.getElementById('slipInput').click()">
-          <div id="slipPlaceholder">
-            <div style="font-size:28px;margin-bottom:8px;">📎</div>
-            <div style="font-size:13px;color:var(--text2);">กดเพื่อเลือกรูปสลิป</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;">JPG, PNG ไม่เกิน 5MB</div>
+
+        <!-- Promo Code -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:6px;">มีโค้ดส่วนลด?</div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="promoInput" placeholder="กรอกโค้ดที่นี่..."
+              style="flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:8px 12px;outline:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;"
+              oninput="this.value=this.value.toUpperCase()">
+            <button onclick="applyPromo()" style="padding:8px 16px;border-radius:8px;border:1px solid var(--bord2);background:var(--surf2);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;white-space:nowrap;transition:all .15s;"
+              onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='';this.style.color=''">ใช้โค้ด</button>
           </div>
-          <img id="slipImg" class="slip-img">
+          <div id="promoMsg" style="font-size:12px;margin-top:6px;display:none;"></div>
         </div>
-        <input type="file" id="slipInput" accept="image/*" style="display:none" onchange="onSlipSelect(this)">
+
+        <!-- Payment (hidden when free) -->
+        <div id="paymentSection">
+          <div class="bank-box">
+            <div class="bank-label">ธนาคารกรุงไทย</div>
+            <div class="bank-num">986-3-40661-9</div>
+            <div class="bank-name">ภีมภูพัฒน์</div>
+          </div>
+          <div class="bank-box" style="background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);">
+            <div class="bank-label">True Wallet</div>
+            <div class="bank-num" style="color:#60a5fa;">061-478-9089</div>
+            <div class="bank-name">ภีมภูพัฒน์</div>
+          </div>
+          <div class="slip-area" id="slipArea" onclick="document.getElementById('slipInput').click()">
+            <div id="slipPlaceholder">
+              <div style="font-size:28px;margin-bottom:8px;">📎</div>
+              <div style="font-size:13px;color:var(--text2);">กดเพื่อเลือกรูปสลิป</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;">JPG, PNG ไม่เกิน 5MB</div>
+            </div>
+            <img id="slipImg" class="slip-img">
+          </div>
+          <input type="file" id="slipInput" accept="image/*" style="display:none" onchange="onSlipSelect(this)">
+        </div>
+
         <div class="err" id="errMsg"></div>
         <button class="btn-main" id="submitBtn" onclick="submitOrder()" disabled>📤 ส่งสลิปและรอ Approve</button>
         <button class="btn-sec" onclick="closeModal()">ยกเลิก</button>
       </div>
+
       <div id="step2" style="display:none;text-align:center;padding:24px 0;">
         <div style="font-size:52px;margin-bottom:16px;">✅</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:10px;">ส่งสลิปแล้ว!</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:20px;">Admin กำลังตรวจสอบ<br>Theme จะถูก unlock ภายใน <strong style="color:var(--gold);">24 ชม.</strong></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:10px;" id="step2Title">ส่งสลิปแล้ว!</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:20px;" id="step2Desc">Admin กำลังตรวจสอบ<br>Theme จะถูก unlock ภายใน <strong style="color:var(--gold);">24 ชม.</strong></div>
         <button class="btn-main" onclick="closeModal()">รับทราบ ✓</button>
       </div>
     </div>
@@ -488,22 +507,31 @@ function render(){
 
 let _bundleTheme=null, _bundleEffect=null;
 
-function buyBundle(themeId,themeName,themePrice,effectId,effectName,effectPrice){
-  const total=themePrice+effectPrice;
-  _buyType='bundle'; _buyId=themeId; _buyName=themeName+' + '+effectName+' Effect'; _buyPrice=total;
-  _bundleTheme={id:themeId,name:themeName,price:themePrice};
-  _bundleEffect={id:effectId,name:effectName,price:effectPrice};
-  _slipFile=null;
-  document.getElementById('modalTitle').textContent='🛒 Bundle — ฿'+total;
-  document.getElementById('modalAmount').textContent='฿'+total;
+function resetModal() {
+  _slipFile=null; _promoCode=null; _promoDiscount=0; _isFreeByPromo=false;
   document.getElementById('step1').style.display='block';
   document.getElementById('step2').style.display='none';
   document.getElementById('slipImg').style.display='none';
   document.getElementById('slipPlaceholder').style.display='block';
   document.getElementById('slipArea').classList.remove('has-file');
+  document.getElementById('paymentSection').style.display='block';
   document.getElementById('submitBtn').disabled=true;
+  document.getElementById('submitBtn').textContent='📤 ส่งสลิปและรอ Approve';
   document.getElementById('errMsg').style.display='none';
+  document.getElementById('promoInput').value='';
+  document.getElementById('promoMsg').style.display='none';
+  document.getElementById('modalSubtext').textContent='โอนเงินแล้วอัพโหลดสลิปด้านล่างได้เลย';
   document.getElementById('slipInput').value='';
+}
+
+function buyBundle(themeId,themeName,themePrice,effectId,effectName,effectPrice){
+  const total=themePrice+effectPrice;
+  _buyType='bundle'; _buyId=themeId; _buyName=themeName+' + '+effectName+' Effect'; _buyPrice=total;
+  _bundleTheme={id:themeId,name:themeName,price:themePrice};
+  _bundleEffect={id:effectId,name:effectName,price:effectPrice};
+  resetModal();
+  document.getElementById('modalTitle').textContent='🛒 Bundle — ฿'+total;
+  document.getElementById('modalAmount').textContent='฿'+total;
   document.getElementById('payModal').classList.add('show');
 }
 
@@ -517,17 +545,10 @@ async function applyTheme(id){
 }
 
 function buyItem(type,id,name,price){
-  _buyType=type; _buyId=id; _buyName=name; _buyPrice=price; _slipFile=null;
+  _buyType=type; _buyId=id; _buyName=name; _buyPrice=price;
+  resetModal();
   document.getElementById('modalTitle').textContent=name+(type==='effect'?' Effect':' Theme');
   document.getElementById('modalAmount').textContent='฿'+price;
-  document.getElementById('step1').style.display='block';
-  document.getElementById('step2').style.display='none';
-  document.getElementById('slipImg').style.display='none';
-  document.getElementById('slipPlaceholder').style.display='block';
-  document.getElementById('slipArea').classList.remove('has-file');
-  document.getElementById('submitBtn').disabled=true;
-  document.getElementById('errMsg').style.display='none';
-  document.getElementById('slipInput').value='';
   document.getElementById('payModal').classList.add('show');
 }
 
@@ -550,44 +571,124 @@ function onSlipSelect(input){
 
 function showErr(msg){const e=document.getElementById('errMsg');e.textContent=msg;e.style.display='block';}
 
-async function submitOrder(){
-  if(!_slipFile||!_uid||!_sid) return;
-  const btn=document.getElementById('submitBtn');
-  btn.disabled=true; btn.textContent='⏳ กำลังส่ง...';
-  try{
-    const ext=_slipFile.name.split('.').pop();
-    const path=`${_uid}_${Date.now()}.${ext}`;
-    const{error:upErr}=await _supa.storage.from('slips').upload(path,_slipFile);
-    if(upErr) throw new Error(upErr.message);
-    const{data:urlData}=_supa.storage.from('slips').getPublicUrl(path);
-    const slipUrl=urlData.publicUrl;
+let _promoCode = null;
+let _promoDiscount = 0;
+let _isFreeByPromo = false;
 
-    if(_buyType==='bundle' && _bundleTheme && _bundleEffect){
-      // Insert 2 orders พร้อมกัน
-      const{error:oErr}=await _supa.from('orders').insert([
-        {user_id:_uid,setup_id:_sid,theme_id:_bundleTheme.id,theme_name:_bundleTheme.name,amount:_bundleTheme.price,slip_url:slipUrl,status:'pending'},
-        {user_id:_uid,setup_id:_sid,theme_id:_bundleEffect.id,theme_name:_bundleEffect.name,amount:_bundleEffect.price,slip_url:slipUrl,status:'pending'},
-      ]);
-      if(oErr) throw new Error(oErr.message);
-      _pending.push(_bundleTheme.id);
-      _pendingEffects.push(_bundleEffect.id);
-    } else {
-      const{error:oErr}=await _supa.from('orders').insert([{
-        user_id:_uid,setup_id:_sid,
-        theme_id:_buyId,theme_name:_buyName,
-        amount:_buyPrice,slip_url:slipUrl,status:'pending',
+async function applyPromo() {
+  const code = document.getElementById('promoInput').value.trim().toUpperCase();
+  const msg  = document.getElementById('promoMsg');
+  if (!code) return;
+
+  const { data, error } = await _supa.from('promo_codes')
+    .select('*').eq('code', code).eq('active', true).single();
+
+  if (error || !data) {
+    msg.style.display = 'block';
+    msg.style.color   = '#fca5a5';
+    msg.textContent   = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้วครับ';
+    return;
+  }
+
+  // เช็คหมดอายุ
+  if (data.expires_at && new Date(data.expires_at) < new Date()) {
+    msg.style.display = 'block';
+    msg.style.color   = '#fca5a5';
+    msg.textContent   = '❌ โค้ดหมดอายุแล้วครับ';
+    return;
+  }
+
+  // เช็คจำนวนใช้งาน
+  if (data.max_uses !== null && data.used_count >= data.max_uses) {
+    msg.style.display = 'block';
+    msg.style.color   = '#fca5a5';
+    msg.textContent   = '❌ โค้ดถูกใช้ครบจำนวนแล้วครับ';
+    return;
+  }
+
+  _promoCode     = data.code;
+  _promoDiscount = data.discount_percent;
+  _isFreeByPromo = data.discount_percent >= 100;
+
+  msg.style.display = 'block';
+  msg.style.color   = '#4ade80';
+  msg.textContent   = `✅ ใช้โค้ดได้! ส่วนลด ${data.discount_percent}%`;
+
+  // คำนวณราคาใหม่
+  const newPrice = _isFreeByPromo ? 0 : Math.round(_buyPrice * (1 - _promoDiscount/100));
+  document.getElementById('modalAmount').textContent = _isFreeByPromo ? 'ฟรี! 🎉' : '฿'+newPrice;
+
+  if (_isFreeByPromo) {
+    // ซ่อนส่วนจ่ายเงิน แสดงปุ่ม unlock ฟรี
+    document.getElementById('paymentSection').style.display = 'none';
+    document.getElementById('modalSubtext').textContent = 'ใช้โค้ดฟรี กดรับได้เลย!';
+    const btn = document.getElementById('submitBtn');
+    btn.disabled  = false;
+    btn.textContent = '🎁 รับฟรีเลย!';
+  }
+}
+
+async function submitOrder(){
+  if (!_uid || !_sid) return;
+  if (!_isFreeByPromo && !_slipFile) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = '⏳ กำลังดำเนินการ...';
+
+  try {
+    if (_isFreeByPromo) {
+      // Unlock ทันทีโดยไม่ต้องรอ Admin
+      if (_buyType === 'bundle' && _bundleTheme && _bundleEffect) {
+        await _supa.from('setups').update({ card_theme: _bundleTheme.id, card_effect: _bundleEffect.id }).eq('id', _sid);
+        _cur = _bundleTheme.id; _curEffect = _bundleEffect.id;
+      } else if (_buyType === 'effect') {
+        await _supa.from('setups').update({ card_effect: _buyId }).eq('id', _sid);
+        _curEffect = _buyId;
+      } else {
+        await _supa.from('setups').update({ card_theme: _buyId }).eq('id', _sid);
+        _cur = _buyId;
+      }
+      // เพิ่ม used_count
+      await _supa.from('promo_codes').update({ used_count: _supa.rpc('increment', {}) }).eq('code', _promoCode);
+      // Insert order ฟรี
+      await _supa.from('orders').insert([{
+        user_id:_uid, setup_id:_sid,
+        theme_id: _buyType==='bundle'?_bundleTheme.id:_buyId,
+        theme_name: _buyName, amount:0, status:'approved', slip_url:null,
       }]);
-      if(oErr) throw new Error(oErr.message);
-      if(_buyType==='effect') _pendingEffects.push(_buyId);
-      else _pending.push(_buyId);
+      document.getElementById('step2Title').textContent = '🎁 Unlock แล้ว!';
+      document.getElementById('step2Desc').innerHTML = 'Theme/Effect ถูก unlock ให้แล้วทันทีครับ<br><strong style="color:var(--gold);">เพลิดเพลินได้เลย! 🎮</strong>';
+    } else {
+      // จ่ายเงินปกติ
+      const ext  = _slipFile.name.split('.').pop();
+      const path = `${_uid}_${Date.now()}.${ext}`;
+      const { error:upErr } = await _supa.storage.from('slips').upload(path, _slipFile);
+      if (upErr) throw new Error(upErr.message);
+      const { data:urlData } = _supa.storage.from('slips').getPublicUrl(path);
+      const slipUrl = urlData.publicUrl;
+
+      if (_buyType === 'bundle' && _bundleTheme && _bundleEffect) {
+        await _supa.from('orders').insert([
+          {user_id:_uid,setup_id:_sid,theme_id:_bundleTheme.id,theme_name:_bundleTheme.name,amount:_bundleTheme.price,slip_url:slipUrl,status:'pending'},
+          {user_id:_uid,setup_id:_sid,theme_id:_bundleEffect.id,theme_name:_bundleEffect.name,amount:_bundleEffect.price,slip_url:slipUrl,status:'pending'},
+        ]);
+        _pending.push(_bundleTheme.id); _pendingEffects.push(_bundleEffect.id);
+      } else {
+        await _supa.from('orders').insert([{user_id:_uid,setup_id:_sid,theme_id:_buyId,theme_name:_buyName,amount:_buyPrice,slip_url:slipUrl,status:'pending'}]);
+        if (_buyType==='effect') _pendingEffects.push(_buyId); else _pending.push(_buyId);
+      }
+      document.getElementById('step2Title').textContent = 'ส่งสลิปแล้ว!';
+      document.getElementById('step2Desc').innerHTML = 'Admin กำลังตรวจสอบ<br>Theme จะถูก unlock ภายใน <strong style="color:var(--gold);">24 ชม.</strong>';
     }
 
-    document.getElementById('step1').style.display='none';
-    document.getElementById('step2').style.display='block';
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
     render(); applyLivePreview();
-  }catch(err){
-    showErr('เกิดข้อผิดพลาด: '+err.message);
-    btn.disabled=false; btn.textContent='📤 ส่งสลิปและรอ Approve';
+
+  } catch(err) {
+    showErr('เกิดข้อผิดพลาด: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = _isFreeByPromo ? '🎁 รับฟรีเลย!' : '📤 ส่งสลิปและรอ Approve';
   }
 }
 
