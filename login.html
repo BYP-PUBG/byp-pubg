@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -13,22 +14,6 @@
   );
 </script>
 <style>
-:root {
-  --bg:     #07080a;
-  --bg2:    #0e0f12;
-  --surf:   #131417;
-  --surf2:  #1a1b1f;
-  --border: #272830;
-  --bord2:  #32333e;
-  --gold:   #f5c842;
-  --goldf:  rgba(245,200,66,0.10);
-  --text:   #f0f1f5;
-  --text2:  #8e8f9e;
-  --text3:  #45464f;
-  --red:    #ef4444;
-  --green:  #22c55e;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
 body{
   background:var(--bg);
   color:var(--text);
@@ -36,9 +21,6 @@ body{
   min-height:100vh;
   display:flex;flex-direction:column;
 }
-/* noise overlay */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.2;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
 
 /* NAV */
 nav{
@@ -48,8 +30,6 @@ nav{
   border-bottom:1px solid var(--border);
   backdrop-filter:blur(12px);
 }
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
-.nav-logo span{color:var(--gold);}
 .nav-back{
   display:flex;align-items:center;gap:6px;
   font-size:12px;color:var(--text2);text-decoration:none;
