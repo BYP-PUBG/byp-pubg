@@ -850,6 +850,14 @@ async function init(){
   const{data:{session}}=await _supa.auth.getSession();
   if(!session){window.location.href='login.html';return;}
   _uid=session.user.id;
+  _previewIGN = 'YOUR IGN';
+  document.getElementById('liveIgn').textContent = '—';
+  document.getElementById('liveDpi').textContent  = '—';
+  document.getElementById('liveSens').textContent = '—';
+  document.getElementById('livePad').textContent  = '—';
+  document.getElementById('liveHz').textContent   = '—';
+  document.getElementById('liveAvatar').innerHTML = '🎮';
+
   const{data:s}=await _supa.from('setups').select('id,card_theme,card_effect,ign,dpi,gen_sens,pad,mon_hz,avatar_url').eq('user_id',_uid).single();
   if(s){
     _sid=s.id; _cur=s.card_theme||'default'; _curEffect=s.card_effect||null;
