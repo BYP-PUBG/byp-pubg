@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -14,6 +13,140 @@
   );
 </script>
 <style>
+:root {
+  --bg:     #07080a;
+  --bg2:    #0e0f12;
+  --surf:   #131417;
+  --surf2:  #1a1b1f;
+  --surf3:  #21222a;
+  --border: #272830;
+  --bord2:  #32333e;
+  --gold:   #f5c842;
+  --goldf:  rgba(245,200,66,0.10);
+  --golddim:rgba(245,200,66,0.08);
+  --red:    #ef4444;
+  --green:  #22c55e;
+  --blue:   #3b82f6;
+  --purple: #a855f7;
+  --text:   #f0f1f5;
+  --text2:  #8e8f9e;
+  --text3:  #45464f;
+  --r:      10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow','Noto Sans Thai',sans-serif;
+  min-height:100vh;
+}
+
+/* noise overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+/* ===== NAV ===== */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:52px;
+  background:rgba(13,14,18,0.97);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:100;
+}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
+.nav-logo span{color:var(--gold);}
+.nav-link,.nav-item{
+  padding:6px 14px;border-radius:6px;border:none;
+  background:transparent;color:var(--text2);
+  font-size:12px;font-weight:600;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;
+  transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+}
+.nav-link:hover,.nav-item:hover{color:var(--text);background:var(--surf2);}
+.nav-link.active,.nav-item.active{color:var(--gold);}
+.nav-back{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text2);text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;
+  padding:5px 12px;border:1px solid var(--border);border-radius:6px;
+  transition:all .15s;
+}
+.nav-back:hover{color:var(--gold);border-color:var(--gold);}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group{margin-bottom:16px;}
+.form-label{
+  display:block;font-size:11px;color:var(--text2);
+  letter-spacing:1.5px;text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;margin-bottom:7px;
+}
+.form-input{
+  width:100%;background:var(--surf2);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-size:14px;padding:11px 14px;
+  outline:none;font-family:'Barlow','Noto Sans Thai',sans-serif;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--gold);}
+.form-input::placeholder{color:var(--text3);}
+
+/* ===== BUTTONS ===== */
+.btn-primary,.btn-gold{
+  display:inline-block;padding:12px 24px;border-radius:8px;border:none;
+  background:var(--gold);color:#08090b;
+  font-size:14px;font-weight:700;letter-spacing:.5px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;
+  transition:all .15s;text-decoration:none;
+}
+.btn-primary:hover,.btn-gold:hover{background:#e8a820;transform:translateY(-1px);}
+.btn-primary:active,.btn-gold:active{transform:translateY(0);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-outline{
+  display:inline-block;padding:10px 22px;background:transparent;
+  color:var(--text2);border-radius:8px;text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.5px;border:1px solid var(--bord2);cursor:pointer;transition:all .15s;
+}
+.btn-outline:hover{color:var(--gold);border-color:var(--gold);}
+
+/* ===== MESSAGE / TOAST ===== */
+.msg{padding:10px 14px;border-radius:7px;font-size:13px;margin-bottom:16px;display:none;}
+.msg.show{display:block;}
+.msg.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.msg.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;}
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--surf);border:1px solid var(--bord2);border-radius:8px;
+  padding:12px 20px;font-size:13px;color:var(--text);
+  z-index:200;transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;}
+
+/* ===== SPINNER ===== */
+.spinner{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(0,0,0,.3);border-top-color:#08090b;
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:6px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== CARD ===== */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.card::before{content:'';display:block;height:3px;}
+.card.gold::before{background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.15));}
+.card.purple::before{background:linear-gradient(90deg,#6366f1,rgba(99,102,241,0.15));}
+.card.green::before{background:linear-gradient(90deg,#22c55e,rgba(34,197,94,0.15));}
+.card-body{padding:24px;}
+
+/* ===== SECTION TITLE ===== */
+.sec-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:12px;
+}
+
 body{
   background:var(--bg);
   color:var(--text);
