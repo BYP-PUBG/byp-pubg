@@ -848,7 +848,11 @@ function closeModal(){document.getElementById('payModal').classList.remove('show
 
 async function init(){
   const{data:{session}}=await _supa.auth.getSession();
-  if(!session){window.location.href='login.html?return=shop.html';return;}
+  if(!session){
+    const returnUrl = encodeURIComponent('shop.html');
+    window.location.href='login.html?return=shop.html';
+    return;
+  }
   _uid=session.user.id;
   _previewIGN = 'YOUR IGN';
   document.getElementById('liveIgn').textContent = '—';
