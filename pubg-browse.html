@@ -723,8 +723,7 @@ function renderStars(setupId) {
   row.querySelectorAll('.star').forEach(s => {
     s.textContent = parseInt(s.dataset.s) <= display ? '★' : '☆';
     s.classList.toggle('on', parseInt(s.dataset.s) <= display);
-    // ถ้าให้แล้ว → lock cursor
-    if (my) s.style.cursor = 'default';
+    s.style.cursor = 'pointer';
   });
   const sc = document.getElementById('sc-' + setupId);
   if (sc) sc.textContent = r ? `${(r.total/r.count).toFixed(1)} (${r.count})` : '';
@@ -732,14 +731,22 @@ function renderStars(setupId) {
 
 async function rateStar(setupId, stars) {
   if (!_currentUserId) { alert('กรุณา Login ก่อนให้ดาวครับ'); return; }
-  if (_myRatings[setupId]) { alert('คุณให้ดาว Setup นี้ไปแล้ว ไม่สามารถเปลี่ยนได้ครับ'); return; }
 
-  await _supa.from('ratings').insert([{ setup_id: setupId, user_id: _currentUserId, stars }]);
+  const existing = _myRatings[setupId];
+
+  if (existing) {
+    // มีแล้ว → UPDATE
+    await _supa.from('ratings').update({ stars }).eq('setup_id', setupId).eq('user_id', _currentUserId);
+    if (_allRatings[setupId]) _allRatings[setupId].total += (stars - existing);
+  } else {
+    // ยังไม่มี → INSERT
+    await _supa.from('ratings').insert([{ setup_id: setupId, user_id: _currentUserId, stars }]);
+    if (!_allRatings[setupId]) _allRatings[setupId] = { total:0, count:0 };
+    _allRatings[setupId].total += stars;
+    _allRatings[setupId].count += 1;
+  }
+
   _myRatings[setupId] = stars;
-  if (!_allRatings[setupId]) _allRatings[setupId] = { total:0, count:0 };
-  _allRatings[setupId].total += stars;
-  _allRatings[setupId].count += 1;
-
   renderStars(setupId);
   const dmStars = document.querySelectorAll('.dm-star');
   if (dmStars.length && dmStars[0].dataset.id === setupId) renderDmStars(setupId);
