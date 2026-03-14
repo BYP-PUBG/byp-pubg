@@ -266,7 +266,80 @@ canvas.dv{
 }
 .setup-card:hover .foot-arrow{color:var(--gold);transform:translateX(3px);}
 
-/* Empty */
+/* ===== CARD THEMES ===== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.setup-card.theme-inferno { background:#1a0a00; border-color:#ff4500; }
+.setup-card.theme-inferno .card-head { border-color:rgba(255,69,0,.3); }
+.setup-card.theme-inferno .card-ign { color:#ffddcc; }
+.setup-card.theme-inferno .cstat-val { color:#ff6b35; }
+.setup-card.theme-inferno .desktop-view,.setup-card.theme-inferno .card-stats,.setup-card.theme-inferno .sens-strip { background:rgba(255,69,0,.04); border-color:rgba(255,69,0,.2); }
+.setup-card.theme-inferno .cstat,.setup-card.theme-inferno .sblk { border-color:rgba(255,69,0,.2); }
+.setup-card.theme-inferno .card-foot { border-color:rgba(255,69,0,.2); }
+.setup-card.theme-inferno::before { background:linear-gradient(90deg,#ff4500,rgba(255,69,0,0)); opacity:1; }
+.setup-card.theme-inferno:hover { border-color:#ff6b35; box-shadow:0 12px 32px rgba(255,69,0,.2); }
+
+.setup-card.theme-storm { background:#060b1a; border-color:#4f46e5; }
+.setup-card.theme-storm .card-head { border-color:rgba(79,70,229,.3); }
+.setup-card.theme-storm .card-ign { color:#e0e7ff; }
+.setup-card.theme-storm .cstat-val { color:#818cf8; }
+.setup-card.theme-storm .desktop-view,.setup-card.theme-storm .card-stats,.setup-card.theme-storm .sens-strip { background:rgba(79,70,229,.04); border-color:rgba(79,70,229,.2); }
+.setup-card.theme-storm .cstat,.setup-card.theme-storm .sblk { border-color:rgba(79,70,229,.2); }
+.setup-card.theme-storm .card-foot { border-color:rgba(79,70,229,.2); }
+.setup-card.theme-storm::before { background:linear-gradient(90deg,#4f46e5,rgba(79,70,229,0)); opacity:1; }
+.setup-card.theme-storm:hover { border-color:#818cf8; box-shadow:0 12px 32px rgba(79,70,229,.25); }
+
+.setup-card.theme-matrix { background:#001a00; border-color:#00ff41; }
+.setup-card.theme-matrix .card-head { border-color:rgba(0,255,65,.3); }
+.setup-card.theme-matrix .card-ign { color:#00ff41; font-family:'Courier New',monospace; }
+.setup-card.theme-matrix .cstat-val { color:#00ff41; }
+.setup-card.theme-matrix .desktop-view,.setup-card.theme-matrix .card-stats,.setup-card.theme-matrix .sens-strip { background:rgba(0,255,65,.03); border-color:rgba(0,255,65,.15); }
+.setup-card.theme-matrix .cstat,.setup-card.theme-matrix .sblk { border-color:rgba(0,255,65,.15); }
+.setup-card.theme-matrix .card-foot { border-color:rgba(0,255,65,.15); }
+.setup-card.theme-matrix::before { background:linear-gradient(90deg,#00ff41,rgba(0,255,65,0)); opacity:1; }
+.setup-card.theme-matrix:hover { border-color:#00ff41; box-shadow:0 12px 32px rgba(0,255,65,.2); }
+
+.setup-card.theme-gold { background:#0d0900; border-color:#f5c842; }
+.setup-card.theme-gold .card-head { border-color:rgba(245,200,66,.3); }
+.setup-card.theme-gold .card-ign { color:#ffe680; }
+.setup-card.theme-gold .cstat-val { color:#f5c842; }
+.setup-card.theme-gold .desktop-view,.setup-card.theme-gold .card-stats,.setup-card.theme-gold .sens-strip { background:rgba(245,200,66,.04); border-color:rgba(245,200,66,.2); }
+.setup-card.theme-gold .cstat,.setup-card.theme-gold .sblk { border-color:rgba(245,200,66,.2); }
+.setup-card.theme-gold .card-foot { border-color:rgba(245,200,66,.2); }
+.setup-card.theme-gold::before { background:linear-gradient(90deg,#f5c842,rgba(245,200,66,0)); opacity:1; }
+.setup-card.theme-gold:hover { border-color:#f5c842; box-shadow:0 12px 32px rgba(245,200,66,.2); }
+
+.setup-card.theme-sakura { background:#1a0a0f; border-color:#f472b6; }
+.setup-card.theme-sakura .card-head { border-color:rgba(244,114,182,.3); }
+.setup-card.theme-sakura .card-ign { color:#fce7f3; }
+.setup-card.theme-sakura .cstat-val { color:#f472b6; }
+.setup-card.theme-sakura .desktop-view,.setup-card.theme-sakura .card-stats,.setup-card.theme-sakura .sens-strip { background:rgba(244,114,182,.04); border-color:rgba(244,114,182,.2); }
+.setup-card.theme-sakura .cstat,.setup-card.theme-sakura .sblk { border-color:rgba(244,114,182,.2); }
+.setup-card.theme-sakura .card-foot { border-color:rgba(244,114,182,.2); }
+.setup-card.theme-sakura::before { background:linear-gradient(90deg,#f472b6,rgba(244,114,182,0)); opacity:1; }
+.setup-card.theme-sakura:hover { border-color:#f472b6; box-shadow:0 12px 32px rgba(244,114,182,.2); }
+
+.setup-card.theme-8bit { background:#0a0a1a; border:3px solid #fff; border-radius:0 !important; box-shadow:4px 4px 0 rgba(255,255,255,.3); }
+.setup-card.theme-8bit .card-head { border-color:rgba(255,255,255,.2); }
+.setup-card.theme-8bit .card-ign { font-family:'Press Start 2P',monospace; font-size:10px; color:#fff; text-shadow:2px 2px 0 #000; }
+.setup-card.theme-8bit .cstat-val { font-family:'Press Start 2P',monospace; font-size:11px; color:#ffe600; }
+.setup-card.theme-8bit .cstat-lbl,.setup-card.theme-8bit .sblk-lbl { font-family:'Press Start 2P',monospace; font-size:5px; }
+.setup-card.theme-8bit .sblk-val { font-family:'Press Start 2P',monospace; font-size:10px; }
+.setup-card.theme-8bit .desktop-view,.setup-card.theme-8bit .card-stats,.setup-card.theme-8bit .sens-strip { border-color:rgba(255,255,255,.15); }
+.setup-card.theme-8bit .cstat,.setup-card.theme-8bit .sblk { border-color:rgba(255,255,255,.15); }
+.setup-card.theme-8bit::before { display:none; }
+.setup-card.theme-8bit:hover { border-color:#ffe600; box-shadow:4px 4px 0 rgba(255,230,0,.5); transform:translate(-2px,-2px); }
+
+.setup-card.theme-8bit-retro { background:#0d0020; border:3px solid #cc44ff; border-radius:0 !important; box-shadow:4px 4px 0 rgba(204,68,255,.3); }
+.setup-card.theme-8bit-retro .card-head { border-color:rgba(204,68,255,.3); }
+.setup-card.theme-8bit-retro .card-ign { font-family:'Press Start 2P',monospace; font-size:10px; color:#ee88ff; text-shadow:2px 2px 0 #000; }
+.setup-card.theme-8bit-retro .cstat-val { font-family:'Press Start 2P',monospace; font-size:11px; color:#ee88ff; }
+.setup-card.theme-8bit-retro .cstat-lbl,.setup-card.theme-8bit-retro .sblk-lbl { font-family:'Press Start 2P',monospace; font-size:5px; color:#884499; }
+.setup-card.theme-8bit-retro .sblk-val { font-family:'Press Start 2P',monospace; font-size:10px; color:#ee88ff; }
+.setup-card.theme-8bit-retro .desktop-view,.setup-card.theme-8bit-retro .card-stats,.setup-card.theme-8bit-retro .sens-strip { border-color:rgba(204,68,255,.2); }
+.setup-card.theme-8bit-retro .cstat,.setup-card.theme-8bit-retro .sblk { border-color:rgba(204,68,255,.2); }
+.setup-card.theme-8bit-retro::before { display:none; }
+.setup-card.theme-8bit-retro:hover { border-color:#ee88ff; box-shadow:4px 4px 0 rgba(238,136,255,.4); transform:translate(-2px,-2px); }
 .empty{text-align:center;padding:80px 20px;color:var(--text3);}
 .empty-icon{font-size:48px;margin-bottom:16px;}
 .empty-t{font-family:'Barlow Condensed',sans-serif;font-size:20px;margin-bottom:8px;color:var(--text2);}
@@ -389,6 +462,7 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
   <div class="nav-links">
     <button class="nav-link active">Explore</button>
     <button class="nav-link" id="setupBtn" onclick="goToForm()">My Setup</button>
+    <a href="shop.html" class="nav-link" style="text-decoration:none;">🎨 Shop</a>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <div class="nav-count">พบ <span id="navCount">0</span> setups</div>
@@ -495,6 +569,7 @@ function mapRow(d) {
     padY: d.pad_y,
     headset: d.headset, keyboard: d.keyboard, chair: d.chair,
     microphone: d.microphone, webcam: d.webcam,
+    cardTheme: d.card_theme || 'default',
   };
 }
 
@@ -641,7 +716,7 @@ function buildCard(d, i) {
   const padShort = (d.pad||'').split(' ')[0]||'—';
   const monShort = (d.monHz||'').replace('Hz','');
   return `
-  <div class="setup-card" onclick="openDetail('${escStr(d.ign)}')">
+  <div class="setup-card${d.cardTheme && d.cardTheme !== 'default' ? ' theme-'+d.cardTheme : ''}" onclick="openDetail('${escStr(d.ign)}')">`
     <div class="card-head">
       <div style="display:flex;align-items:center;gap:8px;">
         ${d.avatarUrl ? `<img src="${d.avatarUrl}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);flex-shrink:0;">` : `<div style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🎮</div>`}
