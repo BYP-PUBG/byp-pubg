@@ -627,7 +627,7 @@ function buildCard(d, i) {
   return `
   <div class="setup-card" onclick="openDetail('${escStr(d.ign)}')">
     <div class="card-head">
-      <div class="card-ign">${d.ign||'—'} ${d.verified ? '<span style="font-size:13px" title="Verified Player">✅</span>' : ''}</div>
+      <div class="card-ign">${d.ign||'—'} ${d.verified ? '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:1px 6px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : ''}</div>
       <div style="display:flex;align-items:center;gap:8px;">
         ${window._isAdmin && d.id ? `<button onclick="event.stopPropagation();adminDeleteCard('${d.id}')" style="padding:2px 8px;border:1px solid rgba(239,68,68,.35);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>` : ''}
         <div class="card-time">${timeAgo(d.timestamp)}</div>
@@ -910,7 +910,7 @@ function drawDesktop(canvasId, d, W, H) {
 function openDetail(ign) {
   const d = allData.find(x=>x.ign===ign);
   if (!d) return;
-  document.getElementById('dmIgn').innerHTML = (d.ign||'—') + (d.verified ? ' <span style="font-size:18px" title="Verified Player">✅</span>' : '');
+  document.getElementById('dmIgn').innerHTML = (d.ign||'—') + (d.verified ? ' <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3);border-radius:5px;padding:2px 8px;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:.5px;vertical-align:middle;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>VERIFIED</span>' : '');
   document.getElementById('dmSub').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString('th-TH') : '—';
 
   document.getElementById('dmBody').innerHTML = `
