@@ -934,6 +934,7 @@ function mapRow(d) {
     os:        d.os,         avgFps:    d.avg_fps,
     gfx:       d.gfx,        notes:     d.notes,
     timestamp: d.created_at, verified:  d.verified,
+    badge: d.badge,
   };
 }
 
@@ -1252,7 +1253,7 @@ function renderPlayersTable() {
       const monShort = (d.monHz||'').replace('Hz','');
       return `
       <tr onclick="openModal(${idx})">
-        <td class="td-ign">${d.ign||'—'} ${d.verified ? '✅' : ''}</td>
+        <td class="td-ign">${d.ign||'—'} ${d.verified?'✅':''} ${d.badge==='streamer'?'🎥':''} ${d.badge==='pro'?'🏆':''}</td>
         <td class="td-mono td-gold">${d.dpi}</td>
         <td class="td-mono">${d.genSens}</td>
         <td class="td-mono">${d.adsSens}</td>
@@ -1263,8 +1264,10 @@ function renderPlayersTable() {
         <td class="td-dim">${padShort}</td>
         <td class="td-time">${timeAgo(d.timestamp)}</td>
         <td onclick="event.stopPropagation()" style="white-space:nowrap">
-          <button onclick="toggleVerify('${d.id}',${!!d.verified})" style="padding:3px 9px;border:1px solid ${d.verified?'rgba(34,197,94,.4)':'rgba(245,200,66,.3)'};border-radius:5px;background:transparent;color:${d.verified?'#86efac':'#f5c842'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:4px;" title="${d.verified?'ยกเลิก Verify':'Verify Player'}">${d.verified?'✅':'☑️'}</button>
-          <button onclick="deleteSetup('${d.id}')" style="padding:3px 9px;border:1px solid rgba(239,68,68,.3);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>
+          <button onclick="toggleVerify('${d.id}',${!!d.verified})" style="padding:3px 8px;border:1px solid ${d.verified?'rgba(34,197,94,.4)':'rgba(245,200,66,.3)'};border-radius:5px;background:transparent;color:${d.verified?'#86efac':'#f5c842'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:2px;" title="${d.verified?'ยกเลิก Verify':'Verify'}">${d.verified?'✅':'☑️'}</button>
+          <button onclick="setBadge('${d.id}','streamer',${d.badge==='streamer'})" style="padding:3px 8px;border:1px solid ${d.badge==='streamer'?'rgba(168,85,247,.4)':'rgba(255,255,255,.1)'};border-radius:5px;background:transparent;color:${d.badge==='streamer'?'#c084fc':'var(--text3)'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:2px;" title="Streamer">🎥</button>
+          <button onclick="setBadge('${d.id}','pro',${d.badge==='pro'})" style="padding:3px 8px;border:1px solid ${d.badge==='pro'?'rgba(245,200,66,.4)':'rgba(255,255,255,.1)'};border-radius:5px;background:transparent;color:${d.badge==='pro'?'#f5c842':'var(--text3)'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:2px;" title="Pro Player">🏆</button>
+          <button onclick="deleteSetup('${d.id}')" style="padding:3px 8px;border:1px solid rgba(239,68,68,.3);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>
         </td>
       </tr>`;
     }).join('');
@@ -1408,6 +1411,17 @@ function exportCSV() {
       (payload) => { allData.unshift(mapRow(payload.new)); refresh(); })
     .subscribe();
 })();
+
+async function setBadge(id, badge, current) {
+  const newVal = current ? null : badge; // toggle — ถ้ามีแล้วเอาออก
+  const { error } = await _supa.from('setups').update({ badge: newVal }).eq('id', id);
+  if (error) { alert('เกิดข้อผิดพลาด: ' + error.message); return; }
+  const item = allData.find(d => d.id === id);
+  if (item) item.badge = newVal;
+  const fi = filtered.find(d => d.id === id);
+  if (fi) fi.badge = newVal;
+  renderPlayersTable();
+}
 
 async function toggleVerify(id, current) {
   const newVal = !current;
