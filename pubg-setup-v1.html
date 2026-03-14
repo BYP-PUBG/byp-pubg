@@ -552,6 +552,18 @@ input[type=range]::-webkit-slider-thumb:hover {
       <div class="version-badge">● Version 1.0 &nbsp;·&nbsp; PUBG Edition</div>
       <h1 class="hero-title">BYP<br><span>BUILD YOUR PLAY</span></h1>
       <p class="hero-sub">บันทึก Mouse Settings และ Desktop Setup ของคุณ เพื่อหาค่าที่เหมาะสมกับ Playstyle</p>
+
+      <!-- Theme & Effect Quick Selector -->
+      <div id="heroThemeBar" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="font-size:10px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;flex-shrink:0;">🎨 Theme</div>
+          <div id="heroThemeBtns" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+          <div style="width:1px;height:20px;background:var(--border);flex-shrink:0;"></div>
+          <div style="font-size:10px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;flex-shrink:0;">✨ Effect</div>
+          <div id="heroEffectBtns" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+        </div>
+      </div>
+
       <div class="progress-bar-wrap">
         <div class="steps">
           <div class="step-dot done" id="dot1"></div>
@@ -1071,6 +1083,21 @@ input[type=range]::-webkit-slider-thumb:hover {
     </div>
     <div class="card">
 
+      <!-- Avatar Upload — บนสุด -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
+        <div class="field-input" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
+            <div>
+              <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
+              <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Card Theme Selector -->
       <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
         <div class="field-label"><span class="lbl-icon">🎨</span> Card Theme</div>
@@ -1093,21 +1120,6 @@ input[type=range]::-webkit-slider-thumb:hover {
           </div>
           <div style="font-size:11px;color:var(--text3);margin-top:6px;">
             ซื้อ effect เพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Avatar Upload -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
-        <div class="field-input" style="padding:16px 20px;">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
-            <div>
-              <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
-              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
-              <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
-            </div>
           </div>
         </div>
       </div>
@@ -1282,40 +1294,38 @@ async function loadThemeSelector(currentTheme, currentEffect, setupId) {
   _selectedTheme = currentTheme || 'default';
   _selectedEffect = currentEffect || null;
 
-  // โหลด approved orders ของ user
   const { data: orders } = await _supa.from('orders')
     .select('theme_id').eq('user_id', _currentUserId).eq('status', 'approved');
   const owned = orders ? orders.map(o => o.theme_id) : [];
 
-  // Themes
-  const themeBox = document.getElementById('themeSelector');
-  if (themeBox) {
-    themeBox.innerHTML = ALL_THEMES
-      .filter(t => t.free || owned.includes(t.id))
-      .map(t => `
-        <button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
-          style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
-          border:1px solid ${_selectedTheme===t.id?'var(--gold)':'var(--border)'};
-          background:${_selectedTheme===t.id?'rgba(245,200,66,.1)':'transparent'};
-          color:${_selectedTheme===t.id?'var(--gold)':'var(--text2)'};">
-          ${t.emoji} ${t.name}
-        </button>`).join('');
-  }
+  const ownedThemes  = ALL_THEMES.filter(t => t.free || owned.includes(t.id));
+  const ownedEffects = ALL_EFFECTS.filter(e => e.id === null || owned.includes(e.id));
 
-  // Effects
+  const themeBtn = (t) => `<button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
+    style="padding:4px 10px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
+    border:1px solid ${_selectedTheme===t.id?'var(--gold)':'var(--border)'};
+    background:${_selectedTheme===t.id?'rgba(245,200,66,.1)':'transparent'};
+    color:${_selectedTheme===t.id?'var(--gold)':'var(--text2)'};">${t.emoji} ${t.name}</button>`;
+
+  const effectBtn = (e) => `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
+    style="padding:4px 10px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
+    border:1px solid ${_selectedEffect===e.id?'var(--gold)':'var(--border)'};
+    background:${_selectedEffect===e.id?'rgba(245,200,66,.1)':'transparent'};
+    color:${_selectedEffect===e.id?'var(--gold)':'var(--text2)'};">${e.emoji} ${e.name}</button>`;
+
+  // Hero bar
+  const heroBar = document.getElementById('heroThemeBar');
+  if (heroBar) heroBar.style.display = 'block';
+  const heroTheme = document.getElementById('heroThemeBtns');
+  if (heroTheme) heroTheme.innerHTML = ownedThemes.map(themeBtn).join('');
+  const heroEffect = document.getElementById('heroEffectBtns');
+  if (heroEffect) heroEffect.innerHTML = ownedEffects.map(effectBtn).join('');
+
+  // Section 7 selectors
+  const themeBox = document.getElementById('themeSelector');
+  if (themeBox) themeBox.innerHTML = ownedThemes.map(themeBtn).join('');
   const effectBox = document.getElementById('effectSelector');
-  if (effectBox) {
-    effectBox.innerHTML = ALL_EFFECTS
-      .filter(e => e.id === null || owned.includes(e.id))
-      .map(e => `
-        <button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
-          style="padding:5px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
-          border:1px solid ${_selectedEffect===e.id?'var(--gold)':'var(--border)'};
-          background:${_selectedEffect===e.id?'rgba(245,200,66,.1)':'transparent'};
-          color:${_selectedEffect===e.id?'var(--gold)':'var(--text2)'};">
-          ${e.emoji} ${e.name}
-        </button>`).join('');
-  }
+  if (effectBox) effectBox.innerHTML = ownedEffects.map(effectBtn).join('');
 }
 
 function selectCardTheme(id) {
