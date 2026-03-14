@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — PUBG Setup</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -13,22 +14,6 @@
   );
 </script>
 <style>
-:root {
-  --bg:       #09090b;
-  --bg2:      #111113;
-  --surface:  #18181b;
-  --surface2: #222226;
-  --border:   #2e2e33;
-  --border2:  #3f3f46;
-  --gold:     #f5c842;
-  --gold2:    #e8a820;
-  --red:      #ef4444;
-  --blue:     #3b82f6;
-  --text:     #fafafa;
-  --text2:    #a1a1aa;
-  --text3:    #52525b;
-  --radius:   10px;
-}
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -585,12 +570,44 @@ input[type=range]::-webkit-slider-thumb:hover {
   <div class="section" id="sec1">
     <div class="section-header">
       <div class="section-icon">👤</div>
-      <div>
-        <div class="section-title-text">ข้อมูลผู้เล่น</div>
-      </div>
+      <div><div class="section-title-text">ข้อมูลผู้เล่น</div></div>
       <div class="section-num">01 / 06</div>
     </div>
     <div class="card">
+
+      <!-- รูปโปรไฟล์ -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
+        <div class="field-input" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
+            <div>
+              <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
+              <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Theme -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">🎨</span> Card Theme</div>
+        <div class="field-input" style="padding:12px 20px;">
+          <div id="themeSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;"><div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;">ซื้อเพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a></div>
+        </div>
+      </div>
+
+      <!-- Card Effect -->
+      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
+        <div class="field-label"><span class="lbl-icon">✨</span> Card Effect</div>
+        <div class="field-input" style="padding:12px 20px;">
+          <div id="effectSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;"><div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;">ซื้อเพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a></div>
+        </div>
+      </div>
+
       <div class="field-row">
         <div class="field-label"><span class="lbl-icon">🏷️</span> ชื่อในเกม (IGN)</div>
         <div class="field-input">
@@ -1083,47 +1100,6 @@ input[type=range]::-webkit-slider-thumb:hover {
     </div>
     <div class="card">
 
-      <!-- Avatar Upload — บนสุด -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">📷</span> รูปโปรไฟล์</div>
-        <div class="field-input" style="padding:16px 20px;">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
-            <div>
-              <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
-              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
-              <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card Theme Selector -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">🎨</span> Card Theme</div>
-        <div class="field-input" style="padding:12px 20px;">
-          <div id="themeSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;">
-            <div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div>
-          </div>
-          <div style="font-size:11px;color:var(--text3);margin-top:6px;">
-            ซื้อ theme เพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card Effect Selector -->
-      <div class="field-row" style="grid-template-columns:1fr;align-items:flex-start;">
-        <div class="field-label"><span class="lbl-icon">✨</span> Card Effect</div>
-        <div class="field-input" style="padding:12px 20px;">
-          <div id="effectSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;">
-            <div style="font-size:12px;color:var(--text3);">กำลังโหลด...</div>
-          </div>
-          <div style="font-size:11px;color:var(--text3);margin-top:6px;">
-            ซื้อ effect เพิ่มได้ที่ <a href="shop.html" style="color:var(--gold);text-decoration:none;">🎨 Shop</a>
-          </div>
-        </div>
-      </div>
-
       <!-- Social Links -->
       <div class="field-row">
         <div class="field-label"><span class="lbl-icon"><img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=16" style="width:16px;height:16px;vertical-align:middle;border-radius:3px;"></span> YouTube</div>
@@ -1477,7 +1453,7 @@ async function submitForm() {
     // ยังไม่มี → INSERT
     ({ error } = await _supa.from('setups').insert([payload]));
   }
-  if (error) console.error('Supabase error:', error.message);
+  if (error) { alert('❌ เกิดข้อผิดพลาด: ' + error.message); return; }
 }
 
 // ===== RESET =====
