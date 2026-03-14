@@ -9,7 +9,8 @@
 <script>
   const _supa = window.supabase.createClient(
     'https://llijafxfyeeehxeeuwvv.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWphZnhmeWVlZWh4ZWV1d3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjUwMjQsImV4cCI6MjA4ODk0MTAyNH0.u_jiWxNpZvTQFOMaJ0DfSZhMp1ysqUTk-vvIoHzxkNY'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWphZnhmeWVlZWh4ZWV1d3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjUwMjQsImV4cCI6MjA4ODk0MTAyNH0.u_jiWxNpZvTQFOMaJ0DfSZhMp1ysqUTk-vvIoHzxkNY',
+  { auth: { storage: window.localStorage, storageKey: 'byp-auth', detectSessionInUrl: true, persistSession: true, autoRefreshToken: true } }
   );
 </script>
 <style>
