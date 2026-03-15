@@ -644,6 +644,10 @@ canvas.dv-big{display:block;width:100%;border-radius:8px;background:#0a0b0e;}
         </div>
       </div>
       <button class="dm-close" onclick="document.getElementById('overlay').classList.remove('show')">✕</button>
+      <button id="dmShareBtn" onclick="copyProfileLink(document.getElementById('dmIgn').textContent)"
+        style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:14px;cursor:pointer;transition:all .15s;margin-right:4px;"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+        onmouseout="this.style.borderColor='';this.style.color=''">🔗</button>
     </div>
     <div class="dm-body" id="dmBody"></div>
   </div>
@@ -907,6 +911,10 @@ function buildCard(d, i) {
           ${[1,2,3,4,5].map(s=>`<span class="star" data-id="${d.id}" data-s="${s}" onclick="rateStar('${d.id}',${s})">☆</span>`).join('')}
           <span class="star-count" id="sc-${d.id}"></span>
         </div>
+        <button onclick="event.stopPropagation();copyProfileLink('${esc(d.ign)}')"
+          style="padding:3px 8px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text3);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;"
+          onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+          onmouseout="this.style.borderColor='';this.style.color=''">🔗</button>
       </div>
     </div>
   </div>`;
@@ -1038,6 +1046,34 @@ function initEffectCanvas(box, card, type) {
       ds();
     }
   }, 50);
+}
+
+function copyProfileLink(ign) {
+  const url = `${window.location.origin}${window.location.pathname}?ign=${encodeURIComponent(ign)}`;
+  navigator.clipboard.writeText(url).then(() => {
+    showCopyToast('✅ Copy ลิ้งค์แล้ว!');
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = url; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showCopyToast('✅ Copy ลิ้งค์แล้ว!');
+  });
+}
+
+function showCopyToast(msg) {
+  let t = document.getElementById('copyToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'copyToast';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#131417;border:1px solid #4ade80;border-radius:8px;padding:10px 20px;font-size:13px;color:#4ade80;z-index:9999;transition:opacity .3s;font-family:"Barlow Condensed",sans-serif;letter-spacing:.5px;white-space:nowrap;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => t.style.opacity = '0', 2500);
 }
 
 function escStr(s){ return (s||'').replace(/'/g,"\\'"); }
@@ -1442,6 +1478,9 @@ async function logout() {
   await renderAuthBtn();
   await loadData();
   await loadRatings();
+  // Auto-open popup ถ้า URL มี ?ign=
+  const ignParam = new URLSearchParams(window.location.search).get('ign');
+  if (ignParam) openDetail(ignParam);
 })();
 </script>
 </body>
