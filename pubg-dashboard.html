@@ -15,24 +15,23 @@
 </script>
 <style>
 :root {
-  --bg:      #08090b;
-  --bg2:     #0f1013;
-  --surface: #14151a;
-  --surf2:   #1c1d24;
-  --surf3:   #23242d;
-  --border:  #2a2b35;
-  --border2: #363740;
-  --gold:    #f5c842;
-  --gold2:   #e8a820;
-  --golddim: rgba(245,200,66,0.12);
-  --red:     #ef4444;
-  --green:   #22c55e;
-  --blue:    #3b82f6;
-  --purple:  #a855f7;
-  --text:    #f0f0f4;
-  --text2:   #9494a4;
-  --text3:   #50505f;
-  --r:       8px;
+    --bg:     #0f1117;
+  --bg2:    #0d0f16;
+  --surf:   #161820;
+  --surf2:  #1c1e2a;
+  --surf3:  #212336;
+  --border: #1e2130;
+  --bord2:  #252840;
+  --gold:   #7c6af7;
+  --goldf:  rgba(124,106,247,0.10);
+  --red:    #ef4444;
+  --green:  #22c55e;
+  --blue:   #3b82f6;
+  --purple: #7c6af7;
+  --text:   #e8e9f0;
+  --text2:  #6b6e8a;
+  --text3:  #3a3d52;
+  --r:      10px;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -41,7 +40,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
+  font-family: 'Outfit','Noto Sans Thai',sans-serif;
   min-height: 100vh;
   display: flex;
 }
@@ -65,7 +64,7 @@ body {
 }
 
 .logo-mark {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -79,7 +78,7 @@ body {
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-top: 3px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
 }
 
 .sidebar-nav {
@@ -93,7 +92,7 @@ body {
   text-transform: uppercase;
   color: var(--text3);
   padding: 8px 10px 6px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
 }
 
 .nav-item {
@@ -115,7 +114,7 @@ body {
   font-family: 'Barlow', sans-serif;
 }
 .nav-item:hover { background: var(--surf2); color: var(--text); }
-.nav-item.active { background: var(--golddim); color: var(--gold); border: 1px solid rgba(245,200,66,0.2); }
+.nav-item.active { background: var(--golddim); color: var(--gold); border: 1px solid rgba(124,106,247,0.2); }
 .nav-item .nav-icon { font-size: 15px; width: 18px; text-align: center; }
 
 .sidebar-footer {
@@ -154,7 +153,7 @@ body {
 }
 
 .topbar-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -181,13 +180,13 @@ body {
   letter-spacing: 0.5px;
 }
 .btn-small:hover { border-color: var(--gold); color: var(--gold); }
-.btn-small.gold { background: var(--gold); color: #08090b; border-color: var(--gold); font-weight: 700; }
+.btn-small.gold { background:#7c6af7;color:#fff; border-color: var(--gold); font-weight: 700; }
 .btn-small.gold:hover { background: var(--gold2); }
 
 .live-badge {
   display: flex; align-items: center; gap: 6px;
   font-size: 11px; color: var(--green);
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   letter-spacing: 1px;
 }
 .live-dot {
@@ -238,11 +237,11 @@ body {
   color: var(--text2);
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   margin-bottom: 8px;
 }
 .stat-value {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 36px;
   font-weight: 800;
   letter-spacing: -1px;
@@ -263,7 +262,7 @@ body {
   margin-bottom: 14px;
 }
 .sec-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -287,7 +286,7 @@ body {
 }
 
 .chart-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -298,10 +297,10 @@ body {
 /* Bar chart */
 .bar-chart { display: flex; flex-direction: column; gap: 10px; }
 .bar-item { display: flex; align-items: center; gap: 10px; }
-.bar-label { font-size: 12px; color: var(--text2); min-width: 70px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+.bar-label { font-size: 12px; color: var(--text2); min-width: 70px; font-family: 'Space Grotesk',sans-serif; letter-spacing: 0.5px; }
 .bar-track { flex:1; height: 6px; background: var(--surf3); border-radius: 3px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
-.bar-count { font-size: 12px; color: var(--text); font-family: 'Barlow Condensed', sans-serif; min-width: 28px; text-align: right; font-weight: 700; }
+.bar-count { font-size: 12px; color: var(--text); font-family: 'Space Grotesk',sans-serif; min-width: 28px; text-align: right; font-weight: 700; }
 
 /* Donut */
 .donut-wrap { display: flex; align-items: center; gap: 20px; }
@@ -309,7 +308,7 @@ body {
 .donut-legend { display: flex; flex-direction: column; gap: 8px; }
 .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.legend-val { margin-left: auto; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--text); font-weight: 700; }
+.legend-val { margin-left: auto; font-family: 'Space Grotesk',sans-serif; font-size: 14px; color: var(--text); font-weight: 700; }
 
 /* ===== TABLE ===== */
 .table-wrap {
@@ -356,7 +355,7 @@ body {
   transition: all 0.15s;
 }
 .filter-chip:hover { border-color: var(--gold); color: var(--gold); }
-.filter-chip.active { background: var(--golddim); border-color: rgba(245,200,66,0.4); color: var(--gold); }
+.filter-chip.active { background: var(--golddim); border-color: rgba(124,106,247,0.4); color: var(--gold); }
 
 table {
   width: 100%;
@@ -367,7 +366,7 @@ table {
 thead th {
   padding: 10px 16px;
   text-align: left;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 11px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -396,8 +395,8 @@ td {
   white-space: nowrap;
 }
 
-.td-ign { font-weight: 600; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; letter-spacing: 0.3px; }
-.td-mono { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; }
+.td-ign { font-weight: 600; color: var(--text); font-family: 'Space Grotesk',sans-serif; font-size: 15px; letter-spacing: 0.3px; }
+.td-mono { font-family: 'Space Grotesk',sans-serif; font-size: 14px; font-weight: 700; }
 .td-gold { color: var(--gold); }
 .td-dim { color: var(--text2); font-size: 12px; }
 .td-tag {
@@ -405,7 +404,7 @@ td {
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 11px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -416,7 +415,7 @@ td {
 .tag-amd { background: rgba(239,68,68,0.15); color: #f87171; }
 .tag-intel { background: rgba(0,113,197,0.15); color: #60a5fa; }
 
-.td-time { color: var(--text3); font-size: 11px; font-family: 'Barlow Condensed', sans-serif; }
+.td-time { color: var(--text3); font-size: 11px; font-family: 'Space Grotesk',sans-serif; }
 
 /* Pagination */
 .pagination {
@@ -443,7 +442,7 @@ td {
   transition: all 0.15s;
 }
 .page-btn:hover { border-color: var(--gold); color: var(--gold); }
-.page-btn.active { background: var(--golddim); border-color: rgba(245,200,66,0.4); color: var(--gold); }
+.page-btn.active { background: var(--golddim); border-color: rgba(124,106,247,0.4); color: var(--gold); }
 
 /* ===== DETAIL MODAL ===== */
 .modal-overlay {
@@ -480,7 +479,7 @@ td {
 }
 
 .modal-ign {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -507,7 +506,7 @@ td {
   margin-bottom: 20px;
 }
 .modal-sec-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -527,8 +526,8 @@ td {
   border-radius: 6px;
   padding: 10px 12px;
 }
-.modal-field-label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; font-family: 'Barlow Condensed', sans-serif; }
-.modal-field-val { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-field-label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; font-family: 'Space Grotesk',sans-serif; }
+.modal-field-val { font-family: 'Space Grotesk',sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
 .modal-field-val.gold { color: var(--gold); }
 
 .pubg-sens-row {
@@ -543,8 +542,8 @@ td {
   padding: 10px 8px;
   text-align: center;
 }
-.sens-box-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--gold); }
-.sens-box-lbl { font-size: 9px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; font-family: 'Barlow Condensed', sans-serif; }
+.sens-box-val { font-family: 'Space Grotesk',sans-serif; font-size: 22px; font-weight: 800; color: var(--gold); }
+.sens-box-lbl { font-size: 9px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; font-family: 'Space Grotesk',sans-serif; }
 
 .modal-notes {
   background: var(--surf2);
@@ -563,7 +562,7 @@ td {
   color: var(--text3);
 }
 .empty-icon { font-size: 40px; margin-bottom: 14px; }
-.empty-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; letter-spacing: 1px; margin-bottom: 6px; color: var(--text2); }
+.empty-title { font-family: 'Space Grotesk',sans-serif; font-size: 18px; letter-spacing: 1px; margin-bottom: 6px; color: var(--text2); }
 .empty-sub { font-size: 13px; }
 
 /* Responsive */
@@ -582,15 +581,15 @@ td {
 <!-- ACCESS DENIED OVERLAY -->
 <div id="accessDenied" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
   <div style="font-size:48px;">🚫</div>
-  <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text);">Access Denied</div>
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:900;color:var(--text);">Access Denied</div>
   <div style="font-size:14px;color:var(--text2);">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</div>
-  <a href="pubg-browse.html" style="margin-top:8px;padding:10px 24px;background:var(--gold);color:#08090b;border-radius:8px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;">← กลับหน้าหลัก</a>
+  <a href="pubg-browse.html" style="margin-top:8px;padding:10px 24px;background:#7c6af7;color:#fff;border-radius:8px;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;">← กลับหน้าหลัก</a>
 </div>
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-mark">BYP<span> : BUILD YOUR PLAY</span></div>
+    <div class="logo-mark">BYP<span style='color:#7c6af7;'> : BUILD YOUR PLAY</span></div>
     <div class="logo-sub">Admin Dashboard — PUBG</div>
   </div>
   <nav class="sidebar-nav">
@@ -620,7 +619,7 @@ td {
   </nav>
   <div class="sidebar-footer">
     <div id="adminInfo" style="font-size:11px;color:var(--text2);margin-bottom:8px;padding:8px 10px;background:var(--surf2);border-radius:6px;border:1px solid var(--border);"></div>
-    <button onclick="adminLogout()" style="width:100%;padding:7px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-bottom:8px;transition:all .15s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='';this.style.color=''">ออกจากระบบ</button>
+    <button onclick="adminLogout()" style="width:100%;padding:7px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;margin-bottom:8px;transition:all .15s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='';this.style.color=''">ออกจากระบบ</button>
     <a href="pubg-browse.html">← กลับหน้าหลัก</a>
   </div>
 </aside>
@@ -839,17 +838,17 @@ td {
     <!-- PANEL: PROMO CODES -->
     <div class="panel" id="panel-promo" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;">🎟️ Promo Codes</div>
-        <button onclick="showCreatePromo()" style="padding:7px 16px;border:1px solid var(--gold);border-radius:7px;background:rgba(245,200,66,.08);color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">+ สร้างโค้ดใหม่</button>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;">🎟️ Promo Codes</div>
+        <button onclick="showCreatePromo()" style="padding:7px 16px;border:1px solid var(--gold);border-radius:7px;background:rgba(124,106,247,.08);color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;">+ สร้างโค้ดใหม่</button>
       </div>
 
       <!-- Create Form -->
       <div id="promoCreateForm" style="display:none;background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px;">สร้างโค้ดใหม่</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px;">สร้างโค้ดใหม่</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
           <div>
             <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">CODE</div>
-            <input id="newCode" placeholder="เช่น BYPFREE" style="width:100%;background:var(--surf);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:7px 10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+            <input id="newCode" placeholder="เช่น BYPFREE" style="width:100%;background:var(--surf);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:7px 10px;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
           </div>
           <div>
             <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">ส่วนลด (%)</div>
@@ -865,7 +864,7 @@ td {
           </div>
         </div>
         <div style="display:flex;gap:8px;">
-          <button onclick="createPromo()" style="padding:8px 20px;border-radius:7px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">สร้างโค้ด</button>
+          <button onclick="createPromo()" style="padding:8px 20px;border-radius:7px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;">สร้างโค้ด</button>
           <button onclick="document.getElementById('promoCreateForm').style.display='none'" style="padding:8px 16px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;">ยกเลิก</button>
         </div>
       </div>
@@ -876,8 +875,8 @@ td {
     <!-- PANEL: ORDERS -->
     <div class="panel" id="panel-orders" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;">รายการซื้อทั้งหมด</div>
-        <button onclick="loadOrders()" style="padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">🔄 Refresh</button>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;">รายการซื้อทั้งหมด</div>
+        <button onclick="loadOrders()" style="padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;">🔄 Refresh</button>
       </div>
       <div id="ordersContainer">
         <div style="text-align:center;padding:40px;color:var(--text3);">กำลังโหลด...</div>
@@ -890,23 +889,23 @@ td {
 
         <!-- Admin Info Card -->
         <div style="background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;">
-          <div style="height:3px;background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.2));"></div>
+          <div style="height:3px;background:linear-gradient(90deg,var(--gold),rgba(124,106,247,0.2));"></div>
           <div style="padding:24px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">ข้อมูล Account</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">ข้อมูล Account</div>
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
               <div style="width:52px;height:52px;border-radius:50%;background:var(--golddim);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;">👑</div>
               <div>
                 <div id="profileEmail" style="font-size:15px;font-weight:600;color:var(--text);"></div>
-                <div style="font-size:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-top:2px;">ADMIN</div>
+                <div style="font-size:12px;color:var(--gold);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;margin-top:2px;">ADMIN</div>
               </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
               <div style="background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:12px;">
-                <div style="font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;">Role</div>
+                <div style="font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;font-family:'Space Grotesk',sans-serif;">Role</div>
                 <div style="font-size:14px;font-weight:600;color:var(--gold);margin-top:4px;">Admin</div>
               </div>
               <div style="background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:12px;">
-                <div style="font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;">สถานะ</div>
+                <div style="font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;font-family:'Space Grotesk',sans-serif;">สถานะ</div>
                 <div style="font-size:14px;font-weight:600;color:#22c55e;margin-top:4px;">● Active</div>
               </div>
             </div>
@@ -917,24 +916,24 @@ td {
         <div style="background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
           <div style="height:3px;background:linear-gradient(90deg,#6366f1,rgba(99,102,241,0.2));"></div>
           <div style="padding:24px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">รีเซตรหัสผ่าน</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">รีเซตรหัสผ่าน</div>
 
             <div id="resetMsg" style="display:none;padding:10px 14px;border-radius:7px;font-size:13px;margin-bottom:14px;"></div>
 
             <div style="margin-bottom:14px;">
-              <label style="display:block;font-size:11px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;margin-bottom:7px;">รหัสผ่านใหม่</label>
+              <label style="display:block;font-size:11px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Space Grotesk',sans-serif;margin-bottom:7px;">รหัสผ่านใหม่</label>
               <input type="password" id="newPassword" placeholder="อย่างน้อย 6 ตัวอักษร"
                 style="width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:11px 14px;outline:none;font-family:'Barlow',sans-serif;transition:border-color .2s;"
-                onfocus="this.style.borderColor='#f5c842'" onblur="this.style.borderColor=''">
+                onfocus="this.style.borderColor='#7c6af7'" onblur="this.style.borderColor=''">
             </div>
             <div style="margin-bottom:20px;">
-              <label style="display:block;font-size:11px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;margin-bottom:7px;">ยืนยันรหัสผ่านใหม่</label>
+              <label style="display:block;font-size:11px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Space Grotesk',sans-serif;margin-bottom:7px;">ยืนยันรหัสผ่านใหม่</label>
               <input type="password" id="confirmPassword" placeholder="กรอกรหัสผ่านอีกครั้ง"
                 style="width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:11px 14px;outline:none;font-family:'Barlow',sans-serif;transition:border-color .2s;"
-                onfocus="this.style.borderColor='#f5c842'" onblur="this.style.borderColor=''">
+                onfocus="this.style.borderColor='#7c6af7'" onblur="this.style.borderColor=''">
             </div>
             <button onclick="resetPassword()"
-              style="width:100%;padding:12px;border-radius:8px;border:none;background:#6366f1;color:#fff;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;"
+              style="width:100%;padding:12px;border-radius:8px;border:none;background:#6366f1;color:#fff;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .15s;"
               onmouseover="this.style.background='#4f46e5'" onmouseout="this.style.background='#6366f1'">
               🔒 เปลี่ยนรหัสผ่าน
             </button>
@@ -1188,7 +1187,7 @@ function renderBarChart(containerId, data, color='var(--gold)') {
   `).join('');
 }
 
-const DONUT_COLORS_1 = ['#f5c842','#3b82f6','#a855f7','#22c55e','#ef4444','#f97316'];
+const DONUT_COLORS_1 = ['#7c6af7','#3b82f6','#a855f7','#22c55e','#ef4444','#f97316'];
 const DONUT_COLORS_2 = ['#76b900','#ef4444','#f97316'];
 
 function renderCharts() {
@@ -1321,10 +1320,10 @@ function renderPlayersTable() {
         <td class="td-dim">${padShort}</td>
         <td class="td-time">${timeAgo(d.timestamp)}</td>
         <td onclick="event.stopPropagation()" style="white-space:nowrap">
-          <button onclick="toggleVerify('${d.id}',${!!d.verified})" style="padding:3px 8px;border:1px solid ${d.verified?'rgba(34,197,94,.4)':'rgba(245,200,66,.3)'};border-radius:5px;background:transparent;color:${d.verified?'#86efac':'#f5c842'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:2px;" title="${d.verified?'ยกเลิก Verify':'Verify'}">${d.verified?'✅':'☑️'}</button>
-          <button onclick="setBadge('${d.id}','streamer',${d.badge==='streamer'})" style="padding:3px 8px;border:1px solid ${d.badge==='streamer'?'rgba(168,85,247,.4)':'rgba(255,255,255,.1)'};border-radius:5px;background:transparent;color:${d.badge==='streamer'?'#c084fc':'var(--text3)'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:2px;" title="Streamer">🎥</button>
-          <button onclick="setBadge('${d.id}','pro',${d.badge==='pro'})" style="padding:3px 8px;border:1px solid ${d.badge==='pro'?'rgba(245,200,66,.4)':'rgba(255,255,255,.1)'};border-radius:5px;background:transparent;color:${d.badge==='pro'?'#f5c842':'var(--text3)'};font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-right:2px;" title="Pro Player">🏆</button>
-          <button onclick="deleteSetup('${d.id}')" style="padding:3px 8px;border:1px solid rgba(239,68,68,.3);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>
+          <button onclick="toggleVerify('${d.id}',${!!d.verified})" style="padding:3px 8px;border:1px solid ${d.verified?'rgba(34,197,94,.4)':'rgba(124,106,247,.3)'};border-radius:5px;background:transparent;color:${d.verified?'#86efac':'#7c6af7'};font-size:11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .15s;margin-right:2px;" title="${d.verified?'ยกเลิก Verify':'Verify'}">${d.verified?'✅':'☑️'}</button>
+          <button onclick="setBadge('${d.id}','streamer',${d.badge==='streamer'})" style="padding:3px 8px;border:1px solid ${d.badge==='streamer'?'rgba(168,85,247,.4)':'rgba(255,255,255,.1)'};border-radius:5px;background:transparent;color:${d.badge==='streamer'?'#c084fc':'var(--text3)'};font-size:11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .15s;margin-right:2px;" title="Streamer">🎥</button>
+          <button onclick="setBadge('${d.id}','pro',${d.badge==='pro'})" style="padding:3px 8px;border:1px solid ${d.badge==='pro'?'rgba(124,106,247,.4)':'rgba(255,255,255,.1)'};border-radius:5px;background:transparent;color:${d.badge==='pro'?'#7c6af7':'var(--text3)'};font-size:11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .15s;margin-right:2px;" title="Pro Player">🏆</button>
+          <button onclick="deleteSetup('${d.id}')" style="padding:3px 8px;border:1px solid rgba(239,68,68,.3);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>
         </td>
       </tr>`;
     }).join('');
@@ -1475,23 +1474,23 @@ async function loadOrders() {
     return;
   }
   box.innerHTML = orders.map(o => {
-    const statusColor = o.status === 'approved' ? '#22c55e' : o.status === 'rejected' ? '#ef4444' : '#f5c842';
+    const statusColor = o.status === 'approved' ? '#22c55e' : o.status === 'rejected' ? '#ef4444' : '#7c6af7';
     const statusText  = o.status === 'approved' ? '✅ Approved' : o.status === 'rejected' ? '❌ Rejected' : '⏳ Pending';
     const date = new Date(o.created_at).toLocaleString('th-TH');
     return `
     <div style="background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div style="flex:1;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:4px;">${o.theme_name} Theme</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:4px;">${o.theme_name} Theme</div>
           <div style="font-size:12px;color:var(--text2);margin-bottom:2px;">฿${o.amount} · ${date}</div>
           <div style="font-size:11px;color:var(--text3);">ID: ${o.id.substring(0,8)}...</div>
-          <div style="margin-top:6px;display:inline-block;font-size:11px;font-weight:700;color:${statusColor};background:${statusColor}22;border:1px solid ${statusColor}44;padding:2px 10px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;">${statusText}</div>
+          <div style="margin-top:6px;display:inline-block;font-size:11px;font-weight:700;color:${statusColor};background:${statusColor}22;border:1px solid ${statusColor}44;padding:2px 10px;border-radius:4px;font-family:'Space Grotesk',sans-serif;letter-spacing:.5px;">${statusText}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
-          ${o.slip_url ? `<a href="${o.slip_url}" target="_blank" style="font-size:11px;color:#60a5fa;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;text-decoration:none;padding:4px 10px;border:1px solid rgba(59,130,246,.3);border-radius:5px;">🖼️ ดูสลิป</a>` : '<span style="font-size:11px;color:var(--text3);">ไม่มีสลิป</span>'}
+          ${o.slip_url ? `<a href="${o.slip_url}" target="_blank" style="font-size:11px;color:#60a5fa;font-family:'Space Grotesk',sans-serif;letter-spacing:.5px;text-decoration:none;padding:4px 10px;border:1px solid rgba(59,130,246,.3);border-radius:5px;">🖼️ ดูสลิป</a>` : '<span style="font-size:11px;color:var(--text3);">ไม่มีสลิป</span>'}
           ${o.status === 'pending' ? `
-          <button onclick="approveOrder('${o.id}','${o.setup_id}','${o.theme_id}')" style="font-size:11px;font-weight:700;color:#86efac;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">✅ Approve</button>
-          <button onclick="rejectOrder('${o.id}')" style="font-size:11px;font-weight:700;color:#fca5a5;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">❌ Reject</button>
+          <button onclick="approveOrder('${o.id}','${o.setup_id}','${o.theme_id}')" style="font-size:11px;font-weight:700;color:#86efac;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:'Space Grotesk',sans-serif;">✅ Approve</button>
+          <button onclick="rejectOrder('${o.id}')" style="font-size:11px;font-weight:700;color:#fca5a5;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:'Space Grotesk',sans-serif;">❌ Reject</button>
           ` : ''}
         </div>
       </div>
@@ -1537,13 +1536,13 @@ async function loadPromos() {
     return `
     <div style="background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
       <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--gold);letter-spacing:2px;">${p.code}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;color:var(--gold);letter-spacing:2px;">${p.code}</div>
         <div style="font-size:12px;color:var(--text2);margin-top:3px;">ส่วนลด ${p.discount_percent}% · ใช้แล้ว ${usesText} · หมดอายุ ${expText}</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-size:11px;font-weight:700;color:${statusColor};background:${statusColor}22;border:1px solid ${statusColor}44;padding:3px 10px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;">${statusText}</span>
-        <button onclick="togglePromo('${p.id}',${p.active})" style="font-size:11px;padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:'Barlow Condensed',sans-serif;">${p.active ? '⛔ ปิด' : '✅ เปิด'}</button>
-        <button onclick="deletePromo('${p.id}')" style="font-size:11px;padding:4px 10px;border-radius:5px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#fca5a5;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">🗑️</button>
+        <span style="font-size:11px;font-weight:700;color:${statusColor};background:${statusColor}22;border:1px solid ${statusColor}44;padding:3px 10px;border-radius:5px;font-family:'Space Grotesk',sans-serif;">${statusText}</span>
+        <button onclick="togglePromo('${p.id}',${p.active})" style="font-size:11px;padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:'Space Grotesk',sans-serif;">${p.active ? '⛔ ปิด' : '✅ เปิด'}</button>
+        <button onclick="deletePromo('${p.id}')" style="font-size:11px;padding:4px 10px;border-radius:5px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#fca5a5;cursor:pointer;font-family:'Space Grotesk',sans-serif;">🗑️</button>
       </div>
     </div>`;
   }).join('');
