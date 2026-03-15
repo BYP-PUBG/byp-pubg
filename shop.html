@@ -69,7 +69,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 @keyframes infernoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,69,0,0)}50%{box-shadow:0 0 20px 6px rgba(255,69,0,.25)}}
 @keyframes stormPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,0)}50%{box-shadow:0 0 20px 6px rgba(79,70,229,.3)}}
 @keyframes firepulse{0%,100%{box-shadow:0 0 8px 2px rgba(255,80,0,.3)}50%{box-shadow:0 0 22px 6px rgba(255,80,0,.55)}}
-.preview-sel-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
+.preview-sel-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .preview-sel-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,.08);}
 .preview-sel-btn:hover{border-color:var(--bord2);color:var(--text);}
 /* Theme colors */
@@ -169,7 +169,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
   <!-- LIVE PREVIEW -->
   <div style="background:var(--surf2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:32px;">
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;">🔍 Live Preview — ลองดูก่อนซื้อ</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start;">
 
       <!-- Card Preview -->
       <div>
