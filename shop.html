@@ -380,8 +380,8 @@ function applyLivePreview() {
   const th = THEMES.find(t=>t.id===_previewTheme);
   const ef = EFFECTS.find(e=>e.id===_previewEffect);
 
-  const needBuyTheme  = th && th.price > 0 && !isCurTheme && !_pending.includes(_previewTheme) && !_ownedThemes.includes(_previewTheme);
-  const needBuyEffect = ef && ef.id && !isCurEffect && !_pendingEffects.includes(_previewEffect) && !_ownedEffects.includes(_previewEffect);
+  const needBuyTheme  = false;
+  const needBuyEffect = false;
   const totalPrice    = (needBuyTheme ? th.price : 0) + (needBuyEffect ? ef.price : 0);
 
   let html = '';
@@ -475,9 +475,7 @@ function render(){
     let btn='';
     if(isActive)       btn=`<button class="theme-btn" style="background:var(--gold);color:#000;cursor:default;" disabled>✓ ใช้อยู่</button>`;
     else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
-    else if(isOwned)   btn=`<button class="theme-btn" style="background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);font-size:13px;padding:6px 16px;" onclick="applyTheme('${th.id}')">📦 ติดตั้ง</button>`;
-    else if(isFree)    btn=`<button class="theme-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`;
-    else               btn=`<button class="theme-btn" onclick="buyItem('theme','${th.id}','${th.name}',${th.price})">ซื้อ ฿${th.price}</button>`;
+    else               btn=`<button class="theme-btn" onclick="applyTheme('${th.id}')">เลือกใช้</button>`;
     return `<div class="theme-card tc-${th.id}">
       ${isActive?'<div class="badge-active">✓ ใช้งานอยู่</div>':''}
       ${isPending?'<div class="badge-pending">⏳ รอ Approve</div>':''}
@@ -502,8 +500,7 @@ function render(){
     let btn='';
     if(isActive)       btn=`<button class="theme-btn" style="background:${ef.color};color:#fff;cursor:default;" disabled>✓ ใช้อยู่</button>`;
     else if(isPending) btn=`<button class="theme-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;cursor:default;" disabled>⏳ รอ Approve</button>`;
-    else if(isOwned)   btn=`<button class="theme-btn" style="background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);font-size:13px;padding:6px 16px;" onclick="applyEffect('${ef.id}')">📦 ติดตั้ง</button>`;
-    else               btn=`<button class="theme-btn" style="background:${ef.color}22;color:${ef.color};border:1px solid ${ef.color}44;" onclick="buyItem('effect','${ef.id}','${ef.name}',${ef.price})">ซื้อ ฿${ef.price}</button>`;
+    else               btn=`<button class="theme-btn" style="background:${ef.color}22;color:${ef.color};border:1px solid ${ef.color}44;" onclick="applyEffect('${ef.id}')">เลือกใช้</button>`;
 
     // Effect preview animation
     let previewStyle='', extraHtml='';
