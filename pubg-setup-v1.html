@@ -21,7 +21,7 @@
   --surface2: #222226;
   --border:   #2e2e33;
   --border2:  #3f3f46;
-  --gold:     #f5c842;
+  --gold:     #7c6af7;
   --gold2:    #e8a820;
   --red:      #ef4444;
   --blue:     #3b82f6;
@@ -36,7 +36,7 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
+  font-family: 'Outfit','Noto Sans Thai',sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -66,7 +66,7 @@ header {
 .hero::before {
   content:'';
   position:absolute; inset:0;
-  background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(245,200,66,0.07) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(124,106,247,0.07) 0%, transparent 70%);
 }
 
 .hero-inner {
@@ -81,11 +81,11 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(245,200,66,0.1);
-  border: 1px solid rgba(245,200,66,0.25);
+  background: rgba(124,106,247,0.1);
+  border: 1px solid rgba(124,106,247,0.25);
   border-radius: 4px;
   padding: 3px 10px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
@@ -95,7 +95,7 @@ header {
 }
 
 .hero-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: clamp(36px, 6vw, 64px);
   font-weight: 800;
   letter-spacing: -1px;
@@ -137,7 +137,7 @@ header {
 .step-dot.active { background: var(--gold); opacity: 0.5; }
 
 .progress-label {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 12px;
   letter-spacing: 1px;
   color: var(--text3);
@@ -193,7 +193,7 @@ main {
 }
 
 .section-title-text {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -202,7 +202,7 @@ main {
 }
 
 .section-num {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 11px;
   letter-spacing: 2px;
   color: var(--text3);
@@ -261,7 +261,7 @@ textarea {
   border: 1px solid transparent;
   border-radius: 6px;
   color: var(--text);
-  font-family: 'Barlow', 'Noto Sans Thai', sans-serif;
+  font-family: 'Outfit','Noto Sans Thai',sans-serif;
   font-size: 14px;
   padding: 6px 10px;
   outline: none;
@@ -277,7 +277,7 @@ input[type=text]:hover, input[type=number]:hover, select:hover {
 input[type=text]:focus, input[type=number]:focus, select:focus {
   border-color: var(--gold);
   background: var(--bg2);
-  box-shadow: 0 0 0 2px rgba(245,200,66,0.08);
+  box-shadow: 0 0 0 2px rgba(124,106,247,0.08);
 }
 
 select option { background: var(--surface2); color: var(--text); }
@@ -315,16 +315,16 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 50%;
   background: var(--gold);
   cursor: pointer;
-  box-shadow: 0 0 0 3px rgba(245,200,66,0.15);
+  box-shadow: 0 0 0 3px rgba(124,106,247,0.15);
   transition: box-shadow 0.2s;
 }
 
 input[type=range]::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 0 5px rgba(245,200,66,0.2);
+  box-shadow: 0 0 0 5px rgba(124,106,247,0.2);
 }
 
 .range-val {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--gold);
@@ -351,7 +351,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   transition: all 0.15s;
 }
 
-.toggle-btn.on  { background: rgba(245,200,66,0.12); border-color: var(--gold); color: var(--gold); }
+.toggle-btn.on  { background: rgba(124,106,247,0.12); border-color: var(--gold); color: var(--gold); }
 .toggle-btn.off { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.4); color: var(--red); }
 
 /* Chip selector */
@@ -370,14 +370,14 @@ input[type=range]::-webkit-slider-thumb:hover {
   white-space: nowrap;
 }
 .chip:hover { border-color: var(--gold); color: var(--text); }
-.chip.selected { background: rgba(245,200,66,0.1); border-color: var(--gold); color: var(--gold); font-weight: 600; }
+.chip.selected { background: rgba(124,106,247,0.1); border-color: var(--gold); color: var(--gold); font-weight: 600; }
 
 /* Sub-label */
 .sub-row {
   background: rgba(0,0,0,0.2);
   border-bottom: 1px solid var(--border);
   padding: 8px 20px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -396,14 +396,14 @@ input[type=range]::-webkit-slider-thumb:hover {
 .submit-section {
   margin-top: 48px;
   padding: 32px;
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(245,200,66,0.04) 100%);
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(124,106,247,0.04) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   text-align: center;
 }
 
 .submit-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -426,7 +426,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   color: #09090b;
   border: none;
   border-radius: 8px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -438,7 +438,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 .btn-submit:hover {
   background: var(--gold2);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(245,200,66,0.25);
+  box-shadow: 0 8px 24px rgba(124,106,247,0.25);
 }
 
 .btn-submit:active { transform: translateY(0); }
@@ -461,7 +461,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .success-icon {
   width: 80px; height: 80px;
-  background: rgba(245,200,66,0.1);
+  background: rgba(124,106,247,0.1);
   border: 2px solid var(--gold);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -470,7 +470,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .success-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Space Grotesk',sans-serif;
   font-size: 40px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -507,7 +507,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .summary-row:last-child { border-bottom: none; }
 .summary-row .s-lbl { color: var(--text2); }
-.summary-row .s-val { color: var(--text); font-weight: 600; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; letter-spacing: 0.5px; }
+.summary-row .s-val { color: var(--text); font-weight: 600; font-family: 'Space Grotesk',sans-serif; font-size: 16px; letter-spacing: 0.5px; }
 .summary-row .s-val.gold { color: var(--gold); }
 
 .btn-new {
@@ -529,7 +529,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   .field-label { border-right: none; border-bottom: 1px solid var(--border); min-height: auto; padding: 10px 16px; }
   .field-input { padding: 10px 16px 14px; }
 }
-.byp-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1b1f;border:1px solid var(--border2);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:9999;transition:all .3s;opacity:0;pointer-events:none;white-space:nowrap;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;}
+.byp-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1b1f;border:1px solid var(--border2);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:9999;transition:all .3s;opacity:0;pointer-events:none;white-space:nowrap;font-family:'Space Grotesk',sans-serif;letter-spacing:.5px;}
 .byp-toast.show{opacity:1;}
 .avatar-uploading{font-size:11px;color:var(--gold);margin-top:6px;display:none;}
 </style>
@@ -543,21 +543,21 @@ input[type=range]::-webkit-slider-thumb:hover {
   <div class="success-sub">ข้อมูล Setup ของคุณถูกบันทึกเรียบร้อยแล้ว</div>
   <div class="summary-box" id="summaryBox"></div>
   <button class="btn-new" onclick="resetForm()">+ กรอกข้อมูลใหม่</button>
-  <a href="pubg-browse.html" onclick="document.body.style.overflow=''" style="display:inline-block;margin-top:10px;padding:10px 28px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">← กลับหน้าหลัก</a>
+  <a href="pubg-browse.html" onclick="document.body.style.overflow=''" style="display:inline-block;margin-top:10px;padding:10px 28px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.color='#7c6af7';this.style.borderColor='#7c6af7'" onmouseout="this.style.color='';this.style.borderColor=''">← กลับหน้าหลัก</a>
 </div>
 
 <!-- HEADER -->
 <header>
   <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;">
-    <a href="pubg-browse.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;padding:6px 14px;border:1px solid var(--border2);border-radius:6px;transition:all .15s;" onmouseover="this.style.color='#f5c842';this.style.borderColor='#f5c842'" onmouseout="this.style.color='';this.style.borderColor=''">
+    <a href="pubg-browse.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;padding:6px 14px;border:1px solid var(--border2);border-radius:6px;transition:all .15s;" onmouseover="this.style.color='#7c6af7';this.style.borderColor='#7c6af7'" onmouseout="this.style.color='';this.style.borderColor=''">
       ← หน้าหลัก
     </a>
-    <span style="margin-left:16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--text);letter-spacing:1px;">BYP <span style="color:#f5c842">: BUILD YOUR PLAY</span></span>
+    <span style="margin-left:16px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text);letter-spacing:1px;">BYP <span style="color:#7c6af7">: BUILD YOUR PLAY</span></span>
   </div>
   <div class="hero">
     <div class="hero-inner">
       <div class="version-badge">● Version 1.0 &nbsp;·&nbsp; PUBG Edition</div>
-      <h1 class="hero-title">BYP<br><span>BUILD YOUR PLAY</span></h1>
+      <h1 class="hero-title">BYP<br><span style='color:#7c6af7;'>BUILD YOUR PLAY</span></h1>
       <p class="hero-sub">บันทึก Mouse Settings และ Desktop Setup ของคุณ เพื่อหาค่าที่เหมาะสมกับ Playstyle</p>
 
       <div class="progress-bar-wrap">
@@ -592,13 +592,13 @@ input[type=range]::-webkit-slider-thumb:hover {
           <div id="miniPreviewCard" style="border-radius:10px;overflow:hidden;position:relative;max-width:320px;border:1px solid var(--border);background:var(--surf);transition:all .3s;">
             <div id="mpHead" style="padding:10px 14px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
               <div id="mpAvatar" style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;overflow:hidden;">🎮</div>
-              <div id="mpIgn" style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);">—</div>
+              <div id="mpIgn" style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;color:var(--text);">—</div>
             </div>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);">
-              <div style="padding:7px 4px;text-align:center;border-right:1px solid var(--border);"><div id="mpDpi" style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">DPI</div></div>
-              <div style="padding:7px 4px;text-align:center;border-right:1px solid var(--border);"><div id="mpSens" style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">SENS</div></div>
-              <div style="padding:7px 4px;text-align:center;border-right:1px solid var(--border);"><div id="mpPad" style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">PAD</div></div>
-              <div style="padding:7px 4px;text-align:center;"><div id="mpHz" style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">HZ</div></div>
+              <div style="padding:7px 4px;text-align:center;border-right:1px solid var(--border);"><div id="mpDpi" style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">DPI</div></div>
+              <div style="padding:7px 4px;text-align:center;border-right:1px solid var(--border);"><div id="mpSens" style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">SENS</div></div>
+              <div style="padding:7px 4px;text-align:center;border-right:1px solid var(--border);"><div id="mpPad" style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">PAD</div></div>
+              <div style="padding:7px 4px;text-align:center;"><div id="mpHz" style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:var(--gold);">—</div><div style="font-size:8px;color:var(--text3);letter-spacing:1px;">HZ</div></div>
             </div>
             <div id="mpWave" style="display:none;position:absolute;bottom:0;left:0;right:0;height:30px;overflow:hidden;pointer-events:none;">
               <svg style="width:200%;animation:wavemove 3s linear infinite;" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,15 Q37,5 75,15 Q112,25 150,15 Q187,5 225,15 Q262,25 300,15 L300,30 L0,30 Z" fill="#10b981" opacity="0.4"/></svg>
@@ -617,7 +617,7 @@ input[type=range]::-webkit-slider-thumb:hover {
             <div id="avatarPreview" style="width:72px;height:72px;border-radius:50%;background:var(--surf2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;">🎮</div>
             <div>
               <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(this)">
-              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#f5c842';this.style.color='#f5c842'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
+              <button onclick="document.getElementById('avatarFile').click()" style="padding:8px 16px;border:1px solid var(--border2);border-radius:7px;background:var(--surf2);color:var(--text2);font-size:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.borderColor='#7c6af7';this.style.color='#7c6af7'" onmouseout="this.style.borderColor='';this.style.color=''">เลือกรูป</button>
               <div id="avatarStatus" class="avatar-uploading">⏳ กำลังโหลดรูป...</div>
               <div style="font-size:11px;color:var(--text3);margin-top:6px;">JPG, PNG ขนาดไม่เกิน 2MB</div>
             </div>
@@ -839,7 +839,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="sub-row" style="margin-top:8px;">Scope Sensitivity แยก Zoom</div>
 
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x2</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--gold);">x2</span> Scope</div>
           <div class="field-input">
             <div class="range-wrap"><input type="range" id="scopeX2" min="1" max="100" value="50" oninput="syncRange('scopeX2','scopeX2Val',this.value)"><span class="range-val" id="scopeX2Val">50</span></div>
             <span class="input-unit">/ 100</span>
@@ -847,7 +847,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
 
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x3</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--gold);">x3</span> Scope</div>
           <div class="field-input">
             <div class="range-wrap"><input type="range" id="scopeX3" min="1" max="100" value="50" oninput="syncRange('scopeX3','scopeX3Val',this.value)"><span class="range-val" id="scopeX3Val">50</span></div>
             <span class="input-unit">/ 100</span>
@@ -855,7 +855,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
 
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x4</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--gold);">x4</span> Scope</div>
           <div class="field-input">
             <div class="range-wrap"><input type="range" id="scopeX4" min="1" max="100" value="50" oninput="syncRange('scopeX4','scopeX4Val',this.value)"><span class="range-val" id="scopeX4Val">50</span></div>
             <span class="input-unit">/ 100</span>
@@ -863,7 +863,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
 
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x6</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--gold);">x6</span> Scope</div>
           <div class="field-input">
             <div class="range-wrap"><input type="range" id="scopeX6" min="1" max="100" value="50" oninput="syncRange('scopeX6','scopeX6Val',this.value)"><span class="range-val" id="scopeX6Val">50</span></div>
             <span class="input-unit">/ 100</span>
@@ -871,7 +871,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
 
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x8</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--gold);">x8</span> Scope</div>
           <div class="field-input">
             <div class="range-wrap"><input type="range" id="scopeX8" min="1" max="100" value="50" oninput="syncRange('scopeX8','scopeX8Val',this.value)"><span class="range-val" id="scopeX8Val">50</span></div>
             <span class="input-unit">/ 100</span>
@@ -879,7 +879,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
 
         <div class="field-row">
-          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold);">x15</span> Scope</div>
+          <div class="field-label"><span class="lbl-icon" style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--gold);">x15</span> Scope</div>
           <div class="field-input">
             <div class="range-wrap"><input type="range" id="scopeX15" min="1" max="100" value="50" oninput="syncRange('scopeX15','scopeX15Val',this.value)"><span class="range-val" id="scopeX15Val">50</span></div>
             <span class="input-unit">/ 100</span>
@@ -951,7 +951,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="field-input">
           <input type="number" id="monSize" min="17" max="55" step="0.1" placeholder="เช่น 27"
             style="width:100px;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:16px;padding:8px 12px;outline:none;font-family:'Barlow',sans-serif;transition:border-color .2s;"
-            onfocus="this.style.borderColor='#f5c842'" onblur="this.style.borderColor=''">
+            onfocus="this.style.borderColor='#7c6af7'" onblur="this.style.borderColor=''">
           <span style="color:var(--text2);font-size:13px;margin-left:8px;">นิ้ว</span>
         </div>
       </div>
@@ -1201,7 +1201,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="field-label"><span class="lbl-icon">📝</span> หมายเหตุ</div>
         <div class="field-input" style="padding:16px 20px;">
           <textarea id="notes" rows="3" placeholder="เช่น ปัญหาที่เจอ, สิ่งที่อยากปรับ..."
-            style="width:100%;resize:vertical;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:12px;font-size:14px;font-family:'Barlow','Noto Sans Thai',sans-serif;outline:none;line-height:1.6;"></textarea>
+            style="width:100%;resize:vertical;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:12px;font-size:14px;font-family:'Outfit','Noto Sans Thai',sans-serif;outline:none;line-height:1.6;"></textarea>
         </div>
       </div>
 
@@ -1289,7 +1289,7 @@ function showToast(msg, type='info', dur=3000) {
     toast.className = 'byp-toast';
     document.body.appendChild(toast);
   }
-  const colors = { info:'#f5c842', success:'#4ade80', error:'#fca5a5' };
+  const colors = { info:'#7c6af7', success:'#4ade80', error:'#fca5a5' };
   toast.style.borderColor = colors[type] || colors.info;
   toast.style.color = colors[type] || colors.info;
   toast.textContent = msg;
@@ -1321,7 +1321,7 @@ const THEME_STYLES_SETUP = {
   inferno:     {bg:'#1a0a00',       border:'#ff4500',       ign:'#ffddcc',      val:'#ff6b35'},
   storm:       {bg:'#060b1a',       border:'#4f46e5',       ign:'#e0e7ff',      val:'#818cf8'},
   matrix:      {bg:'#001a00',       border:'#00ff41',       ign:'#00ff41',      val:'#00ff41', ignFont:"'Courier New',monospace"},
-  gold:        {bg:'#0d0900',       border:'#f5c842',       ign:'#ffe680',      val:'#f5c842'},
+  gold:        {bg:'#0d0900',       border:'#7c6af7',       ign:'#ffe680',      val:'#7c6af7'},
   sakura:      {bg:'#1a0a0f',       border:'#f472b6',       ign:'#fce7f3',      val:'#f472b6'},
   '8bit':      {bg:'#0a0a1a',       border:'#fff',          ign:'#fff',         val:'#ffe600', ignFont:"'Press Start 2P',monospace", ignSize:'9px', borderW:'3px', radius:'0'},
   '8bit-retro':{bg:'#0d0020',       border:'#cc44ff',       ign:'#ee88ff',      val:'#ee88ff', ignFont:"'Press Start 2P',monospace", ignSize:'9px', borderW:'3px', radius:'0'},
@@ -1341,7 +1341,7 @@ function updateMiniPreview() {
   card.style.animation    = '';
   document.getElementById('mpHead').style.borderColor = st.border+'44';
   const ign = document.getElementById('mpIgn');
-  ign.style.color = st.ign; ign.style.fontFamily = st.ignFont||"'Barlow Condensed',sans-serif"; ign.style.fontSize = st.ignSize||'16px';
+  ign.style.color = st.ign; ign.style.fontFamily = st.ignFont||"'Space Grotesk',sans-serif"; ign.style.fontSize = st.ignSize||'16px';
   ign.textContent = document.getElementById('ign')?.value || '—';
   ['mpDpi','mpSens','mpPad','mpHz'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.color=st.val;});
   document.getElementById('mpDpi').textContent  = document.getElementById('dpi')?.value||'—';
@@ -1389,7 +1389,7 @@ function renderFontSelector(currentFont) {
   box.innerHTML = ALL_FONTS.map(f => {
     const isActive = _selectedFont === f.id;
     return `<button onclick="selectCardFont(${f.id ? "'"+f.id+"'" : 'null'})" id="fbtn-${f.id||'none'}"
-      style="padding:5px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid ${isActive?'var(--gold)':'var(--border)'};background:${isActive?'rgba(245,200,66,.1)':'transparent'};color:${isActive?'var(--gold)':'var(--text2)'};"
+      style="padding:5px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid ${isActive?'var(--gold)':'var(--border)'};background:${isActive?'rgba(124,106,247,.1)':'transparent'};color:${isActive?'var(--gold)':'var(--text2)'};"
       >${f.name}</button>`;
   }).join('');
   // Apply font-family หลัง render
@@ -1407,12 +1407,12 @@ function selectCardFont(id) {
     const bid = b.id.replace('fbtn-','');
     const isActive = (bid==='none' && id===null) || bid===id;
     b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
-    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
+    b.style.background  = isActive ? 'rgba(124,106,247,.1)' : 'transparent';
     b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
   });
 }
 const ALL_FONTS = [
-  {id:null,           name:'Default',      family:"'Barlow Condensed',sans-serif"},
+  {id:null,           name:'Default',      family:"'Space Grotesk',sans-serif"},
   {id:'rajdhani',     name:'Rajdhani',     family:"'Rajdhani',sans-serif"},
   {id:'oxanium',      name:'Oxanium',      family:"'Oxanium',sans-serif"},
   {id:'exo2',         name:'Exo 2',        family:"'Exo 2',sans-serif"},
@@ -1456,15 +1456,15 @@ async function loadThemeSelector(currentTheme, currentEffect, setupId) {
   const ownedEffects = ALL_EFFECTS;
 
   const themeBtn = (t) => `<button onclick="selectCardTheme('${t.id}')" id="tbtn-${t.id}"
-    style="padding:4px 10px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
+    style="padding:4px 10px;border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
     border:1px solid ${_selectedTheme===t.id?'var(--gold)':'var(--border)'};
-    background:${_selectedTheme===t.id?'rgba(245,200,66,.1)':'transparent'};
+    background:${_selectedTheme===t.id?'rgba(124,106,247,.1)':'transparent'};
     color:${_selectedTheme===t.id?'var(--gold)':'var(--text2)'};">${t.emoji} ${t.name}</button>`;
 
   const effectBtn = (e) => `<button onclick="selectCardEffect(${e.id?'\''+e.id+'\'':'null'})" id="ebtn-${e.id||'none'}"
-    style="padding:4px 10px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
+    style="padding:4px 10px;border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;
     border:1px solid ${_selectedEffect===e.id?'var(--gold)':'var(--border)'};
-    background:${_selectedEffect===e.id?'rgba(245,200,66,.1)':'transparent'};
+    background:${_selectedEffect===e.id?'rgba(124,106,247,.1)':'transparent'};
     color:${_selectedEffect===e.id?'var(--gold)':'var(--text2)'};">${e.emoji} ${e.name}</button>`;
 
   // Section selectors
@@ -1479,7 +1479,7 @@ function selectCardTheme(id) {
   document.querySelectorAll('[id^="tbtn-"]').forEach(b => {
     const isActive = b.id === 'tbtn-'+id;
     b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
-    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
+    b.style.background  = isActive ? 'rgba(124,106,247,.1)' : 'transparent';
     b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
   });
   updateMiniPreview();
@@ -1491,7 +1491,7 @@ function selectCardEffect(id) {
     const bid = b.id.replace('ebtn-','');
     const isActive = (bid === 'none' && id === null) || bid === id;
     b.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
-    b.style.background  = isActive ? 'rgba(245,200,66,.1)' : 'transparent';
+    b.style.background  = isActive ? 'rgba(124,106,247,.1)' : 'transparent';
     b.style.color       = isActive ? 'var(--gold)' : 'var(--text2)';
   });
   updateMiniPreview();
@@ -1679,7 +1679,7 @@ window.addEventListener('scroll', () => {
 // AUTH CHECK + โหลดข้อมูลเดิม (ถ้ามี)
 (async () => {
   const { data: { session } } = await _supa.auth.getSession();
-  if (!session) { window.location.href = 'login.html'; return; }
+  if (!session) { window.location.href = 'login.html?return=pubg-setup-v1.html'; return; }
 
   _currentUserId = session.user.id;
 
@@ -1702,7 +1702,7 @@ window.addEventListener('scroll', () => {
   _existingSetupId = existing.id;
 
   // เปลี่ยน title และปุ่ม submit
-  document.querySelector('.hero-title').innerHTML = 'BYP<br><span>แก้ไข SETUP</span>';
+  document.querySelector('.hero-title').innerHTML = 'BYP<br><span style="color:#7c6af7;">แก้ไข SETUP</span>';
   document.querySelector('.btn-submit').innerHTML = '💾 &nbsp;บันทึกการแก้ไข';
 
   const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
