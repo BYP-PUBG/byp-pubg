@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Build Your Play — Login</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const _supa = window.supabase.createClient(
@@ -21,7 +21,7 @@
   --surf2:  #1a1b1f;
   --border: #272830;
   --bord2:  #32333e;
-  --gold:   #7c6af7;
+  --gold:   #f5c842;
   --goldf:  rgba(245,200,66,0.10);
   --text:   #f0f1f5;
   --text2:  #8e8f9e;
@@ -33,7 +33,7 @@
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:'Outfit','Noto Sans Thai',sans-serif;
+  font-family:'Barlow','Noto Sans Thai',sans-serif;
   min-height:100vh;
   display:flex;flex-direction:column;
 }
@@ -49,16 +49,16 @@ nav{
   border-bottom:1px solid var(--border);
   backdrop-filter:blur(12px);
 }
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
-.nav-logo span{color:#7c6af7;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
+.nav-logo span{color:#f5c842;}
 .nav-back{
   display:flex;align-items:center;gap:6px;
   font-size:12px;color:var(--text2);text-decoration:none;
-  font-family:'Space Grotesk',sans-serif;letter-spacing:1px;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;
   padding:5px 12px;border:1px solid var(--border);border-radius:6px;
   transition:all .15s;
 }
-.nav-back:hover{color:#7c6af7;border-color:#7c6af7;}
+.nav-back:hover{color:#f5c842;border-color:#f5c842;}
 
 /* MAIN */
 .page{
@@ -69,7 +69,7 @@ nav{
 .card{
   background:var(--surf);
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:16px;
   width:100%;max-width:420px;
   overflow:hidden;
 }
@@ -83,7 +83,7 @@ nav{
 .card-body{padding:32px 36px 36px;}
 
 .card-title{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Barlow Condensed',sans-serif;
   font-size:28px;font-weight:900;letter-spacing:.5px;
   color:var(--text);margin-bottom:4px;
 }
@@ -103,23 +103,23 @@ nav{
 .form-label{
   display:block;font-size:11px;color:var(--text2);
   letter-spacing:1.5px;text-transform:uppercase;
-  font-family:'Space Grotesk',sans-serif;margin-bottom:7px;
+  font-family:'Barlow Condensed',sans-serif;margin-bottom:7px;
 }
 .form-input{
   width:100%;background:var(--surf2);
   border:1px solid var(--border);border-radius:8px;
   color:var(--text);font-size:14px;padding:11px 14px;
-  outline:none;font-family:'Outfit','Noto Sans Thai',sans-serif;
+  outline:none;font-family:'Barlow','Noto Sans Thai',sans-serif;
   transition:border-color .2s;
 }
-.form-input:focus{border-color:#7c6af7;}
+.form-input:focus{border-color:#f5c842;}
 .form-input::placeholder{color:var(--text3);}
 
 .btn-primary{
   width:100%;padding:13px;border-radius:8px;border:none;
-  background:#7c6af7;color:#fff;
+  background:#f5c842;color:#fff;
   font-size:14px;font-weight:700;letter-spacing:.5px;
-  cursor:pointer;font-family:'Space Grotesk',sans-serif;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;
   transition:all .15s;margin-top:4px;
 }
 .btn-primary:hover{background:#e8a820;transform:translateY(-1px);}
@@ -162,7 +162,7 @@ nav{
   background:var(--bg2);
 }
 .card-footer a{color:var(--text2);text-decoration:none;transition:color .15s;}
-.card-footer a:hover{color:#7c6af7;}
+.card-footer a:hover{color:#f5c842;}
 
 /* Loading spinner */
 .spinner{
@@ -179,7 +179,7 @@ nav{
 }
 .verify-icon{font-size:40px;margin-bottom:12px;}
 .verify-title{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Barlow Condensed',sans-serif;
   font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;
 }
 .verify-sub{font-size:13px;color:var(--text2);line-height:1.6;}
@@ -188,11 +188,16 @@ nav{
 <body>
 
 <nav>
-  <div class="nav-logo">BYP<span style='color:#7c6af7;'> : BUILD YOUR PLAY</span></div>
+  <div class="nav-logo">BYP<span style='color:#f5c842;'> : BUILD YOUR PLAY</span></div>
   <a href="pubg-browse.html" class="nav-back">← Browse</a>
 </nav>
 
 <div class="page">
+  <div style="text-align:center;padding:32px 24px 0;margin-bottom:-8px;">
+    <div style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:#f5c842;background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.2);padding:4px 14px;border-radius:20px;margin-bottom:14px;">● PUBG EDITION</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;letter-spacing:1px;color:#f0f1f5;line-height:1;margin-bottom:8px;">BUILD YOUR<br><span style="color:#f5c842;">PLAY</span></div>
+    <div style="font-size:12px;color:#45464f;margin-bottom:28px;letter-spacing:.3px;">รวม Setup จริงจากนักเล่น PUBG</div>
+  </div>
   <div class="card">
     <div class="card-body">
       <div class="card-title" id="cardTitle">ยินดีต้อนรับ</div>
@@ -241,7 +246,7 @@ nav{
         <div class="verify-box">
           <div class="verify-icon">📧</div>
           <div class="verify-title">ยืนยัน Email ของคุณ</div>
-          <div class="verify-sub">เราส่ง Email ไปที่ <strong id="sentEmail" style="color:#7c6af7"></strong> แล้วครับ<br>คลิกลิงก์ใน Email เพื่อเปิดใช้งาน Account</div>
+          <div class="verify-sub">เราส่ง Email ไปที่ <strong id="sentEmail" style="color:#f5c842"></strong> แล้วครับ<br>คลิกลิงก์ใน Email เพื่อเปิดใช้งาน Account</div>
         </div>
       </div>
 
