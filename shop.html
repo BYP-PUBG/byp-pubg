@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BYP : Shop — Card Themes</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600&family=Barlow+Condensed:wght@700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const _supa = window.supabase.createClient(
@@ -14,53 +14,53 @@ const _supa = window.supabase.createClient(
 );
 </script>
 <style>
-:root{--bg:#07080a;--bg2:#0e0f12;--surf:#131417;--surf2:#1a1b1f;--border:#272830;--bord2:#32333e;--gold:#7c6af7;--golddim:rgba(124,106,247,0.08);--text:#f0f1f5;--text2:#8e8f9e;--text3:#45464f;}
+:root{--bg:#07080a;--bg2:#0e0f12;--surf:#131417;--surf2:#1a1b1f;--border:#272830;--bord2:#32333e;--gold:#f5c842;--golddim:rgba(245,200,66,0.08);--text:#f0f1f5;--text2:#8e8f9e;--text3:#45464f;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Outfit','Noto Sans Thai',sans-serif;min-height:100vh;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow','Noto Sans Thai',sans-serif;min-height:100vh;}
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;background:rgba(13,14,18,.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
-.nav-logo span{color:#7c6af7;}
-.nav-back{font-size:12px;color:var(--text2);text-decoration:none;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;padding:5px 12px;border:1px solid var(--border);border-radius:6px;transition:all .15s;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;}
+.nav-logo span{color:#f5c842;}
+.nav-back{font-size:12px;color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:5px 12px;border:1px solid var(--border);border-radius:6px;transition:all .15s;}
 .nav-back:hover{color:var(--gold);border-color:var(--gold);}
 .hero{padding:40px 24px 32px;text-align:center;}
-.hero-title{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:900;letter-spacing:1px;margin-bottom:8px;}
-.hero-title span{color:#7c6af7;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;letter-spacing:1px;margin-bottom:8px;}
+.hero-title span{color:#f5c842;}
 .hero-sub{font-size:14px;color:var(--text2);}
 .page{max-width:920px;margin:0 auto;padding:0 20px 60px;}
-.sec-title{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 .themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px;}
 .theme-card{border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s;position:relative;}
 .theme-card:hover{transform:translateY(-4px);}
-.preview-ign{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px;}
+.preview-ign{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px;}
 .preview-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
 .preview-stat{padding:6px 4px;border-radius:5px;text-align:center;}
-.preview-val{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;}
+.preview-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;}
 .preview-lbl{font-size:8px;opacity:.6;letter-spacing:.5px;margin-top:1px;}
 .theme-info{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.08);}
-.theme-name{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;}
-.theme-price{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;}
-.theme-btn{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 14px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;}
-.badge-active{position:absolute;top:10px;right:10px;background:rgba(124,106,247,.15);color:var(--gold);border:1px solid rgba(124,106,247,.3);font-size:9px;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;z-index:1;}
-.badge-pending{position:absolute;top:10px;right:10px;background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3);font-size:9px;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;z-index:1;}
+.theme-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;}
+.theme-price{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;}
+.theme-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 14px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;}
+.badge-active{position:absolute;top:10px;right:10px;background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;z-index:1;}
+.badge-pending{position:absolute;top:10px;right:10px;background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3);font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:4px;z-index:1;}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:100;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
 .modal-overlay.show{display:flex;}
 .modal{background:var(--surf);border:1px solid var(--bord2);border-radius:14px;width:100%;max-width:420px;margin:auto;}
 .modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.modal-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;color:var(--gold);}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--gold);}
 .modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:16px;cursor:pointer;}
 .modal-body{padding:24px;}
 .bank-box{background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;}
-.bank-label{font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Space Grotesk',sans-serif;margin-bottom:5px;}
-.bank-num{font-size:20px;font-weight:700;color:var(--gold);font-family:'Space Grotesk',sans-serif;letter-spacing:2px;}
+.bank-label{font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;margin-bottom:5px;}
+.bank-num{font-size:20px;font-weight:700;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;}
 .bank-name{font-size:12px;color:var(--text2);margin-top:2px;}
 .slip-area{border:1.5px dashed var(--bord2);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin:14px 0;}
 .slip-area:hover{border-color:var(--gold);background:var(--golddim);}
 .slip-area.has-file{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.05);}
 .slip-img{max-width:100%;max-height:180px;border-radius:8px;margin-top:10px;display:none;}
-.btn-main{width:100%;padding:12px;border-radius:8px;border:none;background:#7c6af7;color:#fff;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .15s;margin-bottom:8px;}
+.btn-main{width:100%;padding:12px;border-radius:8px;border:none;background:#f5c842;color:#fff;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .15s;margin-bottom:8px;}
 .btn-main:hover{background:#e8a820;}
 .btn-main:disabled{opacity:.4;cursor:not-allowed;}
-.btn-sec{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+.btn-sec{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;}
 .err{color:#fca5a5;font-size:12px;margin-bottom:10px;text-align:center;display:none;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1px solid var(--bord2);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text);z-index:200;transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
@@ -69,8 +69,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 @keyframes infernoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,69,0,0)}50%{box-shadow:0 0 20px 6px rgba(255,69,0,.25)}}
 @keyframes stormPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,0)}50%{box-shadow:0 0 20px 6px rgba(79,70,229,.3)}}
 @keyframes firepulse{0%,100%{box-shadow:0 0 8px 2px rgba(255,80,0,.3)}50%{box-shadow:0 0 22px 6px rgba(255,80,0,.55)}}
-.preview-sel-btn{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
-.preview-sel-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(124,106,247,.08);}
+.preview-sel-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.preview-sel-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,.08);}
 .preview-sel-btn:hover{border-color:var(--bord2);color:var(--text);}
 /* Theme colors */
 .tc-default{background:var(--surf);border:1px solid var(--border);}
@@ -99,13 +99,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 .tc-matrix .theme-name{color:#00ff41;}
 .tc-matrix .theme-price{color:#00aa2b;}
 .tc-matrix .theme-btn{background:rgba(0,255,65,.1);color:#00ff41;border:1px solid rgba(0,255,65,.3);}
-.tc-gold{background:#0d0900;border:1px solid #7c6af7;}
+.tc-gold{background:#0d0900;border:1px solid #f5c842;}
 .tc-gold .preview-ign{color:#ffe680;}
-.tc-gold .preview-stat{background:rgba(124,106,247,.08);}
-.tc-gold .preview-val{color:#7c6af7;}
-.tc-gold .theme-name{color:#7c6af7;}
+.tc-gold .preview-stat{background:rgba(245,200,66,.08);}
+.tc-gold .preview-val{color:#f5c842;}
+.tc-gold .theme-name{color:#f5c842;}
 .tc-gold .theme-price{color:#c9a227;}
-.tc-gold .theme-btn{background:rgba(124,106,247,.15);color:#7c6af7;}
+.tc-gold .theme-btn{background:rgba(245,200,66,.15);color:#f5c842;}
 .tc-sakura{background:#1a0a0f;border:1px solid #f472b6;}
 .tc-sakura .preview-ign{color:#fce7f3;}
 .tc-sakura .preview-stat{background:rgba(244,114,182,.1);}
@@ -156,7 +156,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 </head>
 <body>
 <nav>
-  <div class="nav-logo">BYP<span style='color:#7c6af7;'> : BUILD YOUR PLAY</span></div>
+  <div class="nav-logo">BYP<span style='color:#f5c842;'> : BUILD YOUR PLAY</span></div>
   <a href="pubg-browse.html" class="nav-back">← กลับหน้าหลัก</a>
 </nav>
 <div class="hero">
@@ -168,7 +168,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 
   <!-- LIVE PREVIEW -->
   <div style="background:var(--surf2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:32px;">
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;">🔍 Live Preview — ลองดูก่อนซื้อ</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:16px;">🔍 Live Preview — ลองดูก่อนซื้อ</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start;">
 
       <!-- Card Preview -->
@@ -177,15 +177,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
           <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;" id="liveHead">
             <div style="display:flex;align-items:center;gap:8px;">
               <div id="liveAvatar" style="width:28px;height:28px;border-radius:50%;background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;">🎮</div>
-              <div id="liveIgn" style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;">—</div>
+              <div id="liveIgn" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;">—</div>
             </div>
           </div>
           <div style="padding:10px 14px;border-bottom:1px solid var(--border);">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);">
-              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="liveDpi" style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">DPI</div></div>
-              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="liveSens" style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">SENS</div></div>
-              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="livePad" style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">PAD</div></div>
-              <div style="padding:8px 4px;text-align:center;"><div id="liveHz" style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">HZ</div></div>
+              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="liveDpi" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">DPI</div></div>
+              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="liveSens" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">SENS</div></div>
+              <div style="padding:8px 4px;text-align:center;border-right:1px solid var(--border);"><div id="livePad" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">PAD</div></div>
+              <div style="padding:8px 4px;text-align:center;"><div id="liveHz" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--gold);">—</div><div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;">HZ</div></div>
             </div>
           </div>
           <div id="liveEffect" style="position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:12px;overflow:hidden;"></div>
@@ -195,11 +195,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
       <!-- Controls -->
       <div>
         <div style="margin-bottom:14px;">
-          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;margin-bottom:8px;">เลือก Theme</div>
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:8px;">เลือก Theme</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;" id="previewThemeBtns"></div>
         </div>
         <div style="margin-bottom:16px;">
-          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;margin-bottom:8px;">เลือก Effect</div>
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:8px;">เลือก Effect</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;" id="previewEffectBtns"></div>
         </div>
         <div id="previewBuyArea" style="display:flex;flex-direction:column;gap:8px;"></div>
@@ -224,18 +224,18 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
     <div class="modal-body">
       <div id="step1">
         <div style="text-align:center;margin-bottom:14px;">
-          <div style="font-size:26px;font-weight:900;color:var(--gold);font-family:'Space Grotesk',sans-serif;" id="modalAmount">฿29</div>
+          <div style="font-size:26px;font-weight:900;color:var(--gold);font-family:'Barlow Condensed',sans-serif;" id="modalAmount">฿29</div>
           <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="modalSubtext">โอนเงินแล้วอัพโหลดสลิปด้านล่างได้เลย</div>
         </div>
 
         <!-- Promo Code -->
         <div style="margin-bottom:14px;">
-          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;margin-bottom:6px;">มีโค้ดส่วนลด?</div>
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:6px;">มีโค้ดส่วนลด?</div>
           <div style="display:flex;gap:8px;">
             <input type="text" id="promoInput" placeholder="กรอกโค้ดที่นี่..."
-              style="flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:8px 12px;outline:none;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;"
+              style="flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:8px 12px;outline:none;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;"
               oninput="this.value=this.value.toUpperCase()">
-            <button onclick="applyPromo()" style="padding:8px 16px;border-radius:8px;border:1px solid var(--bord2);background:var(--surf2);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;white-space:nowrap;transition:all .15s;"
+            <button onclick="applyPromo()" style="padding:8px 16px;border-radius:8px;border:1px solid var(--bord2);background:var(--surf2);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;white-space:nowrap;transition:all .15s;"
               onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='';this.style.color=''">ใช้โค้ด</button>
           </div>
           <div id="promoMsg" style="font-size:12px;margin-top:6px;display:none;"></div>
@@ -271,7 +271,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 
       <div id="step2" style="display:none;text-align:center;padding:24px 0;">
         <div style="font-size:52px;margin-bottom:16px;">✅</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:10px;" id="step2Title">ส่งสลิปแล้ว!</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:10px;" id="step2Title">ส่งสลิปแล้ว!</div>
         <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:20px;" id="step2Desc">Admin กำลังตรวจสอบ<br>Theme จะถูก unlock ภายใน <strong style="color:var(--gold);">24 ชม.</strong></div>
         <button class="btn-main" onclick="closeModal()">รับทราบ ✓</button>
       </div>
@@ -313,11 +313,11 @@ let _previewTheme = 'default';
 let _previewEffect = null;
 
 const THEME_STYLES = {
-  default:    { bg:'#131417', border:'#272830', ign:'#f0f1f5', val:'#7c6af7', head:'#272830' },
+  default:    { bg:'#131417', border:'#272830', ign:'#f0f1f5', val:'#f5c842', head:'#272830' },
   inferno:    { bg:'#1a0a00', border:'#ff4500', ign:'#ffddcc', val:'#ff6b35', head:'rgba(255,69,0,.15)', anim:'infernoPulse 2s infinite' },
   storm:      { bg:'#060b1a', border:'#4f46e5', ign:'#e0e7ff', val:'#818cf8', head:'rgba(79,70,229,.15)', anim:'stormPulse 2s infinite' },
   matrix:     { bg:'#001a00', border:'#00ff41', ign:'#00ff41', val:'#00ff41', head:'rgba(0,255,65,.08)', ignFont:"'Courier New',monospace" },
-  gold:       { bg:'#0d0900', border:'#7c6af7', ign:'#ffe680', val:'#7c6af7', head:'rgba(124,106,247,.08)' },
+  gold:       { bg:'#0d0900', border:'#f5c842', ign:'#ffe680', val:'#f5c842', head:'rgba(245,200,66,.08)' },
   sakura:     { bg:'#1a0a0f', border:'#f472b6', ign:'#fce7f3', val:'#f472b6', head:'rgba(244,114,182,.08)' },
   '8bit':     { bg:'#0a0a1a', border:'#fff', ign:'#fff', val:'#ffe600', head:'rgba(255,255,255,.05)', ignFont:"'Press Start 2P',monospace", ignSize:'10px', valFont:"'Press Start 2P',monospace", valSize:'11px', borderWidth:'3px', radius:'0' },
   '8bit-retro':{ bg:'#0d0020', border:'#cc44ff', ign:'#ee88ff', val:'#ee88ff', head:'rgba(204,68,255,.08)', ignFont:"'Press Start 2P',monospace", ignSize:'10px', valFont:"'Press Start 2P',monospace", valSize:'11px', borderWidth:'3px', radius:'0' },
@@ -337,7 +337,7 @@ function applyLivePreview() {
 
   const ign = document.getElementById('liveIgn');
   ign.style.color = st.ign;
-  ign.style.fontFamily = st.ignFont || "'Space Grotesk',sans-serif";
+  ign.style.fontFamily = st.ignFont || "'Barlow Condensed',sans-serif";
   ign.style.fontSize = st.ignSize || '18px';
 
   document.getElementById('liveHead').style.borderColor = st.border+'44';
@@ -384,10 +384,10 @@ function applyLivePreview() {
 
   // Theme button
   if (isCurTheme) {
-    html += `<div style="font-size:12px;color:#4ade80;font-family:'Space Grotesk',sans-serif;">✓ ใช้ ${th?.name||'Default'} อยู่แล้ว</div>`;
+    html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;">✓ ใช้ ${th?.name||'Default'} อยู่แล้ว</div>`;
   } else if (th) {
     html += `<button onclick="applyTheme('${th.id}')"
-      style="padding:10px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:.5px;width:100%;">
+      style="padding:10px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;width:100%;">
       ✓ ใช้ ${th.name}
     </button>`;
   }
@@ -395,17 +395,17 @@ function applyLivePreview() {
   // Effect button
   if (ef && ef.id) {
     if (isCurEffect) {
-      html += `<div style="font-size:12px;color:#4ade80;font-family:'Space Grotesk',sans-serif;margin-top:4px;">✓ ใช้ ${ef.name} Effect อยู่แล้ว</div>`;
+      html += `<div style="font-size:12px;color:#4ade80;font-family:'Barlow Condensed',sans-serif;margin-top:4px;">✓ ใช้ ${ef.name} Effect อยู่แล้ว</div>`;
     } else {
       html += `<button onclick="applyEffect('${ef.id}')"
-        style="padding:10px;border-radius:8px;border:none;background:${ef.color};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:.5px;width:100%;margin-top:6px;">
+        style="padding:10px;border-radius:8px;border:none;background:${ef.color};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;width:100%;margin-top:6px;">
         ✓ ใช้ ${ef.name} Effect
       </button>`;
     }
   } else if (!ef || !ef.id) {
     if (_curEffect) {
       html += `<button onclick="applyEffect(null)"
-        style="padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;margin-top:6px;">
+        style="padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;width:100%;margin-top:6px;">
         ✕ ปิด Effect
       </button>`;
     }
