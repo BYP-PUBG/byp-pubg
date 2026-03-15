@@ -814,9 +814,6 @@ function renderCards() {
   const slice = filtered.slice(0, visibleCount);
   grid.innerHTML = slice.map((d,i) => buildCard(d,i)).join('');
 
-  // Draw canvases after render
-  slice.forEach((d,i) => drawDesktop('dvc-'+i, d, 312, 160));
-
   // Init space theme star canvas
   slice.forEach(d => {
     if (d.cardTheme !== 'space' || !d.id) return;
@@ -883,9 +880,6 @@ function buildCard(d, i) {
         ${window._isAdmin && d.id ? `<button onclick="event.stopPropagation();adminDeleteCard('${d.id}')" style="padding:2px 8px;border:1px solid rgba(239,68,68,.35);border-radius:5px;background:transparent;color:#fca5a5;font-size:11px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.15)'" onmouseout="this.style.background='transparent'">🗑️</button>` : ''}
         <div class="card-time">${timeAgo(d.timestamp)}</div>
       </div>
-    </div>
-    <div class="desktop-view">
-      <canvas class="dv" id="dvc-${i}" width="312" height="160"></canvas>
     </div>
     <div class="card-stats">
       <div class="cstat"><div class="cstat-val">${d.dpi||'—'}</div><div class="cstat-lbl">DPI</div></div>
@@ -1279,11 +1273,6 @@ function openDetail(ign) {
   document.getElementById('dmSub').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString('th-TH') : '—';
 
   document.getElementById('dmBody').innerHTML = `
-    <div class="dm-desktop">
-      <div class="dm-desktop-label">Desktop Top View</div>
-      <canvas class="dv-big" id="dvBig" width="640" height="280"></canvas>
-    </div>
-
     <div style="margin-bottom:20px">
       <div class="dm-sec-title">PUBG Mouse Sensitivity</div>
       <div class="dm-sens-row">
@@ -1401,7 +1390,7 @@ function openDetail(ign) {
     const box = {appendChild: el => { el.id='modalEffect'; modal.appendChild(el); }};
     initEffectCanvas(box, modal, d.cardEffect);
   }
-  setTimeout(() => { drawDesktop('dvBig', d, 640, 280); renderDmStars(d.id); }, 50);
+  setTimeout(() => { renderDmStars(d.id); }, 50);
 }
 
 function closeOverlay(e){
